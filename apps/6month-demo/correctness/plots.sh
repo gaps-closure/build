@@ -11,16 +11,20 @@ usage_exit() {
   echo "Usage: $0 [ -vsh ] \\"
   echo "-o  Ownship"
   echo "-t  Target"
+  echo "-p  Output to PNG"
+  echo "-l <TITLE>"
   echo "-h  Help"
   exit 1
 }
 
 handle_opts() {
   local OPTIND
-  while getopts "oth" options; do
+  while getopts "l:opth" options; do
     case "${options}" in
       o) OWNSHIP=1  ;;
       t) TARGET=1                ;;
+      p) PNG=1                   ;;
+      l) TITLE=${OPTARG}  ;;
       h) usage_exit "Help"       ;;
       :) usage_exit "Error: -${OPTARG} requires an argument." ;;
     esac
@@ -34,7 +38,7 @@ gen_plots() {
     local TYPE=$1
 
     local CMD="plot "
-    
+
     COORDS=(X Y Z)
     COORDS_PART=(X-part Y-part Z-part)
 
@@ -52,7 +56,23 @@ gen_plots() {
 
     FILE="plots-${TYPE}"
 
-    echo $CMD > $FILE
+
+    if [[ $PNG ]]; then
+        echo "set terminal png" > $FILE
+        echo "set output '${TYPE}.png'" >> $FILE
+    else
+        echo > $FILE
+    fi
+
+    if [[ $TITLE ]]; then
+        echo "set title '$TITLE'" >> $FILE
+    elif [[ $OWNSHIP ]]; then
+        echo "set title 'UAV Tracks'" >> $FILE
+    elif [[ $TARGET ]]; then
+        echo "set title 'Target Tracks'" >> $FILE
+    fi
+
+    echo $CMD >> $FILE
 }
 
 handle_opts "$@"
