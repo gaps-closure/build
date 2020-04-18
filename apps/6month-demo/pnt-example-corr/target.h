@@ -37,8 +37,8 @@ public:
   void print_track() {
 #ifdef SCALED_SYNC
     if (_track._pos._x == 0 &&
-	_track._pos._y == 0 &&
-	_track._pos._z == 0)
+        _track._pos._y == 0 &&
+        _track._pos._z == 0)
       return;
 
     os << ++count

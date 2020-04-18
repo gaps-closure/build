@@ -8,6 +8,9 @@
 void Target::update(Subject *s) {
 }
 
+void Target::update2(Subject *s) {
+}
+
 void Target::targetLocation() {
 }
 

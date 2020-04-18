@@ -31,6 +31,7 @@ public:
   Track getTracking() { return _track; }
   
   void update(Subject* s) override;
+  void update2(Subject* s);
   void notify() override {
     for (auto e : _observers)
       e->update(this);
@@ -39,8 +40,8 @@ public:
   void print_track() {
 #ifdef SCALED_SYNC
     if (_track._pos._x == 0 &&
-	_track._pos._y == 0 &&
-	_track._pos._z == 0)
+        _track._pos._y == 0 &&
+        _track._pos._z == 0)
       return;
 
     os << ++count
