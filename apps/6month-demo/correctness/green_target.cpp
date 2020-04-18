@@ -52,6 +52,10 @@ public:
 
         return subject;
     };
+
+    int length() {
+        return len;
+    }
 };
 
 Queue uav_q;
@@ -68,26 +72,25 @@ void Target::update(Subject *s)
     OwnShip *uav = dynamic_cast<OwnShip *>(s);
     GpsSensor *gps = dynamic_cast<GpsSensor *>(s);
     RfSensor *rf = dynamic_cast<RfSensor *>(s);
+
     if (uav) {
-        if (expect_uav) {
-            update2(s);
-            expect_uav = false;
-        }
-        else {
-            uav_q.enqueue(s);
-        }
+        uav_q.enqueue(s);
     }
     else if (gps) {
         update2(s);
+        m.unlock();
+        return;
     }
     else if (rf) {
-        if (!expect_uav) {
-            update2(s);
-            expect_uav = true;
-        }
-        else {
-            rfs_q.enqueue(s);
-        }
+        rfs_q.enqueue(s);
+    }
+
+    while (uav_q.length() > 0 && rfs_q.length() > 0) {
+        Subject *s = uav_q.dequeue();
+        update2(s);
+
+        s = rfs_q.dequeue();
+        update2(s);
     }
     m.unlock();
 }
@@ -106,10 +109,14 @@ void Target::update(Subject *s) {
   GpsSensor *gps = dynamic_cast<GpsSensor *>(s);
   RfSensor *rf = dynamic_cast<RfSensor *>(s);
   if (uav) {
+    //  Position pos = uav->getPosition();
+    //  printf("UAV %d %f %f %f\n", cnt, pos._x, pos._y, pos._z);
     setUAVLocation(uav->getPosition());
   } else if (gps) {
     tick = true; // yeah.. hackish
   } else if (rf) {
+    //Distance dis = rf->getDistance();
+    //printf("TGT %d %f %f %f\n", cnt, dis._dx, dis._dy, dis._dz);
     setDistance(rf->getDistance());
   }
 		
