@@ -63,7 +63,7 @@ static-green: $(GREEN_OBJ)
 	$(CC) $(CFLAGS) $< -o $@ -c
 
 clean:
-	-rm -f *.o *~ orange green
+	-rm -f *.o *~ orange green *.txt
 
 
 #### LLVM Partitioner 

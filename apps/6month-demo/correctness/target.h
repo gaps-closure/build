@@ -23,7 +23,7 @@ public:
   Target(int rate = 1) : _frequency(rate) {
     _cycle = static_cast<int> (((1.0 / _frequency) / (sleep_msec / 1000)));
 #ifdef SCALED_SYNC
-    os.open("target-part.csv");
+    os.open("target-part.txt");
 #endif
   };
   ~Target() {};
@@ -44,9 +44,14 @@ public:
       return;
 
     os << ++count
-       << "," << _track._pos._x
-       << "," << _track._pos._y
-       << "," << _track._pos._z << "," << std::endl;
+       << "\t" << _track._pos._x
+       << "\t" << _track._pos._y
+       << "\t" << _track._pos._z
+       << std::endl;
+
+    extern int sample_count;
+    if (count > sample_count)
+        exit(0);
 #else
     std::cout << "\t\t--- Target TRACK ---" << std::endl
 	      << "\t\t x=" << _track._pos._x << std::endl

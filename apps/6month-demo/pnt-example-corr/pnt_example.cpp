@@ -12,8 +12,45 @@
 #include "ownship.h"
 #include "target.h"
 
+#ifdef SCALED_SYNC
+int sample_count = 1000000;
+
+void usage()
+{
+    printf("Usage: <this-program> \n\
+\t -h     \t help\n\
+\t -c     \t sample count\n");
+    exit(1);
+}
+
+void parse(int argc, char **argv)
+{
+    char enc[64] = { '\0' };
+    char flow_loaded = 0;
+    int c;
+
+    while ((c = getopt(argc, argv, "hc:")) != -1) {
+        switch (c) {
+        case 'c':
+            sample_count = atoi(optarg);
+            break;
+        case 'h':
+            usage();
+            break;
+        default:
+            usage();
+        }
+    }
+}
+
+int main(int argc, char **argv)
+{
+    parse(argc, argv);
+
+#else
 int main()
 {
+#endif
   Position p(.0, .0, .0); // initial position
   Distance d(1062, 7800, 9000); // initial target distance
 

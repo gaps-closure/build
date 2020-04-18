@@ -30,8 +30,46 @@
 #pragma cle def TAG_2_2_1 {}
 #pragma cle def TAG_2_2_2 {}
 
+#ifdef SCALED_SYNC
+int sample_count = 1000000;
+
+void usage()
+{
+    printf("Usage: <this-program> \n\
+\t -h     \t help\n\
+\t -c     \t sample count\n");
+    exit(1);
+}
+
+void parse(int argc, char **argv)
+{
+    char enc[64] = { '\0' };
+    char flow_loaded = 0;
+    int c;
+
+    while ((c = getopt(argc, argv, "hc:")) != -1) {
+        switch (c) {
+        case 'c':
+            sample_count = atoi(optarg);
+            break;
+        case 'h':
+            usage();
+            break;
+        default:
+            usage();
+        }
+    }
+}
+
 int main(int argc, char **argv)
 {
+    parse(argc, argv);
+
+#else
+int main(int argc, char **argv)
+{
+#endif
+
    std::cout << "orange " << std::endl;
    hal_init();
 
