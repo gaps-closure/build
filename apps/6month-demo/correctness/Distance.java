@@ -6,8 +6,10 @@
  * @author tchen
  *******************************************************************************/
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class Distance
@@ -15,8 +17,10 @@ public class Distance
     private Distance() {
     }
     
-    private void merge(String ngc, String perspecta) {
+    private void merge(String ngc, String perspecta, String output) {
         try {
+            BufferedWriter fosLog = new BufferedWriter(new FileWriter(output));
+            
             File ngcFile = new File(ngc);
             File perspectaFile = new File(perspecta);
             
@@ -57,22 +61,15 @@ public class Distance
                 
                 double distance = Math.sqrt(sum);
                 
-                String lnDiff = "";
-                double[] diff = new double[v.length];
-                if (saved != null) {
-                    for (int i = 0; i < diff.length; i++) {
-                        diff[i] = saved[i] - v[i];
-                        lnDiff += "\t" + String.format("%.2f", diff[i]);
-                    }
-                }
                 
-                System.out.println(line + "\t" + String.format("%.2f", distance));
+                fosLog.write(line + "\t" + String.format("%.2f", distance) + "\n");
                 
                 saved = v;
                 
             }
             readerNGC.close();
             readerPL.close();
+            fosLog.close();
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -98,7 +95,7 @@ public class Distance
             System.exit(1);
         }
         
-        oneline.merge(dirNGC + "ownship.txt", dirPL + "ownship-part.txt");
-        oneline.merge(dirNGC + "target.txt", dirPL + "target-part.txt");
+        oneline.merge(dirNGC + "ownship.txt", dirPL + "ownship-part.txt", "./ownship.distances");
+        oneline.merge(dirNGC + "target.txt", dirPL + "target-part.txt", "./target.distances");
     }
 }
