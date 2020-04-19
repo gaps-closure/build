@@ -29,9 +29,7 @@ class GpsSensor : public Sensor
  public:
   GpsSensor(Position const& p, Velocity const& v) : _p(p), _v(v) { }
   Position getPosition() { return _p; }
-#ifdef SCALED_SYNC
-  Velocity getVelocity() { return _v; }
-#endif
+
 // CHANGE: add
 void setPosition(Position const& p) { _p = p; }
   Time getTimePoint() { return _now; }
@@ -68,7 +66,7 @@ class RfSensor : public Sensor
 {
   Distance _d;
   Velocity _v; // only used for simulation
-#ifdef SCALED_SYNC
+#ifdef PROC_SYNC
   bool _synced = false;
 #endif
  public:
@@ -77,17 +75,8 @@ class RfSensor : public Sensor
 // CHANGE: add
 void setDistance(Distance const& d) { _d = d; }
 
-#ifdef SCALED_SYNC
-  void setSynced(bool synced, GpsSensor *gps) {
-    if (_synced)
-        return;
-
-//    Velocity v = gps->getVelocity();
-//    double delta = gps->getPosition()._x / v._dx;
-//    _d._dx += v._dx * delta;
-//    _d._dy += v._dy * delta;
-//    _d._dz += v._dz * delta;
-
+#ifdef PROC_SYNC
+  void setSynced(bool synced) {
     _synced = synced;
   }
 #endif
@@ -104,7 +93,7 @@ void setDistance(Distance const& d) { _d = d; }
  private:
   void simulate(Velocity const& v, Time const& now)
   {
-#ifdef SCALED_SYNC
+#ifdef PROC_SYNC
     if (!_synced)
       return;
 #endif

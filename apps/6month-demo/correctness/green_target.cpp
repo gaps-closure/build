@@ -2,7 +2,7 @@
 #include "ownship.h"
 #include "sensors.h"
 
-#ifdef SCALED_SYNC
+#ifdef PROC_SYNC
 #include <mutex>
 
 std::mutex m;

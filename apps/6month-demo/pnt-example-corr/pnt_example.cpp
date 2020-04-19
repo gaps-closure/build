@@ -12,7 +12,7 @@
 #include "ownship.h"
 #include "target.h"
 
-#ifdef SCALED_SYNC
+#ifdef PROC_SYNC
 int sample_count = 1000000;
 
 void usage()
@@ -69,7 +69,7 @@ int main()
   uav->attach(tgt);
   rfs->attach(tgt);
 
-#ifdef SCALED_SYNC  
+#ifdef PROC_SYNC  
   uav->registerSensor(rfs);
 #endif
   

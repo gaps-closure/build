@@ -12,7 +12,7 @@ class OwnShip: public Observer, public Subject
   Track _track;
   int _frequency;
   int _cycle;
-#ifdef SCALED_SYNC
+#ifdef PROC_SYNC
   int count = 0;
   ofstream os;
   RfSensor *_rfs;
@@ -21,7 +21,7 @@ class OwnShip: public Observer, public Subject
 public:
   OwnShip(int rate = 1) : _frequency(rate) {
     _cycle = static_cast<int> (((1.0 / _frequency) / (sleep_msec / 1000)));
-#ifdef SCALED_SYNC
+#ifdef PROC_SYNC
     os.open("ownship-part.txt");
 #endif
   };
@@ -39,7 +39,7 @@ public:
 
   void print_track()
   {
-#ifdef SCALED_SYNC
+#ifdef PROC_SYNC
     os << ++count  
        << "\t" << _track._pos._x
        << "\t" << _track._pos._y
@@ -59,7 +59,7 @@ public:
   // CHANGE: from protected
   void setPosition(Position const& p) { _track._pos = p; }
     
-#ifdef SCALED_SYNC
+#ifdef PROC_SYNC
   void registerSensor(RfSensor *rfs) { _rfs = rfs; }
 #endif
   

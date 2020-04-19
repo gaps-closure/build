@@ -30,7 +30,7 @@
 #pragma cle def TAG_2_2_1 {}
 #pragma cle def TAG_2_2_2 {}
 
-#ifdef SCALED_SYNC
+#ifdef PROC_SYNC
 int sample_count = 1000000;
 
 void usage()

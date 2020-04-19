@@ -30,7 +30,7 @@
 #pragma cle def TAG_2_2_1 {}
 #pragma cle def TAG_2_2_2 {}
 
-#ifdef SCALED_SYNC
+#ifdef PROC_SYNC
 int sample_count = 1000000;
 
 void usage()
@@ -93,7 +93,7 @@ int main(int argc, char **argv)
   uav->attach(tgt);
   rfs->attach(tgt);
 
-#ifdef SCALED_SYNC  
+#ifdef PROC_SYNC  
   uav->registerSensor(rfs);
 #endif
   

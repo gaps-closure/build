@@ -5,7 +5,7 @@ void OwnShip::update(Subject *s) {
   static int cnt = 0;
   GpsSensor *gps = dynamic_cast<GpsSensor *>(s);
   if (gps) {
-#ifdef SCALED_SYNC  
+#ifdef PROC_SYNC  
     _rfs->setSynced(true, gps);
 #endif
     setPosition(gps->getPosition());

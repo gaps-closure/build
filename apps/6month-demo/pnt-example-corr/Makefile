@@ -2,10 +2,10 @@ CPPFLAGS=-std=c++11
 
 ifdef vc
 CPPFLAGS += -DVIRTUAL_CLOCK
-CPPFLAGS += -DSCALED_SYNC
+CPPFLAGS += -DPROC_SYNC
 else
-ifdef scale
-CPPFLAGS += -DSCALED_SYNC
+ifdef sync
+CPPFLAGS += -DPROC_SYNC
 endif
 endif
 
