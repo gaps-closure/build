@@ -41,7 +41,7 @@ GREEN_OBJ = \
 
 default: all
 
-all: orange green
+all: orange green distance
 
 static: static-orange static-green
 
@@ -50,6 +50,9 @@ orange: $(ORANGE_OBJ)
 
 green: $(GREEN_OBJ)
 	$(CXX) -o $@ $^ $(LDFLAGS)
+
+distance:
+	javac Distance.java
 
 static-orange: $(ORANGE_OBJ)
 	$(CXX) -o orange $^ $(LIBS) $(COMPATLIBS)

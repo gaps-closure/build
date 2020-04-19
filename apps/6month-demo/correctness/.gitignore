@@ -2,3 +2,4 @@ plots-ownship
 plots-target
 *.png
 *.txt
+*.class
