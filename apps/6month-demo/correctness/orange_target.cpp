@@ -8,7 +8,7 @@
 void Target::update(Subject *s) {
 }
 
-void Target::update2(Subject *s) {
+void update2(Subject *uav, Subject* rfs) {
 }
 
 void Target::targetLocation() {
@@ -28,7 +28,7 @@ void TargetShadow::update(Subject *s) {
     pos.trailer.oid = oid;
     pos.trailer.mid = mid;
     pos.trailer.crc = crc;
-
+//printf("send UAV %f %f %f\n", pos.x, pos.y, pos.z);
     #pragma cle begin TAG_2_2_1
     gaps_tag  t_tag;
     #pragma cle end TAG_2_2_1
@@ -52,6 +52,7 @@ void TargetShadow::update(Subject *s) {
     dis.trailer.mid = mid;
     dis.trailer.crc = crc;
 
+//printf("send TGT %f %f %f\n", dis.x, dis.y, dis.z);
     #pragma cle begin TAG_2_2_2
     gaps_tag  t_tag;
     #pragma cle end TAG_2_2_2

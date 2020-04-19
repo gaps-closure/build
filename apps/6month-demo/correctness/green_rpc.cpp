@@ -23,7 +23,7 @@ void OwnShipShadow::receive()
         position._x = pos.x;
         position._y = pos.y;
         position._z = pos.z;
-
+// printf("recv UAV %.2f %.2f %.2f\n", pos.x, pos.y, pos.z);
         setPosition(position);
         notify();
     }
@@ -48,7 +48,7 @@ void RfSensorShadow::receive()
         distance._dx = dis.x;
         distance._dy = dis.y;
         distance._dz = dis.z;
-
+// printf("recv TGT %.2f %.2f %.2f\n", dis.x, dis.y, dis.z);
         setDistance(distance);
         notify();
     }

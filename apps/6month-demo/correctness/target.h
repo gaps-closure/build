@@ -31,7 +31,7 @@ public:
   Track getTracking() { return _track; }
   
   void update(Subject* s) override;
-  void update2(Subject* s);
+  void update2(Subject *uav, Subject *rfs);
   void notify() override {
     for (auto e : _observers)
       e->update(this);
