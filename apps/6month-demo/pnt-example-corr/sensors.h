@@ -55,6 +55,8 @@ class GpsSensor : public Sensor
     _p._x += v._dx * delta;
     _p._y += v._dy * delta;
     _p._z += v._dz * delta;
+
+// printf("=== %f %f %f\n", v._dx * delta, v._dy * delta, v._dz * delta);
     _v = v;
     notify();
   }
@@ -76,11 +78,11 @@ class RfSensor : public Sensor
     if (_synced)
         return;
 
-    Velocity v = gps->getVelocity();
-    double delta = gps->getPosition()._x / v._dx;
-    _d._dx += v._dx * delta;
-    _d._dy += v._dy * delta;
-    _d._dz += v._dz * delta;
+//    Velocity v = gps->getVelocity();
+//    double delta = gps->getPosition()._x / v._dx;
+//    _d._dx += v._dx * delta;
+//    _d._dy += v._dy * delta;
+//    _d._dz += v._dz * delta;
 
     _synced = synced;
   }
@@ -111,7 +113,6 @@ class RfSensor : public Sensor
     _d._dx += v._dx * delta;
     _d._dy += v._dy * delta;
     _d._dz += v._dz * delta;
-
     _v = v;
     notify();
   }
