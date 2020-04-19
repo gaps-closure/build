@@ -5,6 +5,8 @@
 #ifdef SCALED_SYNC
 #include <mutex>
 
+std::mutex m;
+
 typedef struct _node {
    Subject *subject;
    struct _node *next;
@@ -82,8 +84,6 @@ public:
 Queue uav_q;
 Queue rfs_q;
 
-std::mutex m;
-
 void Target::update(Subject *s)
 {
     m.lock();
@@ -123,63 +123,6 @@ void Target::update(Subject *s)
         exp_rfs._dz += _cycle * 1.8;
     }
     m.unlock();
-}
-
-void Target::update2(Subject *uavSub, Subject *rfsSub) {
-    OwnShip *uav = dynamic_cast<OwnShip *>(uavSub);
-    RfSensor *rf = dynamic_cast<RfSensor *>(rfsSub);
-
-    static int uav_cnt = 0;
-    static int rfs_cnt = 0;
-    static bool uav_over = false;
-    static bool rfs_over = false;
-
-    static Position exp_uav(5, 2.5, 1.2);
-    static Distance exp_rfs(35, 1250, 18);
-
-    double inc = (uav->getPosition()._x - _uav_pos._x) / 0.5;
-    setUAVLocation(uav->getPosition());
-    double rem = _cycle - uav_cnt % _cycle;
-    uav_cnt += inc;
-    if (inc >= rem)
-        uav_over = true;
-    exp_uav._x = 0.5 * (inc - rem);
-    exp_uav._y = 0.25 * (inc - rem);
-    exp_uav._z = 0.12 * (inc - rem);
-    printf("UAV %.2f %.2f %d %d %.2f\n", inc, rem, uav_cnt, uav_over, (inc - rem));
-
-    inc = (_d._dx == 0) ? 1 : (rf->getDistance()._dx - _d._dx) / 3.5;
-    setDistance(rf->getDistance());
-    rem = _cycle - rfs_cnt % _cycle;
-    rfs_cnt += inc;
-    if (inc >= rem)
-        rfs_over = true;
-    exp_rfs._dx = 3.5 * (inc - rem);
-    exp_rfs._dy = 125 * (inc - rem);
-    exp_rfs._dz = 1.8 * (inc - rem);
-    printf("RFS %.2f %.2f %d %d %.2f\n", inc, rem, rfs_cnt, rfs_over, (inc - rem));
-
-    if (uav_over == true && rfs_over == true) {
-        _uav_pos._x -= exp_uav._x;
-        _uav_pos._y -= exp_uav._y;
-        _uav_pos._z -= exp_uav._z;
-        _d._dx -= exp_rfs._dx;
-        _d._dy -= exp_rfs._dy;
-        _d._dz -= exp_rfs._dz;
-printf("================ %.2f %.2f %.2f %.2f %.2f %.2f\n", exp_uav._x, exp_uav._y, exp_uav._z, exp_rfs._dx, exp_rfs._dy, exp_rfs._dz);
-      targetLocation();
-      print_track();
-      notify();
-
-      _uav_pos._x += exp_uav._x;
-      _uav_pos._y += exp_uav._y;
-      _uav_pos._z += exp_uav._z;
-      _d._dx += exp_rfs._dx;
-      _d._dy += exp_rfs._dy;
-      _d._dz += exp_rfs._dz;
-      uav_over = false;
-      rfs_over = false;
-    }
 }
 
 #else
