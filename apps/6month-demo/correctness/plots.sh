@@ -3,26 +3,18 @@
 usage_exit() {
   [[ -n "$1" ]] && echo $1
   echo "Usage: $0 [ -vsh ] \\"
-  echo "-o  Ownship"
-  echo "-t  Target"
-  echo "-x  Ownship Distances"
-  echo "-y  Target Distances"
   echo "-p  Output to PNG"
-  echo "-l <TITLE>"
+  echo "-l <Correction Applied>"
   echo "-h  Help"
   exit 1
 }
 
 handle_opts() {
   local OPTIND
-  while getopts "l:optxyh" options; do
+  while getopts "l:ph" options; do
     case "${options}" in
-      o) OWNSHIP=1            ;;
-      t) TARGET=1             ;;
-      x) OWNSHIP_DISTANCE=1   ;;
-      y) TARGET_DISTANCE=1    ;;
       p) PNG=1                ;;
-      l) TITLE=${OPTARG}      ;;
+      l) CORR="(${OPTARG})"   ;;
       h) usage_exit "Help"    ;;
       :) usage_exit "Error: -${OPTARG} requires an argument." ;;
     esac
@@ -35,7 +27,8 @@ handle_opts() {
 gen_plots() {
     local TYPE=$1
     local INFILE=./${TYPE}.distances
-
+    local title=$2
+    
     local CMD="plot "
 
     COORDS=(X Y Z)
@@ -63,21 +56,17 @@ gen_plots() {
         echo > $FILE
     fi
 
-    if [[ $TITLE ]]; then
-        echo "set title '$TITLE'" >> $FILE
-    elif [[ $OWNSHIP ]]; then
-        echo "set title 'UAV Tracks'" >> $FILE
-    elif [[ $TARGET ]]; then
-        echo "set title 'Target Tracks'" >> $FILE
-    fi
-
+    echo "set title '$title'" >> $FILE
     echo $CMD >> $FILE
+
+    gnuplot -p -c $FILE
 }
 
 gen_plots_distance() {
     local TYPE=$1
     local INFILE=./${TYPE}.distances
-
+    local title=$2
+    
     local CMD="plot \"${INFILE}\" using 1:12 title \"Distance\""
 
 
@@ -86,26 +75,22 @@ gen_plots_distance() {
 
     if [[ $PNG ]]; then
         echo "set terminal png" > $FILE
-        echo "set output '${TYPE}.png'" >> $FILE
+        echo "set output '${TYPE}-distance.png'" >> $FILE
     else
         echo > $FILE
     fi
 
-    echo "set title 'Errors $TITLE (Distances between $TYPE positions of the Original and Partiioned Programs)'" >> $FILE
+    echo "set title 'Errors $title (Distances between $TYPE positions of the Original and Partiioned Programs)'" >> $FILE
 
     echo $CMD >> $FILE
+
+    gnuplot -p -c $FILE
 }
 
 handle_opts "$@"
 
-if [[ $OWNSHIP ]]; then
-    gen_plots ownship
-elif [[ $TARGET ]]; then
-    gen_plots target
-elif [[ $OWNSHIP_DISTANCE ]]; then
-    gen_plots_distance ownship
-elif [[ $TARGET_DISTANCE ]]; then
-    gen_plots_distance target
-fi
-gnuplot -p -c $FILE
+gen_plots ownship "UAV Tracks ${CORR}"
+gen_plots target "Target Tracks ${CORR}"
+gen_plots_distance ownship "${CORR}"
+gen_plots_distance target "${CORR}"
 

@@ -7,6 +7,9 @@
 
 std::mutex m;
 
+Subject *last_uav;
+Subject *last_rfs;
+
 typedef struct _node {
    Subject *subject;
    struct _node *next;
@@ -62,18 +65,21 @@ public:
                 OwnShip *inQ = dynamic_cast<OwnShip *>(head->subject);
                 Position inqPos = inQ->getPosition();
 
-                if (inqPos._x < pos->_x)
-                    dequeue();
-                else
+                if (inqPos._x <= pos->_x)
+                    last_uav = dequeue();
+
+                if (inqPos._x >= pos->_x)
                     return true;
             }
             else {
                 Distance *dis = (Distance *) s;
                 RfSensor *inQ = dynamic_cast<RfSensor *>(head->subject);
                 Distance inqPos = inQ->getDistance();
-                if (inqPos._dx < dis->_dx)
-                    dequeue();
-                else
+
+                if (inqPos._dx <= dis->_dx)
+                    last_rfs = dequeue();
+
+                if (inqPos._dx >= dis->_dx)
                     return true;
             }
         }
@@ -108,8 +114,12 @@ void Target::update(Subject *s)
     }
 
     while (uav_q.reached(true, &exp_uav) && rfs_q.reached(false, &exp_rfs)) {
-        setUAVLocation(exp_uav);
-        setDistance(exp_rfs);
+        OwnShip *u = dynamic_cast<OwnShip *>(last_uav);
+        setUAVLocation(u->getPosition());
+
+        RfSensor *r = dynamic_cast<RfSensor *>(last_rfs);
+        setDistance(r->getDistance());
+
         targetLocation();
         print_track();
         notify();
