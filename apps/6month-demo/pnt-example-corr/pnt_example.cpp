@@ -12,7 +12,7 @@
 #include "ownship.h"
 #include "target.h"
 
-#ifdef PROC_SYNC
+#ifdef LOGGING
 int sample_count = 1000000;
 
 void usage()

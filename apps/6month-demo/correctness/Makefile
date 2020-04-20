@@ -20,10 +20,20 @@ CPPFLAGS=-std=c++11 ${HAL_API_INCLUDE} ${HAL_APPGEN_INCLUDE}
 ifdef vc
 CPPFLAGS += -DVIRTUAL_CLOCK
 CPPFLAGS += -DPROC_SYNC
+CPPFLAGS += -DLOGGING
 else
+
 ifdef sync
 CPPFLAGS += -DPROC_SYNC
+CPPFLAGS += -DLOGGING
+
+else
+ifdef logging
+CPPFLAGS += -DLOGGING
 endif
+
+endif
+
 endif
 
 

@@ -14,7 +14,7 @@ public:
   Track _track;
   int _frequency;
   int _cycle;
-#ifdef PROC_SYNC
+#ifdef LOGGING
   int count = 0;
   ofstream os;
 #endif
@@ -22,7 +22,7 @@ public:
 public:
   Target(int rate = 1) : _frequency(rate) {
     _cycle = static_cast<int> (((1.0 / _frequency) / (sleep_msec / 1000)));
-#ifdef PROC_SYNC
+#ifdef LOGGING
     os.open("target-part.txt");
 #endif
   };
@@ -38,7 +38,7 @@ public:
   }
   
   void print_track() {
-#ifdef PROC_SYNC
+#ifdef LOGGING
     if (_track._pos._x == 0 &&
         _track._pos._y == 0 &&
         _track._pos._z == 0)

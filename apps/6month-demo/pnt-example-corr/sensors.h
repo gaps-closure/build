@@ -78,12 +78,6 @@ class RfSensor : public Sensor
     if (_synced)
         return;
 
-//    Velocity v = gps->getVelocity();
-//    double delta = gps->getPosition()._x / v._dx;
-//    _d._dx += v._dx * delta;
-//    _d._dy += v._dy * delta;
-//    _d._dz += v._dz * delta;
-
     _synced = synced;
   }
 #endif

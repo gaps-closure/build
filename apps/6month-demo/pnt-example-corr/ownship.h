@@ -10,7 +10,7 @@ class OwnShip: public Observer, public Subject
   Track _track;
   int _frequency;
   int _cycle;
-#ifdef PROC_SYNC
+#ifdef LOGGING
   int count = 0;
   ofstream os;
   RfSensor *_rfs;
@@ -19,7 +19,7 @@ class OwnShip: public Observer, public Subject
 public:
   OwnShip(int rate = 1) : _frequency(rate) {
     _cycle = static_cast<int> (((1.0 / _frequency) / (sleep_msec / 1000)));
-#ifdef PROC_SYNC
+#ifdef LOGGING
     os.open("ownship.txt");
 #endif
   };
@@ -37,7 +37,7 @@ public:
 
   void print_track()
   {
-#ifdef PROC_SYNC
+#ifdef LOGGING
     os << ++count  
        << "\t" << _track._pos._x
        << "\t" << _track._pos._y
