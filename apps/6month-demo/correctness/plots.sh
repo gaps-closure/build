@@ -48,15 +48,13 @@ gen_plots() {
 
     FILE="plots-${TYPE}"
 
+    echo "set title '$title'" > $FILE
 
     if [[ $PNG ]]; then
-        echo "set terminal png" > $FILE
+        echo "set terminal png" >> $FILE
         echo "set output '${TYPE}.png'" >> $FILE
-    else
-        echo > $FILE
     fi
 
-    echo "set title '$title'" >> $FILE
     echo $CMD >> $FILE
 
     gnuplot -p -c $FILE
@@ -72,15 +70,12 @@ gen_plots_distance() {
 
     FILE="plots-${TYPE}"
 
+    echo "set title '$title Errors, distances between original and partiioned'" > $FILE
 
     if [[ $PNG ]]; then
-        echo "set terminal png" > $FILE
+        echo "set terminal png" >> $FILE
         echo "set output '${TYPE}-distance.png'" >> $FILE
-    else
-        echo > $FILE
     fi
-
-    echo "set title 'Errors $title (Distances between $TYPE positions of the Original and Partiioned Programs)'" >> $FILE
 
     echo $CMD >> $FILE
 
@@ -91,6 +86,6 @@ handle_opts "$@"
 
 gen_plots ownship "UAV Tracks ${CORR}"
 gen_plots target "Target Tracks ${CORR}"
-gen_plots_distance ownship "${CORR}"
-gen_plots_distance target "${CORR}"
+gen_plots_distance ownship "UAV Tracks ${CORR}"
+gen_plots_distance target "Target ${CORR}"
 
