@@ -2,7 +2,7 @@
 #include "ownship.h"
 #include "sensors.h"
 
-#ifdef PROC_SYNC
+#ifdef VIRTUAL_CLOCK
 #include <mutex>
 
 std::mutex m;
