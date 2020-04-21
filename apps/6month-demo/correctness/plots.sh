@@ -64,6 +64,7 @@ gen_plots_distance() {
     local TYPE=$1
     local INFILE=./${TYPE}.distances
     local title=$2
+    local range="$3"
     
     local CMD="plot \"${INFILE}\" using 1:12 title \"Distance\""
 
@@ -71,6 +72,10 @@ gen_plots_distance() {
     FILE="plots-${TYPE}"
 
     echo "set title '$title Errors, distances between original and partiioned'" > $FILE
+
+    if [[ $range ]]; then
+        echo "set yrange [$range]" >> $FILE
+    fi
 
     if [[ $PNG ]]; then
         echo "set terminal png" >> $FILE
@@ -86,6 +91,6 @@ handle_opts "$@"
 
 gen_plots ownship "UAV Tracks ${CORR}"
 gen_plots target "Target Tracks ${CORR}"
-gen_plots_distance ownship "UAV Tracks ${CORR}"
-gen_plots_distance target "Target ${CORR}"
+gen_plots_distance ownship "${CORR}" "-0.2:1.5"
+gen_plots_distance target "${CORR}" 
 
