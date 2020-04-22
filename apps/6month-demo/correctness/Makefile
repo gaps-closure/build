@@ -49,9 +49,15 @@ GREEN_OBJ = \
 	green_target.o \
 	green_rpc.o
 
+CLASSES = \
+	Distance.java \
+	ProcOutput.java \
+	LossDetect.java
+
+
 default: all
 
-all: orange green distance
+all: orange green classes
 
 static: static-orange static-green
 
@@ -60,9 +66,6 @@ orange: $(ORANGE_OBJ)
 
 green: $(GREEN_OBJ)
 	$(CXX) -o $@ $^ $(LDFLAGS)
-
-distance:
-	javac Distance.java
 
 static-orange: $(ORANGE_OBJ)
 	$(CXX) -o orange $^ $(LIBS) $(COMPATLIBS)
@@ -75,8 +78,15 @@ static-green: $(GREEN_OBJ)
 .c.o:  config.h
 	$(CC) $(CFLAGS) $< -o $@ -c
 
+.SUFFIXES: .java .class
+
+.java.class:
+	javac $*.java
+
+classes: $(CLASSES:.java=.class)
+
 clean:
-	-rm -f *.o *~ orange green *.txt
+	-rm -f *.o *~ orange green *.txt *.class
 
 
 #### LLVM Partitioner 

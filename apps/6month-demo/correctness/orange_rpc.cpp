@@ -16,6 +16,12 @@ void GpsSensorShadow::receive()
     Position position;
     position_datatype pos;
 
+#ifdef LOGGING
+  int count = 0;
+  ofstream os;
+  os.open("ownship-o-rcv.txt");
+#endif
+
     while (1) {
         xdc_blocking_recv(socket, &pos, &t_tag);
 
@@ -25,6 +31,13 @@ void GpsSensorShadow::receive()
 
         setPosition(position);
         notify();
+#ifdef LOGGING
+        os << ++count
+           << "\t" << position._x
+           << "\t" << position._y
+           << "\t" << position._z
+           << std::endl;
+#endif
     }
     zmq_close(socket);
 }

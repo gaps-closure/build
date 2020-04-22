@@ -18,6 +18,12 @@ void OwnShipShadow::receive()
     Position position(0, 0, 0);
     position_datatype pos;
 
+#ifdef LOGGING
+  int count = 0;
+  ofstream os;
+  os.open("ownship-g-rcv.txt");
+#endif
+
     while (1) {
         xdc_blocking_recv(socket, &pos, &t_tag);
         position._x = pos.x;
@@ -26,6 +32,13 @@ void OwnShipShadow::receive()
 // printf("recv UAV %.2f %.2f %.2f\n", pos.x, pos.y, pos.z);
         setPosition(position);
         notify();
+#ifdef LOGGING
+        os << ++count
+           << "\t" << position._x
+           << "\t" << position._y
+           << "\t" << position._z
+           << std::endl;
+#endif
     }
     zmq_close(socket);
 }
@@ -43,14 +56,27 @@ void RfSensorShadow::receive()
     Distance distance(0, 0, 0);
     distance_datatype dis;
 
+#ifdef LOGGING
+  int count = 0;
+  ofstream os;
+  os.open("rfs-g-rcv.txt");
+#endif
+
     while (1) {
         xdc_blocking_recv(socket, &dis, &t_tag);
         distance._dx = dis.x;
         distance._dy = dis.y;
         distance._dz = dis.z;
-// printf("recv TGT %.2f %.2f %.2f\n", dis.x, dis.y, dis.z);
+
         setDistance(distance);
         notify();
+#ifdef LOGGING
+        os << ++count
+           << "\t" << distance._dx
+           << "\t" << distance._dy
+           << "\t" << distance._dz
+           << std::endl;
+#endif
     }
     zmq_close(socket);
 }

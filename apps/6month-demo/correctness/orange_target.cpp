@@ -17,6 +17,11 @@ void Target::targetLocation() {
 void TargetShadow::update(Subject *s) {
   OwnShip *uav = dynamic_cast<OwnShip *>(s);
   RfSensor *rf = dynamic_cast<RfSensor *>(s);
+#ifdef LOGGING
+  static int count_uav = 0, count_rfs = 0;
+  static ofstream os_uav("ownship-o-snd.txt"), os_rfs("rfs-o-snd.txt");
+#endif
+
   if (uav) {
     Position position  = uav->getPosition();
     position_datatype pos;
@@ -28,7 +33,7 @@ void TargetShadow::update(Subject *s) {
     pos.trailer.oid = oid;
     pos.trailer.mid = mid;
     pos.trailer.crc = crc;
-//printf("send UAV %f %f %f\n", pos.x, pos.y, pos.z);
+
     #pragma cle begin TAG_2_2_1
     gaps_tag  t_tag;
     #pragma cle end TAG_2_2_1
@@ -39,6 +44,14 @@ void TargetShadow::update(Subject *s) {
     if (send_pos_socket == NULL)
         send_pos_socket = xdc_pub_socket();
     xdc_asyn_send(send_pos_socket, &pos, &t_tag);
+
+#ifdef LOGGING
+    os_uav << ++count_uav
+           << "\t" << position._x
+           << "\t" << position._y
+           << "\t" << position._z
+           << std::endl;
+#endif
   }
   else if (rf) {
     Distance distance  = rf->getDistance();
@@ -63,5 +76,12 @@ void TargetShadow::update(Subject *s) {
     if (send_dis_socket == NULL)
         send_dis_socket = xdc_pub_socket();
     xdc_asyn_send(send_dis_socket, &dis, &t_tag);
+#ifdef LOGGING
+    os_rfs << ++count_rfs
+           << "\t" << distance._dx
+           << "\t" << distance._dy
+           << "\t" << distance._dz
+           << std::endl;
+#endif
   }
 }

@@ -13,6 +13,10 @@ void OwnShipShadow::update(Subject *s) {
   if (!gps) {
     return;
   }
+#ifdef LOGGING
+  static int count = 0;
+  static ofstream os("ownship-g-snd.txt");
+#endif
   Position position  = gps->getPosition();
   position_datatype pos;
   pos.x = position._x;
@@ -34,4 +38,11 @@ void OwnShipShadow::update(Subject *s) {
   if (send_pos_socket == NULL)
       send_pos_socket = xdc_pub_socket();
   xdc_asyn_send(send_pos_socket, &pos, &t_tag);
+#ifdef LOGGING
+    os << ++count
+           << "\t" << position._x
+           << "\t" << position._y
+           << "\t" << position._z
+           << std::endl;
+#endif
 }
