@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <chrono>
 #include "ownship.h"
 
 #include "hal_xdcomms.h"
@@ -22,6 +22,7 @@ void OwnShipShadow::receive()
   int count = 0;
   ofstream os;
   os.open("ownship-g-rcv.txt");
+  std::chrono::high_resolution_clock m_clock;
 #endif
 
     while (1) {
@@ -37,6 +38,7 @@ void OwnShipShadow::receive()
            << "\t" << position._x
            << "\t" << position._y
            << "\t" << position._z
+           << "\t" << std::chrono::duration_cast<std::chrono::microseconds>(m_clock.now().time_since_epoch()).count()
            << std::endl;
 #endif
     }
@@ -60,6 +62,7 @@ void RfSensorShadow::receive()
   int count = 0;
   ofstream os;
   os.open("rfs-g-rcv.txt");
+  std::chrono::high_resolution_clock m_clock;
 #endif
 
     while (1) {
@@ -75,6 +78,7 @@ void RfSensorShadow::receive()
            << "\t" << distance._dx
            << "\t" << distance._dy
            << "\t" << distance._dz
+           << "\t" << std::chrono::duration_cast<std::chrono::microseconds>(m_clock.now().time_since_epoch()).count()
            << std::endl;
 #endif
     }

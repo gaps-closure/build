@@ -20,6 +20,7 @@ void GpsSensorShadow::receive()
   int count = 0;
   ofstream os;
   os.open("ownship-o-rcv.txt");
+  std::chrono::high_resolution_clock m_clock;
 #endif
 
     while (1) {
@@ -36,6 +37,7 @@ void GpsSensorShadow::receive()
            << "\t" << position._x
            << "\t" << position._y
            << "\t" << position._z
+           << "\t" << std::chrono::duration_cast<std::chrono::microseconds>(m_clock.now().time_since_epoch()).count()
            << std::endl;
 #endif
     }

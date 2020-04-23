@@ -86,7 +86,7 @@ static-green: $(GREEN_OBJ)
 classes: $(CLASSES:.java=.class)
 
 clean:
-	-rm -f *.o *~ orange green *.txt *.class
+	-rm -f *.o *~ orange green *.txt *.class plots-*
 
 
 #### LLVM Partitioner 

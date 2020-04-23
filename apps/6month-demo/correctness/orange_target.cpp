@@ -20,6 +20,7 @@ void TargetShadow::update(Subject *s) {
 #ifdef LOGGING
   static int count_uav = 0, count_rfs = 0;
   static ofstream os_uav("ownship-o-snd.txt"), os_rfs("rfs-o-snd.txt");
+  static std::chrono::high_resolution_clock m_clock;
 #endif
 
   if (uav) {
@@ -50,10 +51,16 @@ void TargetShadow::update(Subject *s) {
            << "\t" << position._x
            << "\t" << position._y
            << "\t" << position._z
+           << "\t" << std::chrono::duration_cast<std::chrono::microseconds>(m_clock.now().time_since_epoch()).count()
            << std::endl;
 #endif
   }
   else if (rf) {
+    static int cnt = 0;
+    if (_cycle == 0 || 0 != ++cnt % _cycle) {
+          return;
+    }
+
     Distance distance  = rf->getDistance();
     distance_datatype dis;
     dis.x = distance._dx;
@@ -65,7 +72,6 @@ void TargetShadow::update(Subject *s) {
     dis.trailer.mid = mid;
     dis.trailer.crc = crc;
 
-//printf("send TGT %f %f %f\n", dis.x, dis.y, dis.z);
     #pragma cle begin TAG_2_2_2
     gaps_tag  t_tag;
     #pragma cle end TAG_2_2_2
@@ -81,6 +87,7 @@ void TargetShadow::update(Subject *s) {
            << "\t" << distance._dx
            << "\t" << distance._dy
            << "\t" << distance._dz
+           << "\t" << std::chrono::duration_cast<std::chrono::microseconds>(m_clock.now().time_since_epoch()).count()
            << std::endl;
 #endif
   }

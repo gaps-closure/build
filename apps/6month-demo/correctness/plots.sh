@@ -87,10 +87,74 @@ gen_plots_distance() {
     gnuplot -p -c $FILE
 }
 
+gen_plot_delay() {
+    local TYPE=$1
+    local sender=$2
+    local receiver="$3"
+
+    local combo=${TYPE}-${sender}-${receiver}
+    local INFILE=./${combo}-loss.txt
+    
+    local CMD="plot \"${INFILE}\" using 1:7 title \"Delays\""
+
+
+    FILE="plots-${combo}"
+
+    echo "set title 'Delays - $combo'" > $FILE
+
+    if [[ $range ]]; then
+        echo "set yrange [$range]" >> $FILE
+    fi
+
+    if [[ $PNG ]]; then
+        echo "set terminal png" >> $FILE
+        echo "set output '${combo}-delay.png'" >> $FILE
+    fi
+
+    echo $CMD >> $FILE
+
+    gnuplot -p -c $FILE
+}
+
+gen_plot_loss() {
+    local TYPE=$1
+    local sender=$2
+    local receiver="$3"
+
+    local combo=${TYPE}-${sender}-${receiver}
+    local INFILE=./${combo}-loss.txt
+    
+    local CMD="plot \"${INFILE}\" using 1:8 title \"Loss\""
+
+
+    FILE="plots-${combo}"
+
+    echo "set title 'Loss - $combo'" > $FILE
+
+    echo "set yrange [-1:2]" >> $FILE
+
+    if [[ $PNG ]]; then
+        echo "set terminal png" >> $FILE
+        echo "set output '${combo}-loss.png'" >> $FILE
+    fi
+
+    echo $CMD >> $FILE
+
+    gnuplot -p -c $FILE
+}
+
 handle_opts "$@"
 
 gen_plots ownship "UAV Tracks ${CORR}"
 gen_plots target "Target Tracks ${CORR}"
 gen_plots_distance ownship "${CORR}" "-0.2:1.5"
 gen_plots_distance target "${CORR}" 
+gen_plot_delay ownship g o
+gen_plot_delay ownship o g
+gen_plot_delay rfs o g
+
+gen_plot_loss ownship g o
+gen_plot_loss ownship o g
+gen_plot_loss rfs o g
+
 

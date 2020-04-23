@@ -16,6 +16,7 @@ void OwnShipShadow::update(Subject *s) {
 #ifdef LOGGING
   static int count = 0;
   static ofstream os("ownship-g-snd.txt");
+  static std::chrono::high_resolution_clock m_clock;
 #endif
   Position position  = gps->getPosition();
   position_datatype pos;
@@ -43,6 +44,7 @@ void OwnShipShadow::update(Subject *s) {
            << "\t" << position._x
            << "\t" << position._y
            << "\t" << position._z
+           << "\t" << std::chrono::duration_cast<std::chrono::microseconds>(m_clock.now().time_since_epoch()).count()
            << std::endl;
 #endif
 }

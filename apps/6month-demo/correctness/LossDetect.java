@@ -14,12 +14,15 @@ import java.io.IOException;
 
 public class LossDetect
 {
+    long sendTime;
+    long recvTime;
+    
     private LossDetect() {
     }
     
-    private double[] getXYZ(String line) {
+    private double[] getXYZ(String line, boolean send) {
         String[] fields = line.split("\\s+");
-        if (fields.length < 4) {
+        if (fields.length < 5) {
             System.out.println("invalid data: " + line);
             return null;
         }
@@ -28,7 +31,34 @@ public class LossDetect
         for (int i = 1; i < 4; i++)
             v[i - 1] = Double.parseDouble(fields[i].trim());
         
+        if (send)
+            sendTime = Long.parseLong(fields[4]);
+        else
+            recvTime = Long.parseLong(fields[4]);
+        
         return v;
+    }
+    
+    private void writeLoss(BufferedWriter lossWriter, String line) {
+        try {
+            String out = line + "\t-1\t-1\t1";
+            System.out.println(out);
+            lossWriter.write(out + "\n");
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void writeNormal(BufferedWriter lossWriter, String line) {
+        try {
+            String out = line + "\t" + recvTime + "\t" + (recvTime - sendTime) + "\t0";
+            System.out.println(out);
+            lossWriter.write(out + "\n");
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
     private void merge(String sendName, String recvName, String lossName) {
@@ -42,20 +72,19 @@ public class LossDetect
             int loss_count = 0;
             double[] recv = null;
             while ((lineSend = readerSender.readLine()) != null) {
-                double[] send = getXYZ(lineSend);
+                double[] send = getXYZ(lineSend, true);
                 if (send == null) {
                     continue;
                 }
                 if (recv == null) {
                     lineRecv = readerRecver.readLine();
                     if (lineRecv != null) {
-                        recv = getXYZ(lineRecv);
+                        recv = getXYZ(lineRecv, false);
                     }
                 }
                 if (recv == null) {
                     loss_count++;
-                    lossWriter.write(lineSend + "\n");
-                    System.out.println(lineSend);
+                    writeLoss(lossWriter, lineSend);
                     continue;
                 }
                 boolean loss = false;
@@ -67,11 +96,11 @@ public class LossDetect
                 }
                 if (loss) {
                     loss_count++;
-                    lossWriter.write(lineSend + "\n");
-                    System.out.println(lineSend);
+                    writeLoss(lossWriter, lineSend);
                 }
                 else {
                     recv = null; // read again
+                    writeNormal(lossWriter, lineSend);
                 }
             }
             lossWriter.write("Total loss: " + loss_count + "\n");
