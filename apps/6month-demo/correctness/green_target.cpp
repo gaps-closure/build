@@ -115,14 +115,15 @@ void Target::update(Subject *s)
 
     while (uav_q.reached(true, &exp_uav) && rfs_q.reached(false, &exp_rfs)) {
         OwnShip *u = dynamic_cast<OwnShip *>(last_uav);
-        setUAVLocation(u->getPosition());
-
         RfSensor *r = dynamic_cast<RfSensor *>(last_rfs);
-        setDistance(r->getDistance());
+        if (u != NULL && r != NULL) {
+            setUAVLocation(u->getPosition());
+            setDistance(r->getDistance());
 
-        targetLocation();
-        print_track();
-        notify();
+            targetLocation();
+            print_track();
+            notify();
+        }
 
         exp_uav._x += _cycle * 0.5;
         exp_uav._y += _cycle * 0.25;

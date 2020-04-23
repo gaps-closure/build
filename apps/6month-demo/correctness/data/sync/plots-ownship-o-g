@@ -1,0 +1,3 @@
+set title 'Loss - ownship - Orange to Green'
+set yrange [-1:2]
+plot "./ownship-o-g-loss.txt" using 1:8 title "Loss" with linespoints

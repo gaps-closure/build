@@ -100,7 +100,13 @@ gen_plot_delay() {
 
     FILE="plots-${combo}"
 
-    echo "set title 'Delays - $combo'" > $FILE
+    if [[ $sender == "o" ]]; then
+        title="Delay (us) - ${TYPE} - Orange to Green"
+    else
+        title="Delay (us) - ${TYPE} - Green to Orange"
+    fi
+    
+    echo "set title '$title'" > $FILE
 
     if [[ $range ]]; then
         echo "set yrange [$range]" >> $FILE
@@ -124,12 +130,18 @@ gen_plot_loss() {
     local combo=${TYPE}-${sender}-${receiver}
     local INFILE=./${combo}-loss.txt
     
-    local CMD="plot \"${INFILE}\" using 1:8 title \"Loss\""
+    local CMD="plot \"${INFILE}\" using 1:8 title \"Loss\" with linespoints"
 
 
     FILE="plots-${combo}"
 
-    echo "set title 'Loss - $combo'" > $FILE
+    if [[ $sender == "o" ]]; then
+        title="Loss - ${TYPE} - Orange to Green"
+    else
+        title="Loss - ${TYPE} - Green to Orange"
+    fi
+    
+    echo "set title '$title'" > $FILE
 
     echo "set yrange [-1:2]" >> $FILE
 
@@ -148,7 +160,7 @@ handle_opts "$@"
 gen_plots ownship "UAV Tracks ${CORR}"
 gen_plots target "Target Tracks ${CORR}"
 gen_plots_distance ownship "${CORR}" "-0.2:1.5"
-gen_plots_distance target "${CORR}" 
+gen_plots_distance target "${CORR}" "0:400"
 gen_plot_delay ownship g o
 gen_plot_delay ownship o g
 gen_plot_delay rfs o g
