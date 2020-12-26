@@ -29,20 +29,20 @@ using json = nlohmann::json;
 * @todo implement EOIR/RDR correlation
 */
 
-class ISRM {
+class ISRMShadow {
 public:
 	/**
-	 * @brief Construct a new ISRM object
+	 * @brief Construct a new ISRMShadow object
 	 *
-	 * @param int - The number of collections you wish to define as the maximum the ISRM object will hold
+	 * @param int - The number of collections you wish to define as the maximum the ISRMShadow object will hold
 	 * 
 	 */
-	ISRM(int);
+	ISRMShadow(int);
 	/**
-	 * @brief Destroy the ISRM object and clear all collection storage
+	 * @brief Destroy the ISRMShadow object and clear all collection storage
 	 * 
 	 */
-	~ISRM();
+	~ISRMShadow();
 	/**
 	 * @brief Function Stub
 	 * 
@@ -190,7 +190,7 @@ public:
 
 private:
 	/**
-	 * @brief Storage for all detections recieved from ISRM/RDR
+	 * @brief Storage for all detections recieved from ISRMShadow/RDR
 	 * 
 	 */
 	Store<Detect*> detects;

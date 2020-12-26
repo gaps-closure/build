@@ -10,38 +10,38 @@ using namespace amqm;
 using namespace cms;
 using namespace std;
 
-ISRM::ISRM(int maxDetects) : planManager(5), detects(maxDetects) {
-	amq.listen("updateMissionPlan", std::bind(&ISRM::updateMissionPlan, this, _1), true);
-	amq.listen("requestISRMDetections", std::bind(&ISRM::handleDetectionsRequest, this, _1), true);
-	amq.listen("recieveRDRDetections", std::bind(&ISRM::handleRecieveRDRDetections, this, _1), true);
-	amq.listen("recieveEOIRDetections", std::bind(&ISRM::handleRecieveEOIRDetections, this, _1), true);
-	amq.listen("updateConfig", std::bind(&ISRM::handleUpdateConfig, this, _1), true);
+ISRMShadow::ISRMShadow(int maxDetects) : planManager(5), detects(maxDetects) {
+	amq.listen("updateMissionPlan", std::bind(&ISRMShadow::updateMissionPlan, this, _1), true);
+	amq.listen("requestISRMDetections", std::bind(&ISRMShadow::handleDetectionsRequest, this, _1), true);
+	amq.listen("recieveRDRDetections", std::bind(&ISRMShadow::handleRecieveRDRDetections, this, _1), true);
+	amq.listen("recieveEOIRDetections", std::bind(&ISRMShadow::handleRecieveEOIRDetections, this, _1), true);
+	amq.listen("updateConfig", std::bind(&ISRMShadow::handleUpdateConfig, this, _1), true);
 	json j = Utils::loadDefaultConfig();
 	processConfigContent(j);
 	//collectDetects();
 }
 
-void ISRM::processConfigContent(json j) {
+void ISRMShadow::processConfigContent(json j) {
 	detects.setSize(j["maxDetects"]);
 }
 
-void ISRM::handleUpdateConfig(json j) {
+void ISRMShadow::handleUpdateConfig(json j) {
 	json k = Utils::loadConfig(j);
 	processConfigContent(k);
 }
 
-ISRM::~ISRM() {
+ISRMShadow::~ISRMShadow() {
 	planManager.clearAll();
 	detects.clearAll();
 }
 
-void ISRM::run() {
+void ISRMShadow::run() {
 
 }
 
-void ISRM::classify() {
+void ISRMShadow::classify() {
 }
-void ISRM::print() {
+void ISRMShadow::print() {
 	for (const auto& key_value : detects.getMap()) {
 		cout << "id: " << key_value.first << endl;
 		cout << "lat: " << key_value.second->getLat() << endl;
@@ -53,7 +53,7 @@ void ISRM::print() {
 		cout << "***********" << endl;
 	}
 }
-void ISRM::collectDetects() {
+void ISRMShadow::collectDetects() {
 
 	Detect *eoirDet1 = new Detect(0, 0, 0);
 	eoirDet1->setClassification("tank");
@@ -78,14 +78,14 @@ void ISRM::collectDetects() {
 	print();
 }
 
-void ISRM::appendMoreData() {
+void ISRMShadow::appendMoreData() {
 	if (detects.contains("det2")) {
 		Detect *detect = detects.get("det2");
 		detect->setSpeed(1.2);
 		detect->setBearing(0.7);
 	}
 }
-void ISRM::correlate(const string& id1, const string& id2) {
+void ISRMShadow::correlate(const string& id1, const string& id2) {
 	if (detects.contains(id1) && detects.contains(id2)) {
 		Detect *d1 = detects.get(id1);
 		Detect *d2 = detects.get(id2);
@@ -98,7 +98,7 @@ void ISRM::correlate(const string& id1, const string& id2) {
 	}
 }
 
-void ISRM::handleDetectionsRequest(json j) {
+void ISRMShadow::handleDetectionsRequest(json j) {
 	//return detections by adding properties to det here
 	string phase = j["phase"];
 	json det;
@@ -116,18 +116,18 @@ cout << "@@@ recieveISRMDetections " << Utils::getDetectionsJson(detects).dump(2
 	amq.publish("recieveISRMDetections", Utils::getDetectionsJson(detects), true);
 }
 
-void ISRM::handleRecieveRDRDetections(json j) {
+void ISRMShadow::handleRecieveRDRDetections(json j) {
 	rdrDataCollected = true;
 	Utils::addDetections(detects, j);
 }
 
-void ISRM::handleRecieveEOIRDetections(json j) {
+void ISRMShadow::handleRecieveEOIRDetections(json j) {
 	eoirDataCollected = true;
 	Utils::addDetections(detects, j);
 }
 
 
-void ISRM::updateMissionPlan(const json &j) {
+void ISRMShadow::updateMissionPlan(const json &j) {
 	MissionPlan *plan = Utils::parsePlan(j);
 	planManager.add(plan->getId(), plan);
 }
