@@ -58,6 +58,8 @@ public:
           json j = json::object();
           j["ss"] = "All";
           j["st"] = "ready";
+cout << "@@@ component_heartbeats " << j.dump(2) << endl;
+
           amq.publish("component_heartbeats", j, true);
           std::cout << "All subsystems online" << std::endl;
           //clean-up listener thread
@@ -90,7 +92,7 @@ private:
       * @brief boolean variable for each subsystem status
       * 
       */
-     bool MPU_rdy, MPX_rdy, EOIR_rdy, RDR_rdy, ISRM_rdy, all_subs_rdy;
+     bool MPU_rdy, MPX_rdy, EOIR_rdy, RDR_rdy, ISRM_rdy, ISRMshadow_rdy, all_subs_rdy;
      ///@} 
      /**
       * @brief name of subsystem using heartbeat
@@ -144,6 +146,10 @@ private:
           {
                ISRM_rdy = true;
           }
+          else if (j[ss] == "ISRMshadow")
+          {
+               ISRMshadow_rdy = true;
+          }
           else if (j[ss] == "EOIR")
           {
                EOIR_rdy = true;
@@ -154,7 +160,7 @@ private:
           }
 
           // Check if all systems are set to ready
-          if(EOIR_rdy == true && ISRM_rdy == true && MPX_rdy == true && MPU_rdy == true && EOIR_rdy == true)
+          if(EOIR_rdy == true && ISRM_rdy == true && ISRMshadow_rdy == true && MPX_rdy == true && MPU_rdy == true && EOIR_rdy == true)
           {
                all_subs_rdy = true;
           }

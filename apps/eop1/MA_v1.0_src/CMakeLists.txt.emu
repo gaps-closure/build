@@ -15,6 +15,7 @@ link_directories(BEFORE install/lib64 pinstall/lib gaps.ma.dependencies/deps/ope
 
 add_subdirectory(EOIR)
 add_subdirectory(ISRM)
+add_subdirectory(ISRMshadow)
 add_subdirectory(MPU)
 add_subdirectory(MPX)
 add_subdirectory(RDR)

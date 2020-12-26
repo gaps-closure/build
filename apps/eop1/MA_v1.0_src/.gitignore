@@ -1,0 +1,7 @@
+pinstall
+lbuild
+install
+.cproject
+.project
+.settings
+../xdcc/amqlib/test

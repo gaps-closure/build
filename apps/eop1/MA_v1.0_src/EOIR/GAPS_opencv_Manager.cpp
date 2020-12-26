@@ -153,6 +153,10 @@ void GAPS_openCV::classifyEntireFrame(const cv::Mat &frame, dnn::Net &net) {
 	postprocessframe(frame, outs);
 	Mat detectedFrame;
 	frame.convertTo(detectedFrame, CV_8U);
+
+    namedWindow("GAPS Closure", WINDOW_AUTOSIZE);
+    imshow("GAPS Closure", detectedFrame);
+//    waitKey();
 }
 
 void GAPS_openCV::postprocessframe(const Mat& frame, const vector<Mat>& outs) {

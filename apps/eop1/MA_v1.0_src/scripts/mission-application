@@ -5,35 +5,41 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 function start(){	
 	echo "Running ISRM..."
 	cd $SCRIPT_DIR/../ISRM
-	./../lbuild/ISRM/ISRM& > /dev/null 2>&1
+	./../lbuild/ISRM/ISRM > /tmp/isrm.log 2>&1 &
 	echo $! >> $SCRIPT_DIR/pid
 	echo "Success."
+
+	echo "Running ISRMshadow..."
+	cd $SCRIPT_DIR/../ISRMshadow
+	./../lbuild/ISRMshadow/ISRMshadow > /tmp/isrmshadow.log 2>&1 &
+	echo $! >> $SCRIPT_DIR/pid
+	echo "Success."
+        
 	echo "Running MPU..."
 	cd $SCRIPT_DIR/../MPU
-	./../lbuild/MPU/MPU& > /dev/null 2>&1
+	./../lbuild/MPU/MPU > /tmp/mpu.log 2>&1 &
 	echo $! >> $SCRIPT_DIR/pid
 	echo "Success."
 	echo "Running MPX..."
 	cd $SCRIPT_DIR/../MPX
-	./../lbuild/MPX/MPX& > /dev/null 2>&1
+	./../lbuild/MPX/MPX > /tmp/mpx.log 2>&1 &
 	echo $! >> $SCRIPT_DIR/pid
 	echo "Success."
 	echo "Running RDR..."
 	cd $SCRIPT_DIR/../RDR
-	./../lbuild/RDR/RDR& > /dev/null 2>&1
+	./../lbuild/RDR/RDR > /tmp/rdr.log 2>&1 &
 	echo $! >> $SCRIPT_DIR/pid
 	echo "Success."
 	echo "Running EOIR..."
 	cd $SCRIPT_DIR/../EOIR
-	./../lbuild/EOIR/EOIR& > /dev/null 2>&1
+	./../lbuild/EOIR/EOIR > /tmp/eoir.log 2>&1 &
 	echo $! >> $SCRIPT_DIR/pid
 	echo "Success."
 	echo "Running External..."
         cd $SCRIPT_DIR/../External
-        ./../lbuild/External/External& > /dev/null 2>&1
+        ./../lbuild/External/External > /tmp/external.log 2>&1 &
         echo $! >> $SCRIPT_DIR/pid
         echo "Success."
-
 }
 
 function stop(){
@@ -64,6 +70,8 @@ elif [ $1 = "start" ]; then
         fi
         start
 
+elif [ $1 = "status" ]; then
+        ps aux | grep -e EOIR -e RDR -e ISRM -e MPU -e MPX -e External | grep lbuild
 elif [ $1 = "stop" ]; then
         stop
 else
