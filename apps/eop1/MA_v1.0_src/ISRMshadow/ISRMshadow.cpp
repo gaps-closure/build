@@ -11,8 +11,8 @@ using namespace cms;
 using namespace std;
 
 ISRMShadow::ISRMShadow(int maxDetects) : planManager(5), detects(maxDetects) {
-	amq.listen("updateMissionPlan", std::bind(&ISRMShadow::updateMissionPlan, this, _1), true);
-	amq.listen("requestISRMDetections", std::bind(&ISRMShadow::handleDetectionsRequest, this, _1), true);
+	amq.listen("updateMissionPlanXD", std::bind(&ISRMShadow::updateMissionPlanXD, this, _1), true);
+	amq.listen("requestISRMDetectionsXD", std::bind(&ISRMShadow::handleDetectionsRequestXD, this, _1), true);
 	amq.listen("recieveRDRDetections", std::bind(&ISRMShadow::handleRecieveRDRDetections, this, _1), true);
 	amq.listen("recieveEOIRDetections", std::bind(&ISRMShadow::handleRecieveEOIRDetections, this, _1), true);
 	amq.listen("updateConfig", std::bind(&ISRMShadow::handleUpdateConfig, this, _1), true);
@@ -98,7 +98,7 @@ void ISRMShadow::correlate(const string& id1, const string& id2) {
 	}
 }
 
-void ISRMShadow::handleDetectionsRequest(json j) {
+void ISRMShadow::handleDetectionsRequestXD(json j) {
 	//return detections by adding properties to det here
 	string phase = j["phase"];
 	json det;
@@ -112,8 +112,8 @@ cout << "@@@ requestEOIRDetections " << j.dump(2) << endl;
 	}
 	eoirDataCollected = false;
 	rdrDataCollected = false;
-cout << "@@@ recieveISRMDetections " << Utils::getDetectionsJson(detects).dump(2) << endl;
-	amq.publish("recieveISRMDetections", Utils::getDetectionsJson(detects), true);
+cout << "@@@ recieveISRMDetectionsXD " << Utils::getDetectionsJson(detects).dump(2) << endl;
+	amq.publish("recieveISRMDetectionsXD", Utils::getDetectionsJson(detects), true);
 }
 
 void ISRMShadow::handleRecieveRDRDetections(json j) {
@@ -127,7 +127,11 @@ void ISRMShadow::handleRecieveEOIRDetections(json j) {
 }
 
 
-void ISRMShadow::updateMissionPlan(const json &j) {
+void ISRMShadow::updateMissionPlanXD(const json &j) {
+cout << "received updateMissionPlanXD " << j.dump(2) << endl;
 	MissionPlan *plan = Utils::parsePlan(j);
 	planManager.add(plan->getId(), plan);
+
+    // TODO: publish updateMissionPlan
+	// ISRMShadow::amq.publish("updateMissionPlan", j, true);
 }

@@ -100,7 +100,7 @@ public:
 	 *
 	 * @return VOID
 	 */
-	void handleDetectionsRequest(json j);
+	void handleDetectionsRequestXD(json j);
 	/**
 	 * @brief Handles ActiveMQ response from EOIR for detects
 	 * 
@@ -221,7 +221,7 @@ private:
 	 *
 	 * @return VOID
 	 */
-	void updateMissionPlan(const json &j);
+	void updateMissionPlanXD(const json &j);
 	/**
 	 * @brief Handles ActiveMQ response from RDR for detects
 	 * 

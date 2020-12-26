@@ -13,6 +13,7 @@ using namespace std;
 ISRM::ISRM(int maxDetects) : planManager(5), detects(maxDetects) {
 	amq.listen("updateMissionPlan", std::bind(&ISRM::updateMissionPlan, this, _1), true);
 	amq.listen("requestISRMDetections", std::bind(&ISRM::handleDetectionsRequest, this, _1), true);
+	amq.listen("recieveISRMDetectionsXD", std::bind(&ISRM::handleRecieveISRMDetectionsXD, this, _1), true);
 	amq.listen("recieveRDRDetections", std::bind(&ISRM::handleRecieveRDRDetections, this, _1), true);
 	amq.listen("recieveEOIRDetections", std::bind(&ISRM::handleRecieveEOIRDetections, this, _1), true);
 	amq.listen("updateConfig", std::bind(&ISRM::handleUpdateConfig, this, _1), true);
@@ -102,18 +103,26 @@ void ISRM::handleDetectionsRequest(json j) {
 	//return detections by adding properties to det here
 	string phase = j["phase"];
 	json det;
-cout << "@@@ requestRDRDetections " << j.dump(2) << endl;
-cout << "@@@ requestEOIRDetections " << j.dump(2) << endl;
-	amq.publish("requestRDRDetections", j, true);
-	amq.publish("requestEOIRDetections", j, true);
+//cout << "@@@ requestRDRDetections " << j.dump(2) << endl;
+//cout << "@@@ requestEOIRDetections " << j.dump(2) << endl;
+//	amq.publish("requestRDRDetections", j, true);
+//	amq.publish("requestEOIRDetections", j, true);
+//
+//	while (!rdrDataCollected || !eoirDataCollected) {
+//		Utils::sleep_for(500);
+//	}
+//	eoirDataCollected = false;
+//	rdrDataCollected = false;
+//	amq.publish("recieveISRMDetections", Utils::getDetectionsJson(detects), true);
 
-	while (!rdrDataCollected || !eoirDataCollected) {
-		Utils::sleep_for(500);
-	}
-	eoirDataCollected = false;
-	rdrDataCollected = false;
-cout << "@@@ recieveISRMDetections " << Utils::getDetectionsJson(detects).dump(2) << endl;
-	amq.publish("recieveISRMDetections", Utils::getDetectionsJson(detects), true);
+    // TODO: redact
+cout << "@@@ requestISRMDetectionsXD " << j.dump(2) << endl;
+	amq.publish("requestISRMDetectionsXD", j, true);
+}
+
+void ISRM::handleRecieveISRMDetectionsXD(json j) {
+cout << "@@@ recieveISRMDetections " << j.dump(2) << endl;
+    amq.publish("recieveISRMDetections", j, true);
 }
 
 void ISRM::handleRecieveRDRDetections(json j) {
@@ -130,4 +139,7 @@ void ISRM::handleRecieveEOIRDetections(json j) {
 void ISRM::updateMissionPlan(const json &j) {
 	MissionPlan *plan = Utils::parsePlan(j);
 	planManager.add(plan->getId(), plan);
+
+	// TODO: redact mission plan
+	ISRM::amq.publish("updateMissionPlanXD", j, true);
 }

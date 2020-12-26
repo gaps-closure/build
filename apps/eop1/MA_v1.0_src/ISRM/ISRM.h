@@ -101,6 +101,9 @@ public:
 	 * @return VOID
 	 */
 	void handleDetectionsRequest(json j);
+
+	void handleRecieveISRMDetectionsXD(json j);
+
 	/**
 	 * @brief Handles ActiveMQ response from EOIR for detects
 	 * 
