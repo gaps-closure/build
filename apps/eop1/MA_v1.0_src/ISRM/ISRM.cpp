@@ -102,13 +102,17 @@ void ISRM::handleDetectionsRequest(json j) {
 	//return detections by adding properties to det here
 	string phase = j["phase"];
 	json det;
+cout << "@@@ requestRDRDetections " << j.dump(2) << endl;
+cout << "@@@ requestEOIRDetections " << j.dump(2) << endl;
 	amq.publish("requestRDRDetections", j, true);
 	amq.publish("requestEOIRDetections", j, true);
+
 	while (!rdrDataCollected || !eoirDataCollected) {
 		Utils::sleep_for(500);
 	}
 	eoirDataCollected = false;
 	rdrDataCollected = false;
+cout << "@@@ recieveISRMDetections " << Utils::getDetectionsJson(detects).dump(2) << endl;
 	amq.publish("recieveISRMDetections", Utils::getDetectionsJson(detects), true);
 }
 

@@ -106,6 +106,8 @@ void Ground_Vehicle::Update_Ground_Vehicle_Position(void)
 		j["lon"] = current_Location.y;
 		j["bearing"] = bearing;
 		j["speed"] = speed;
+cout << "@@@ groundMovers " << j.dump(2) << endl;
+
 		amq.publish("groundMovers", j, true);
 		Utils::sleep_for(1000);
 	}

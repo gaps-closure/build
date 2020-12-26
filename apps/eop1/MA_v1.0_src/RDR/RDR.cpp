@@ -107,6 +107,7 @@ void RDR::handleRequestRDRDetections(json j) {
 			body.clear();
 		}
 	}
+cout << "@@@ recieveRDRDetections \n" << resp.dump(2) << endl;
 	amq.publish("recieveRDRDetections", resp, true);
 }
 
