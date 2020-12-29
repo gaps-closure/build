@@ -48,7 +48,7 @@ void MPU::loadPlan(json j) {
 }
 
 void MPU::sendPlan(const json &j) {
-cout << "@@@ updateMissionPlan " << j.dump(2) << endl;
+//cout << "@@@ updateMissionPlan " << j.dump(2) << endl;
 	MPU::amq.publish("updateMissionPlan", j, true);
 }
 

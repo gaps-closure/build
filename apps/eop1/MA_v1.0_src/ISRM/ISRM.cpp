@@ -116,12 +116,12 @@ void ISRM::handleDetectionsRequest(json j) {
 //	amq.publish("recieveISRMDetections", Utils::getDetectionsJson(detects), true);
 
     // TODO: redact
-cout << "@@@ requestISRMDetectionsXD " << j.dump(2) << endl;
+//cout << "@@@ requestISRMDetectionsXD " << j.dump(2) << endl;
 	amq.publish("requestISRMDetectionsXD", j, true);
 }
 
 void ISRM::handleRecieveISRMDetectionsXD(json j) {
-cout << "@@@ recieveISRMDetections " << j.dump(2) << endl;
+//cout << "@@@ recieveISRMDetections " << j.dump(2) << endl;
     amq.publish("recieveISRMDetections", j, true);
 }
 

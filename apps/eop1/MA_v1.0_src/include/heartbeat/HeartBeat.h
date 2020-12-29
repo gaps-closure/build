@@ -58,7 +58,7 @@ public:
           json j = json::object();
           j["ss"] = "All";
           j["st"] = "ready";
-cout << "@@@ component_heartbeats " << j.dump(2) << endl;
+//cout << "@@@ component_heartbeats " << j.dump(2) << endl;
 
           amq.publish("component_heartbeats", j, true);
           std::cout << "All subsystems online" << std::endl;

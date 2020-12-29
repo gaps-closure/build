@@ -126,7 +126,7 @@ void MPX::checkPlanStatus(Store<MissionPlan*> &planManager) {
 				j["lon"] = location.x;
 				j["alt"] = planManager.getCurrent()->getHeadSchedule()->getZ();
 				j["time"] = time(&timer);
-cout << "@@@ pnt " << j.dump(2) << endl;
+//cout << "@@@ pnt " << j.dump(2) << endl;
 				amq.publish("pnt", j, true);
 				distance = Utils::distanceEarth(location.y, location.x,
 					planManager.getCurrent()->getHeadSchedule()->getX(),
@@ -198,7 +198,7 @@ void MPX::recieveISRMDetections(json j) {
 void MPX::requestISRMDetections(const string &phase) {
 	json js;
 	js["phase"] = phase;
-cout << "@@@ requestISRMDetections " << js.dump(2) << endl;
+//cout << "@@@ requestISRMDetections " << js.dump(2) << endl;
 	amq.publish("requestISRMDetections", js, true);
 }
 

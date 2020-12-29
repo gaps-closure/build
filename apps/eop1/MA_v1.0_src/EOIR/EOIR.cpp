@@ -91,7 +91,7 @@ void EOIR::handleRequestEOIRDetections(json j) {
 			body.clear();
 		}
 	}
-	cout << "@@@ recieveEOIRDetections " << resp.dump(2) << endl;
+//	cout << "@@@ recieveEOIRDetections " << resp.dump(2) << endl;
 	amq.publish("recieveEOIRDetections", resp, true);
 	
 }

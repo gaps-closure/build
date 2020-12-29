@@ -102,8 +102,8 @@ void ISRMShadow::handleDetectionsRequestXD(json j) {
 	//return detections by adding properties to det here
 	string phase = j["phase"];
 	json det;
-cout << "@@@ requestRDRDetections " << j.dump(2) << endl;
-cout << "@@@ requestEOIRDetections " << j.dump(2) << endl;
+//cout << "@@@ requestRDRDetections " << j.dump(2) << endl;
+//cout << "@@@ requestEOIRDetections " << j.dump(2) << endl;
 	amq.publish("requestRDRDetections", j, true);
 	amq.publish("requestEOIRDetections", j, true);
 
@@ -112,7 +112,7 @@ cout << "@@@ requestEOIRDetections " << j.dump(2) << endl;
 	}
 	eoirDataCollected = false;
 	rdrDataCollected = false;
-cout << "@@@ recieveISRMDetectionsXD " << Utils::getDetectionsJson(detects).dump(2) << endl;
+//cout << "@@@ recieveISRMDetectionsXD " << Utils::getDetectionsJson(detects).dump(2) << endl;
 	amq.publish("recieveISRMDetectionsXD", Utils::getDetectionsJson(detects), true);
 }
 
