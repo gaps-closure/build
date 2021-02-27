@@ -16,7 +16,10 @@
      "guarddirective": { "operation": "allow"}, \
      "argtaints": [], \
      "codtaints": ["ORANGE"], \
-     "rettaints": ["TAG_RESPONSE_GET_A"] \
+     "rettaints": ["TAG_RESPONSE_GET_A"], \
+     "idempotent": true, \
+     "checkpointable": true, \
+     "lossResistance": "medium" \
     } \
   ] }
 
