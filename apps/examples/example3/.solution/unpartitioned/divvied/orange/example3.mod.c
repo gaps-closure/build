@@ -19,12 +19,16 @@
      "rettaints": ["TAG_RESPONSE_GET_A"] \
     } \
   ] }
+#pragma clang attribute push (__attribute__((annotate("XDLINKAGE_GET_A"))), apply_to = any(function,type_alias,record,enum,variable,field))
 #pragma cle begin XDLINKAGE_GET_A 
 double fib(i) {
 #pragma cle end XDLINKAGE_GET_A 
+#pragma clang attribute pop
+#pragma clang attribute push (__attribute__((annotate("ORANGE"))), apply_to = any(function,type_alias,record,enum,variable,field))
 #pragma cle begin ORANGE
   static int mod = 100000007;
   #pragma cle end ORANGE
+#pragma clang attribute pop
   i++;
   if (i < 2) {
     return 1;
@@ -38,36 +42,7 @@ double fib(i) {
   }
   return one;
 }
-int fib_main() {
-  #pragma cle begin PURPLE
-  double x;
-  #pragma cle end PURPLE
-  int msec = 0;
-  clock_t before = clock();
-  for (int i= 0; i < 1000; i++) {
-     x = fib(i);
-     if(i % 100 == 0) {
-         clock_t difference = clock() - before;
-        msec = difference * 1000 / CLOCKS_PER_SEC;
-       printf("%f %d\n", x, msec);
-     }
-  }
-  before = clock();
-  for (int i= 0; i < 1000; i++) {
-     x = fib(i);
-     if(i % 100 == 0) {
-         clock_t difference = clock() - before;
-        msec = difference * 1000 / CLOCKS_PER_SEC;
-       printf("%f %d\n", x, msec);
-     }
-  }
-
-  return 0;
-}
 
 
 
-int main() {
-  return fib_main(); 
-}
 

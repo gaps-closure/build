@@ -1,6 +1,6 @@
 #!/bin/bash
 export PROG=$(eval basename `pwd`)
-export PYTHON="/usr/bin/python3 -u"
+export PYTHON=/usr/bin/python3
 
 CLOSURE_TOOLS=/opt/closure
 export CLOSURE_BINS=${CLOSURE_TOOLS}/bin
@@ -8,7 +8,6 @@ export CLOSURE_INCLUDES=${CLOSURE_TOOLS}/include
 export CLOSURE_LIBS=${CLOSURE_TOOLS}/lib
 export CLOSURE_SCRIPTS=${CLOSURE_TOOLS}/scripts
 export CLOSURE_SCHEMAS=${CLOSURE_TOOLS}/schemas
-export CLOSURE_ETC=${CLOSURE_TOOLS}/etc
 
 export OPT_DBG=${CLOSURE_BINS}/opt-debug
 export OPT_NODBG=/usr/local/bin/opt
@@ -26,7 +25,6 @@ export IDLGENERATOR=${CLOSURE_SCRIPTS}/IDLGenerator.py
 export RPCGENERATOR=${CLOSURE_SCRIPTS}/RPCGenerator.py
 export AUTOGEN=${CLOSURE_SCRIPTS}/autogen.py
 export HALGEN=${CLOSURE_SCRIPTS}/hal_autoconfig.py
-export HALDEV=${CLOSURE_ETC}/devices_socat.json
 
 LLVM_RELEASE=/usr/local
 export CLANG=${LLVM_RELEASE}/bin/clang-10
@@ -39,3 +37,4 @@ export LLVM_DIR=${LLVM_RELEASE}
 export IPCMODE=multithreaded
 export ENCLAVES="orange purple"
 export EXT=c
+export DISPLAY=:2

@@ -1,6 +1,10 @@
 {
     "files.associations": {
         "*.def": "cpp",
-        "*.inc": "cpp"
+        "*.inc": "cpp",
+        "initializer_list": "c",
+        "time.h": "c",
+        "typeinfo": "c",
+        "example3_rpc.h": "c"
     }
 }

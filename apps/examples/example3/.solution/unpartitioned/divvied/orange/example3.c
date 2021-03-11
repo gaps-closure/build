@@ -38,36 +38,7 @@ double fib(i) {
   }
   return one;
 }
-int fib_main() {
-  #pragma cle begin PURPLE
-  double x;
-  #pragma cle end PURPLE
-  int msec = 0;
-  clock_t before = clock();
-  for (int i= 0; i < 1000; i++) {
-     x = fib(i);
-     if(i % 100 == 0) {
-         clock_t difference = clock() - before;
-        msec = difference * 1000 / CLOCKS_PER_SEC;
-       printf("%f %d\n", x, msec);
-     }
-  }
-  before = clock();
-  for (int i= 0; i < 1000; i++) {
-     x = fib(i);
-     if(i % 100 == 0) {
-         clock_t difference = clock() - before;
-        msec = difference * 1000 / CLOCKS_PER_SEC;
-       printf("%f %d\n", x, msec);
-     }
-  }
-
-  return 0;
-}
 
 
 
-int main() {
-  return fib_main(); 
-}
 
