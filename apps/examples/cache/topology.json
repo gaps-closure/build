@@ -1,0 +1,25 @@
+{
+    "source_path": "./refactored",
+    "levels": [
+        "orange",
+        "purple"
+    ],
+    "global_scoped_vars": [],
+    "functions": [
+        {
+            "name": "fib",
+            "level": "orange",
+            "line": "25"
+        },
+        {
+            "name": "fib_main",
+            "level": "purple",
+            "line": "46"
+        },
+        {
+            "name": "main",
+            "level": "purple",
+            "line": "60"
+        }
+    ]
+}

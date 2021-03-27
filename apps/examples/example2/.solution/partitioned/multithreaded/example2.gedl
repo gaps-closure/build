@@ -1,0 +1,20 @@
+{
+"gedl": [
+	{
+		"caller": "purple",
+		"callee": "orange",
+		"calls": [
+			{
+				"func":		"fib",
+				"return":	{"type": "double"},
+				"clelabel":	"XDLINKAGE_GET_A",
+				"params": [
+					{"type": "int", "name": "i", "dir": "in"}
+				],
+				"occurs": [
+					{"file": "/home/andrew/gaps/build/apps/examples/example2/./divvied/purple/example2.mod.c", "lines": [30,34]}
+				]
+			}
+		]
+	}
+]}

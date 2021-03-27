@@ -38,7 +38,8 @@ double _rpc_fib(int i) {
 	if(hashmap == NULL) {
 		hashmap = malloc(size*sizeof(hashmap));
 	}
-	int code = hash_code(req_fib, size);
+	int code = 1;
+	code = (code * req_fib.i) % size;
 	if(hashmap[code].data != NULL ) {
 		//printf("Cache Hit \n");
 		double* pointer = ((double*) hashmap[code].data);
