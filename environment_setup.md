@@ -9,6 +9,10 @@ CLOSURE utilizes a number of open-source libraries, tools, and sources to suppor
   * <b>OS:</b> Ubuntu 19.10 x86_64
   * <b>Kernel:</b> 5.3.0-29-generic
   
+  or
+  * <b>OS:</b> Centos 7 x86_64</b>
+  * <b>Kernel:</b> 3.10.0-1160.2.2.el7.x86_64
+  
 ## IDE
   * Visual Studio Code (VSCode) v1.42.1
   
@@ -63,14 +67,31 @@ CLOSURE will keep current with the latest LLVM and Clang releases, periodically 
 
 In addition to the above, we also use [Apache Daffofil v. 2.5.0](http://daffodil.apache.org/releases/2.5.0/), xsltproc (Ubuntu package xsltproc version 1.1.33-0ubuntu1.1) and Saxon-B (Ubuntu package libsaxonb-java version 9.1.0.8+dfsg-2).
 
-### Python3 packages (pip3 install)
+### Centos 7 Packages (yum install)
 | Package       | Version | 
-|:--------------|:--------------|
-| decorator   | 4.4.1 |
-| hpp2plantuml | 0.6 |
-| lark-parser | 0.7.8 |
-| networkx    | 2.4   |
-| pexpect     | 4.7.0 |
-| pydot       | 1.4.1 |
-| matplotlib  | 3.2.1 |
-| libconf     | 2.0.1 |
+|:--------------|:---------------|
+| cairo-devel                   | 1.15.12-4.el7 |
+| epel-release                  | 7-11          |
+| graphviz                      | 2.30.1-22.el7 |
+| graphviz-devel                | 2.30.1-22.el7 |
+|	gobject-introspection-devel   | 1.56.1-1.el7  |
+| libconfig-devel               | 1.4.9-5.el7   |
+| python3                       | 3.6.8-17.el7  |
+| python36-cairo                | 1.10.0-25.el7 |
+| python36-gobject              | 3.22.0-6.el7  |
+| zeromq-devel                  | 4.1.4-6.el7   | 
+
+### Python3 packages (pip3 install)
+| Package              | Version       | 
+|:---------------------|:--------------|
+| decorator            | 4.4.1 |
+| hpp2plantuml         | 0.6 |
+| lark-parser          | 0.7.8 |
+| networkx             | 2.4   |
+| pexpect              | 4.7.0 |
+| pydot                | 1.4.1 |
+| matplotlib           | 3.2.1 |
+| libconf              | 2.0.1 |
+| xdot                 | 1.1   | 
+| dash                 | 1.18.1 |
+| dash-cytoscape       | 0.2.0 |
