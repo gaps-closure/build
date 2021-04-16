@@ -16,7 +16,8 @@
      "guarddirective": { "operation": "allow"}, \
      "argtaints": [], \
      "codtaints": ["ORANGE"], \
-     "rettaints": ["TAG_RESPONSE_GET_A"] \
+     "rettaints": ["TAG_RESPONSE_GET_A"], \
+     "cache": "no" \
     } \
   ] }
 #pragma cle begin XDLINKAGE_GET_A 
@@ -49,7 +50,7 @@ int fib_main() {
      if(i % 100 == 0) {
          clock_t difference = clock() - before;
         msec = difference * 1000 / CLOCKS_PER_SEC;
-       printf("%f %d\n", x, msec);
+       printf("Modded Fibonacci Value: %f Time in milliseconds: %d\n", x, msec);
      }
   }
   before = clock();
@@ -58,7 +59,7 @@ int fib_main() {
      if(i % 100 == 0) {
          clock_t difference = clock() - before;
         msec = difference * 1000 / CLOCKS_PER_SEC;
-       printf("%f %d\n", x, msec);
+       printf("Modded Fibonacci Value: %f Time in milliseconds: %d\n", x, msec);
      }
   }
 
