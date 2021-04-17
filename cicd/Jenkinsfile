@@ -1,0 +1,29 @@
+
+properties([
+    parameters ([
+        booleanParam(
+            defaultValue: true,
+            description: 'build Dock 1',
+            name: 'FORCE_BUILD_CONTAINER')
+    ])
+])
+    
+node {
+    
+    stage('Build_container') {
+        if (params.FORCE_BUILD_CONTAINER) {
+            echo 'Building docker'
+        } else {
+            echo 'No docker build'
+        }
+    }
+    
+    def ucont = docker.image('ubuntu');
+    
+    stage('Testing') {
+        ucont.inside {
+            sh 'uname -a'
+            sh 'pwd'
+        }
+    }
+}
