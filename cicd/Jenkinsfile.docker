@@ -1,13 +1,15 @@
 
 node {
 
+    def dockerfile = "./cicd/Dockerfile.base"
+    def bcont
+
     stage("Checkout CICD") {
         checkout scm
     }
     
     stage("Build Base Container") {
-        def dockerfile = "./cicd/Dockerfile.base"
-        def bcont = docker.build("test1_ac", "-f ${dockerfile} .")
+        bcont = docker.build("test1_ac", "-f ${dockerfile} .")
     }
 
     stage("Test Base Container") { 
