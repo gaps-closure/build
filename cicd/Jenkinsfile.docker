@@ -1,29 +1,12 @@
 
-properties([
-    parameters ([
-        booleanParam(
-            defaultValue: true,
-            description: 'build Dock 1',
-            name: 'FORCE_BUILD_CONTAINER')
-    ])
-])
-    
 node {
     
-    stage('Build_container') {
-        if (params.FORCE_BUILD_CONTAINER) {
-            echo 'Building docker'
-        } else {
-            echo 'No docker build'
-        }
+    stage("Build Base Container") {
+        def dockerfile = Dockerfile.base
+        def bcont = docker.build("test1_ac", "-f ${dockerfile} ./cicd")
     }
-    
-    def ucont = docker.image('ubuntu');
-    
-    stage('Testing') {
-        ucont.inside {
-            sh 'uname -a'
-            sh 'pwd'
-        }
+
+    stage("Test Base Container") { 
+        bcont.inside('sh "echo Test Passed"')
     }
 }
