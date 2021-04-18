@@ -13,6 +13,8 @@ node {
     }
 
     stage("Test Base Container") { 
-        bcont.inside('sh "echo Test Passed"')
+        bcont.inside {
+            sh 'echo "Test Passed"'
+        }
     }
 }
