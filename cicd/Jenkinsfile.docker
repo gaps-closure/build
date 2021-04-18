@@ -1,5 +1,9 @@
 
 node {
+
+    stage("Checkout CICD") {
+        checkout scm
+    }
     
     stage("Build Base Container") {
         def dockerfile = "Dockerfile.base"
