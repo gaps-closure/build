@@ -6,8 +6,8 @@ node {
     }
     
     stage("Build Base Container") {
-        def dockerfile = "Dockerfile.base"
-        def bcont = docker.build("test1_ac", "-f ${dockerfile} ./cicd")
+        def dockerfile = "./cicd/Dockerfile.base"
+        def bcont = docker.build("test1_ac", "-f ${dockerfile}")
     }
 
     stage("Test Base Container") { 
