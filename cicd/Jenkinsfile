@@ -1,29 +1,18 @@
 
-properties([
-    parameters ([
-        booleanParam(
-            defaultValue: true,
-            description: 'build Dock 1',
-            name: 'FORCE_BUILD_CONTAINER')
-    ])
-])
-    
 node {
-    
-    stage('Build_container') {
-        if (params.FORCE_BUILD_CONTAINER) {
-            echo 'Building docker'
-        } else {
-            echo 'No docker build'
-        }
+
+  def closure_img = docker.image("closure_ubuntu_develop")  
+
+  stage('Checkout Closure') {
+    closure_img.inside {
+      git clone "https://github.com/gaps-closure/build"
+      sh 'ls -l build'
     }
+  }
     
-    def ucont = docker.image('ubuntu');
-    
-    stage('Testing') {
-        ucont.inside {
-            sh 'uname -a'
-            sh 'pwd'
+  stage('Build Closure') {
+        closure_img.inside {
+            sh 'ls -l build'
         }
     }
 }

@@ -1,7 +1,7 @@
 
 node {
 
-    def dockerfile = "./cicd/Dockerfile.base"
+    def dockerfile = "./cicd/Dockerfile.ubuntu.develop"
     def bcont
 
     stage("Checkout CICD") {
@@ -9,7 +9,7 @@ node {
     }
     
     stage("Build Base Container") {
-        bcont = docker.build("test1_ac", "-f ${dockerfile} .")
+        bcont = docker.build("closure_ubuntu_develop", "-f ${dockerfile} .")
     }
 
     stage("Test Base Container") { 

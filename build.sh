@@ -74,7 +74,7 @@ handle_opts "$@"
 if [ "${#components[@]}" -eq 0 ]; then   # build all
     if [ ! -d src ]; then
         echo "directory does not exist: src"
-        exit
+        exit 1
     fi
 
     cd src
