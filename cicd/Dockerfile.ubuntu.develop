@@ -27,7 +27,8 @@ RUN cd /tmp \
 && sed 's/pod2man/pod2man --name gits-checkup/' -i contrib/Makefile \
 && make \
 && make install \
-&& cd /tmp; rm -rf gitslave-2.0.2*
+&& cd /tmp; rm -rf gitslave-2.0.2* \
+&& sed -i '1018s,{\\d+},\\{\\d+\\},' `which gits`
 
 RUN cd /tmp \
 && wget https://github.com/gaps-closure/build/releases/download/v1.2/LLVM-10.0.1-Linux.sh \
@@ -35,6 +36,7 @@ RUN cd /tmp \
 && rm LLVM-10.0.1-Linux.sh \
 && cp -r /usr/local/lib/python3.8/site-packages/clang /usr/local/lib/python3.8/dist-packages/clang
 
+RUN apt-get -y install cmake
 
 RUN useradd -ms /bin/bash closure \
 && usermod -aG sudo closure \
