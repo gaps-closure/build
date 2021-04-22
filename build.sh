@@ -6,6 +6,9 @@ EMU_ARM_URL="https://github.com/gaps-closure/emu/releases/download/v1.0/ubuntu-a
 RELEASES=($LLVM_URL $EMU_ARM_URL)
 BIN=bin
 
+#try to force failure when something fails...
+set -e
+
 usage_exit() {
   [[ -n "$1" ]] && echo $1
   echo "Usage: $0 [ -chl ] \\"
@@ -112,7 +115,7 @@ do
         llvm)
             # built above
             ;;
-	    capo)
+	capo)
             echo "Building $c ........................."
             pushd src/capo
             ./build.sh -l
@@ -123,7 +126,13 @@ do
             pushd src/$c
             ./build.sh
             popd
-            ;;       
+            ;;
+        hal)
+            echo "Building $c ........................."
+            pushd src/$c
+            make
+            popd
+            ;;            
     esac
 done
 

@@ -17,7 +17,7 @@ RUN apt-get -y install					\
     xdot						\
     sudo
 
-RUN pip3 install decorator jsonschema lark-parser libconf vstask networkx pydot
+RUN pip3 install decorator jsonschema lark-parser libconf vstask networkx pydot libclang
 
 RUN cd /tmp \
 &&  wget https://sourceforge.net/projects/gitslave/files/gitslave-2.0.2.tar.gz \
@@ -36,9 +36,21 @@ RUN cd /tmp \
 && rm LLVM-10.0.1-Linux.sh \
 && cp -r /usr/local/lib/python3.8/site-packages/clang /usr/local/lib/python3.8/dist-packages/clang
 
+#for capo
 RUN apt-get -y install cmake
 
-RUN useradd -ms /bin/bash closure \
+#for CVI
+RUN apt-get -y install nodejs
+RUN apt-get -y install npm
+
+RUN wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg \
+&&  sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/ \
+&&  sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list' \
+&&  sudo apt update \
+&&  sudo apt-get -y install code
+
+
+RUN useradd --uid 1000 -ms /bin/bash closure \
 && usermod -aG sudo closure \
 && echo "%sudo ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
