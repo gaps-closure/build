@@ -1,9 +1,9 @@
 #!/bin/bash
 INSTALLDIR=/opt/closure
-GAPSSRC=~/gaps/build/src
+GAPSSRC=${1:-~/gaps/build/src}
 OPTDBG=/opt/closure/devel/10.0.1dbg/bin/opt
 
-echo "Installing to $INSTALLDIR"
+echo "Installing from $GAPSSRC to $INSTALLDIR"
 
 for d in bin include lib schemas scripts etc
 do
