@@ -4,7 +4,7 @@ node {
     def closure_dir = "/home/closure/gaps"
     def jenkins_id = sh script: 'id -u -z', returnStdout: true
     def use_existing_img = false
-    def dockerfile = "cicd/Docker.ubuntu.develop.full"
+    def dockerfile = "cicd/Dockerfile.ubuntu.develop.full"
     
     try {
         stage('Prepare workspace') {
