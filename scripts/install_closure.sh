@@ -46,5 +46,5 @@ sudo cp $GAPSSRC/hal/autogen/*.py $INSTALLDIR/scripts \
 && sudo chmod +x $INSTALLDIR/scripts/*
 
 #etc
-sudo cp $GAPSSRC/hal/confgen/device_defs/* $INSTALLDIR/etc
+sudo cp -r $GAPSSRC/hal/confgen/device_defs/* $INSTALLDIR/etc
 
