@@ -18,7 +18,7 @@ node {
  		closure_img = docker.image("closure_ubuntu_develop_full")
             } else {
           
-                dir("$WORKSPACE/build") {
+                dir("$WORKSPACE") {
                     closure_img = docker.build("closure_ubuntu_develop_full", "-f ${dockerfile} cicd")
                 }
             }
