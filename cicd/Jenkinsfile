@@ -11,7 +11,7 @@ node {
         }
       
         stage('Building Closure') {
-            if (use_ing_img) {
+            if (use_existing_img) {
                 echo "Using prebuilt image for testing"
  		closure_img = docker.image("closure_ubuntu_develop_full")
             } else {
