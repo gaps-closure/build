@@ -4,10 +4,12 @@ node {
     def closure_dir = "/home/closure/gaps"
     def jenkins_id = sh script: 'id -u -z', returnStdout: true
     def use_existing_img = false
+    def dockerfile = "Docker.ubuntu.closure.full"
     
     try {
         stage('Prepare workspace') {
             cleanWs()
+	    checkout scm
         }
       
         stage('Building Closure') {
@@ -15,8 +17,10 @@ node {
                 echo "Using prebuilt image for testing"
  		closure_img = docker.image("closure_ubuntu_develop_full")
             } else {
-                dir("$WORKSPACE")
-                closure_img = docker.build("closure_ubuntu_develop_full", "-f ${dockerfile} .")
+          
+                dir("$WORKSPACE/build") {
+                    closure_img = docker.build("closure_ubuntu_develop_full", "-f ${dockerfile} cicd")
+                }
             }
         }
         
