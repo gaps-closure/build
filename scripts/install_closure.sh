@@ -14,7 +14,7 @@ done
 sudo cp $GAPSSRC/capo/compliance/verifier $INSTALLDIR/bin \
 && sudo cp $GAPSSRC/mules/xdcc_gen/xdcc_gen $INSTALLDIR/bin \
 && sudo cp $GAPSSRC/hal/daemon/hal $INSTALLDIR/bin \
-&& sudo cp $OPTDBG $INSTALLDIR/bin/opt-debug 
+&& sudo ln -s `which opt` $INSTALLDIR/bin/opt-debug 
 
 #include
 sudo cp $GAPSSRC/hal/api/xdcomms.h $INSTALLDIR/include \

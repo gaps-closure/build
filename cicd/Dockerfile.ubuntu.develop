@@ -15,7 +15,9 @@ RUN apt-get -y install					\
     libboost-all-dev 					\
     bc 							\
     xdot						\
-    sudo
+    sudo                                                \
+    libtinfo-dev                                        \
+    libxml2-dev
 
 RUN pip3 install decorator jsonschema lark-parser libconf vstask networkx pydot libclang
 
@@ -31,7 +33,7 @@ RUN cd /tmp \
 && sed -i '1018s,{\\d+},\\{\\d+\\},' `which gits`
 
 RUN cd /tmp \
-&& wget https://github.com/gaps-closure/build/releases/download/v1.2/LLVM-10.0.1-Linux.sh \
+&& wget -nv https://github.com/gaps-closure/build/releases/download/v1.2/LLVM-10.0.1-Linux.sh \
 && bash ./LLVM-10.0.1-Linux.sh --prefix=/usr/local --exclude-subdir \
 && rm LLVM-10.0.1-Linux.sh \
 && cp -r /usr/local/lib/python3.8/site-packages/clang /usr/local/lib/python3.8/dist-packages/clang
