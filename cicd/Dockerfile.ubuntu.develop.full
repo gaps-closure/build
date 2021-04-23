@@ -1,0 +1,21 @@
+FROM closure_ubuntu_develop
+MAINTAINER acichocki@perspectalabs.com
+ARG DEBIAN_FRONTEND=noninteractive
+
+ARG CLOSURE_DIR=/home/closure/gaps
+
+RUN mkdir -p $CLOSURE_DIR
+
+RUN cd $CLOSURE_DIR \
+&& gits clone https://github.com/gaps-closure/build \
+&& cd build && git checkout cicd
+
+RUN cd $CLOSURE_DIR/build/src/capo && git submodule update --init pdg
+
+RUN cd $CLOSURE_DIR/build/src/capo/pdg && git checkout develop
+
+RUN cd $CLOSURE_DIR/build && ./build.sh
+
+RUN $CLOSURE_DIR/build/scripts/install_closure.sh $CLOSURE_DIR/build/src
+               
+#RUN chown -R closure $CLOSURE_DIR

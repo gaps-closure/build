@@ -56,8 +56,8 @@ RUN useradd --uid 1000 -ms /bin/bash closure \
 && usermod -aG sudo closure \
 && echo "%sudo ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-USER closure
-ENV HOME /home/closure
+#USER closure
+#ENV HOME /home/closure
 
 EXPOSE 21 22
 

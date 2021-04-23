@@ -1,18 +1,45 @@
 
 node {
-
-  def closure_img = docker.image("closure_ubuntu_develop")  
-
-  stage('Checkout Closure') {
-    closure_img.inside {
-      git clone "https://github.com/gaps-closure/build"
-      sh 'ls -l build'
-    }
-  }
+    def closure_img 
+    def closure_dir = "/home/closure/gaps"
+    def jenkins_id = sh script: 'id -u -z', returnStdout: true
+    def use_existing_img = true
     
-  stage('Build Closure') {
-        closure_img.inside {
-            sh 'ls -l build'
+    try {
+        stage('Prepare workspace') {
+            cleanWs()
         }
+      
+        stage('Building Closure') {
+            if (use_ing_img) {
+                echo "Using prebuilt image for testing"
+ 		closure_img = docker.image("closure_ubuntu_develop_full")
+            } else {
+                dir("$WORKSPACE")
+                closure_img = docker.build("closure_ubuntu_develop_full", "-f ${dockerfile} .")
+            }
+        }
+        
+        stage('Test Example 3') {
+            def example_dir = "$closure_dir/build/apps/examples/example3"
+            closure_img.inside("-u 0:0") {
+                sh "cd $example_dir && mkdir -p annotated && cp .solution/refactored/* annotated"
+                sh "cd $example_dir && . .vscode/closure_env.sh && cd annotated && make -f ../.vscode/Makefile.conflicts dot && make -f ../.vscode/Makefile.conflicts enclaves && mkdir -p ../refactored && cp topology.json ../ && make -f ../.vscode/Makefile.conflicts clean && cp -r * ../refactored"
+                sh "cd $example_dir && . .vscode/closure_env.sh &&  make -f .vscode/Makefile.divvied"
+                sh "cd $example_dir && . .vscode/closure_env.sh && mkdir -p partitioned; cp -r /opt/closure/heuristics ./partitioned; make -f .vscode/Makefile.gedl rpc;"
+                sh "cd $example_dir && . .vscode/closure_env.sh && make -f .vscode/Makefile.verifier verify"
+                sh "cd $example_dir && . .vscode/closure_env.sh && make -f .vscode/Makefile.verifier clean; make -f .vscode/Makefile.mbig build"
+            }
+        }
+
+    } catch (e) {
+        currentBuild.result = "FAILED"
+        notifyFailed()
+        throw e
     }
+}
+def notifyFailed() {
+        emailext(to: 'acichocki', 
+            body: "Project: ${env.JOB_NAME}, URL: ${env.BUILD_URL}", 
+            subject: "Jenkins FAILURE: ${env.JOB_NAME}")
 }
