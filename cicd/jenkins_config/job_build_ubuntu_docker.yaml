@@ -1,0 +1,33 @@
+jobs:
+  - script: >
+      pipelineJob("build_ubuntu_docker") {
+        description()
+        keepDependencies(false)
+        parameters {
+          booleanParam("FORCE_BUILD_CONTAINER", true, "build Dock 1")
+        }
+        definition {
+          cpsScm {
+             scm {
+               git {
+                 remote {
+                   github("gaps-closure/build", "https")
+                 }
+                 branch("*/cicd")
+               }
+             }
+             scriptPath("cicd/Jenkinsfile.docker")
+          }
+        }
+        disabled(false)
+        configure {
+          it / 'properties' / 'jenkins.model.BuildDiscarderProperty' {
+            strategy {
+              'daysToKeep'('-1')
+              'numToKeep'('3')
+              'artifactDaysToKeep'('-1')
+              'artifactNumToKeep'('-1')
+            }
+          }
+        }
+      }

@@ -1,0 +1,31 @@
+jobs:
+  - script: >
+      pipelineJob('build_closure_in_ubuntu_docker') {
+        definition {
+          triggers {
+            cron('H H(3-5) * * *')
+          }
+          cpsScm {
+            scm {
+              git {
+                remote {
+                  github("gaps-closure/build", "https")
+                }
+                branch("*/cicd")
+              }
+            }
+            scriptPath("cicd/Jenkinsfile")
+          }
+        }
+        disabled(false)
+        configure {
+          it / 'properties' / 'jenkins.model.BuildDiscarderProperty' {
+            strategy {
+              'daysToKeep'('-1')
+              'numToKeep'('3')
+              'artifactDaysToKeep'('-1')
+              'artifactNumToKeep'('-1')
+            }
+          }
+        }
+      }

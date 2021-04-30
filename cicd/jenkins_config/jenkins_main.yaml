@@ -1,0 +1,31 @@
+jenkins:
+  disableRememberMe: false
+  securityRealm:
+    local:
+      users:
+      - id: "admin"
+        name: "admin"
+        properties:
+        - mailer:
+            emailAddress: "acichocki@perspectalabs.com"
+unclassified:
+  email-ext:
+    defaultRecipients: "acichocki"
+    defaultSubject: "$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!"
+    defaultSuffix: "@perspectalabs.com"
+    listId: "Jenkins Builds <perspectalabs.com>"
+    mailAccount:
+      smtpHost: "smtp.perspectalabs.com"
+      smtpPassword: "{AQAAABAAAAAQx468Dv7SSx3faC7CE1B4SgtviX/6q7qKpPHWzWC8qP0=}"
+    precedenceBulk: true
+    watchingEnabled: false
+  location:
+    adminAddress: "acichocki@perspectalabs.com"
+tool:
+  git:
+    installations:
+    - home: "git"
+      name: "Default"
+  mavenGlobalConfig:
+    globalSettingsProvider: "standard"
+    settingsProvider: "standard"

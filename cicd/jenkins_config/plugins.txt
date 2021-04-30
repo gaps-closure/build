@@ -1,0 +1,13 @@
+##
+## these plugins need to be installed manually
+##
+plugins:
+  required:
+    docker-plugin: latest
+    docker-workflow: latest
+    email-ext: latest
+    ws-cleanup: latest
+    configuration-as-code: latest
+    configuration-as-code-groovy: latest
+    git: latest
+    job-dsl: latest
