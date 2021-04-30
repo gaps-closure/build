@@ -20,4 +20,5 @@ do
   $CMD
 done 10<"plugins.txt"
 
-
+echo "Restarting Jenkins...."
+java -jar $JENKINS_CLI -s $JENKINS_URL -auth $JENKINS_AUTH restart
