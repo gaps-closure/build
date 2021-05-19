@@ -12,7 +12,7 @@
 					{"type": "int", "name": "i", "dir": "in"}
 				],
 				"occurs": [
-					{"file": "/home/andrew/gaps/build/apps/examples/example3/./divvied/purple/example3.mod.c", "lines": [31,40]}
+					{"file": "/home/andrew/gaps/build/apps/examples/reliable_rpc_examples/example3/./divvied/purple/example3.mod.c", "lines": [35]}
 				]
 			}
 		]

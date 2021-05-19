@@ -38,3 +38,6 @@ export LLVM_DIR=${LLVM_RELEASE}
 export IPCMODE=multithreaded
 export ENCLAVES="orange purple"
 export EXT=c
+
+#vnc display
+export DISPLAY=:2
