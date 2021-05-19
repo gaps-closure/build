@@ -4,5 +4,6 @@
         "*.inc": "cpp",
         "initializer_list": "c",
         "*.idl": "c"
-    }
+    },
+    "git.ignoreLimitWarning": true
 }
