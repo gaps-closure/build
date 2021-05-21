@@ -20,7 +20,14 @@ sudo apt-get update
 sudo apt-get install jenkins
 ```
 
-To complete installation, open the Jenkins GUI in a browser, at http://<host>:8080, and follow prompts. Make sure to install the default plugins, and to create a user 'admin'.
+During installation a user 'jenkins' is created. This user will be used for all the building tasks run by Jenkins. Make sure to add this user to both 'sudo' and 'docker groups:
+
+```
+usermod -a -G sudo jenkins
+usermod -a -G docker jenkins
+```
+
+To complete installation, open the Jenkins GUI in a browser, at http://\<host\>:8080, and follow prompts. Make sure to install the default plugins, and to create a user 'admin'.
 
 Next, install Jenkins plugins:
 
@@ -31,7 +38,7 @@ cd <closure dir>/build/cicd
 
 Finally, import Jenkins configuration, and all defined jobs, using the GUI: 
 
-From Jenkins GUI click on "Manage Jenkins", then "Configuration as Code", then enter the full path to the jenkins configuration directory "<closure dir>/build/cicd/jenkins_config" and click "Apply new configuration".
+From Jenkins GUI click on "Manage Jenkins", then "Configuration as Code", then enter the full path to the jenkins configuration directory "\<closure dir\>/build/cicd/jenkins_config" and click "Apply new configuration".
 
 Maintaining configuration files
 ===============================
