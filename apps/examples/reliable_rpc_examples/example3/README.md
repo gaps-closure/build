@@ -1,4 +1,7 @@
-# CLOSURE Example: Example 1
+# CLOSURE Example: Example 3: Sequence Generation
+
+## Properties:
+- Showcases Caller Restarts
 
 ## Directory Structure
 
@@ -15,12 +18,23 @@
 ## Security Intent
 
 * Variable `a` in `get_a()` is in ORANGE and can be shared with PURPLE
-* Variable `b` in `get_b()` is in PURPLE and cannot be shared
-* Calculated EWMA must be available on PURPLE side (for printing there)
+* a is fetched(from orange side)  on PURPLE side (for printing there)
+* Sample Error handling and callee restart handling code
+```
+ while (1) {
+    int error = 0;
+    int restarted = 0;
+    x = _rpc_get_a(&error, &restarted);
+    if(error == 1) assert(0);
+    if(restarted == 1) assert(0);
+    printf("%f\n", x);
+    sleep(3);
+  }
+```
 
-## Example 1 CLE Label Definitions
+## Example 3 CLE Label Definitions
 
-For convenience, the following CLE label definitions are provided for use in example 1. Place after include directives in `annotated/example1.c`
+For convenience, the following CLE label definitions are provided for use in example 3. Place after include directives in `annotated/example3.c`
 ```
 #pragma cle def PURPLE {"level":"purple"}
 
@@ -38,13 +52,16 @@ For convenience, the following CLE label definitions are provided for use in exa
      "guarddirective": { "operation": "allow"}, \
      "argtaints": [], \
      "codtaints": ["ORANGE"], \
-     "rettaints": ["TAG_RESPONSE_GET_A"] \
+     "rettaints": ["TAG_RESPONSE_GET_A"], \
+     "idempotent": true, \
+     "num_tries": 5, \
+     "timeout": 1000 \
     } \
   ] }
 ```
 
 ## Full Solution
-For reference during the independent exercise only, see `.solution` subdirectory for complete working copy of example1 code.
+For reference during the independent exercise only, see `.solution` subdirectory for complete working copy of example3 code.
 
 ## Dependencies
 

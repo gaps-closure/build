@@ -45,7 +45,7 @@ while (1) {
   }
 ```
 
-## Example 1 CLE Label Definitions
+## Example 2 CLE Label Definitions
 
 For convenience, the following CLE label definitions are provided for use in example 2. Place after include directives in `annotated/example2.c`
 ```

@@ -45,9 +45,9 @@ Demo Link: https://youtu.be/dS8AykXJfrQ
 * Showcases Delays
 ### Example 2: Stock Price
 - Showcases Error Propagation
-- Showcases Caller(Client) Restarts
+- Showcases Callee Restarts
 ### Example 3: Sequence Generation 
-- Showcases Calle(Server Restarts)
+- Showcases Caller Restarts
 
 For more details, checkout the README for each example.
 
