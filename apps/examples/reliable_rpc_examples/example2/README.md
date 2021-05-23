@@ -1,4 +1,9 @@
-# CLOSURE Example: Example 1
+# CLOSURE Example: Example 2: Stock Price
+
+## Properties:
+- Showcases Error Propagation
+- Showcases Callee Restarts
+
 
 ## Directory Structure
 
@@ -14,13 +19,35 @@
 
 ## Security Intent
 
-* Variable `a` in `get_a()` is in ORANGE and can be shared with PURPLE
-* Variable `b` in `get_b()` is in PURPLE and cannot be shared
-* Calculated EWMA must be available on PURPLE side (for printing there)
+* Variable `stockprice` in `get_price()` is in ORANGE and can be shared with PURPLE
+* Time is computed on purple side and price is fetched(from orange side)  on PURPLE side (for printing there)
+* Sample Error handling and callee restart handling code
+```
+while (1) {
+     time_t reportTime = time(NULL);
+     int error = 0;
+     int restarted = 0;
+     x = _rpc_get_price(&error, &restarted);
+     if(error == 1){
+       x = last_reported;
+       reportTime = last_reported_time;
+     }
+     else{
+       last_reported = x;
+       last_reported_time = reportTime;
+     }
+     if(restarted == 1){
+       //
+     }
+     
+    printf("The stock price is %.2f reported at %s", x,  asctime(localtime(&reportTime)));
+    sleep(5);
+  }
+```
 
 ## Example 1 CLE Label Definitions
 
-For convenience, the following CLE label definitions are provided for use in example 1. Place after include directives in `annotated/example1.c`
+For convenience, the following CLE label definitions are provided for use in example 2. Place after include directives in `annotated/example2.c`
 ```
 #pragma cle def PURPLE {"level":"purple"}
 
@@ -31,20 +58,23 @@ For convenience, the following CLE label definitions are provided for use in exa
      "guarddirective": { "operation": "allow"}}\
   ] }
 
-#pragma cle def XDLINKAGE_GET_A {"level":"orange",\
+#pragma cle def XDLINKAGE_GET_PRICE {"level":"orange",\
   "cdf": [\
     {"remotelevel":"purple", \
      "direction": "bidirectional", \
      "guarddirective": { "operation": "allow"}, \
      "argtaints": [], \
      "codtaints": ["ORANGE"], \
-     "rettaints": ["TAG_RESPONSE_GET_A"] \
+     "rettaints": ["TAG_RESPONSE_GET_PRICE"], \
+     "idempotent": true, \
+     "num_tries": 5, \
+     "timeout": 1000 \
     } \
   ] }
 ```
 
 ## Full Solution
-For reference during the independent exercise only, see `.solution` subdirectory for complete working copy of example1 code.
+For reference during the independent exercise only, see `.solution` subdirectory for complete working copy of example2 code.
 
 ## Dependencies
 
