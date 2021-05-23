@@ -64,3 +64,9 @@ To build a subset of components, specify them in the command line argument to th
 $BUILD/build.sh {capo cvi mules mbig emu hal llvm}
 ```
 
+#Build the Cache RPC
+In order to run the RPC with the cache, do the following steps:
+In closure_env.sh, make sure the RPCgenerator file is connected to RPCgenerator_az. That file contains the cache generation code.
+
+
+
