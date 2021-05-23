@@ -1,7 +1,6 @@
 {
     "files.associations": {
         "*.def": "cpp",
-        "*.inc": "cpp",
-        "initializer_list": "c"
+        "*.inc": "cpp"
     }
 }

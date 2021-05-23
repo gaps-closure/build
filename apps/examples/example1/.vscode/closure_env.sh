@@ -22,7 +22,7 @@ export TAGPROC=${CLOSURE_SCRIPTS}/tag_processor.py
 export CUTZOOM=${CLOSURE_SCRIPTS}/cutzoom.py
 export DIV=${CLOSURE_SCRIPTS}/program_divider.py
 export IDLGENERATOR=${CLOSURE_SCRIPTS}/IDLGenerator.py
-export RPCGENERATOR=${CLOSURE_SCRIPTS}/RPCGenerator_ss.py
+export RPCGENERATOR=${CLOSURE_SCRIPTS}/RPCGenerator.py
 export AUTOGEN=${CLOSURE_SCRIPTS}/autogen.py
 export HALGEN=${CLOSURE_SCRIPTS}/hal_autoconfig.py
 
@@ -37,6 +37,3 @@ export LLVM_DIR=${LLVM_RELEASE}
 export IPCMODE=multithreaded
 export ENCLAVES="orange purple"
 export EXT=c
-
-#vnc display
-export DISPLAY=:1
