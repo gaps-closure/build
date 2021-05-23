@@ -41,8 +41,9 @@ Reliable RPC protocol extends the baseline RPC protocol.
 ## Examples
 Demo Link: https://youtu.be/dS8AykXJfrQ
 ### Example 1: EWMA
-* Showcases Request and Response Packet Loss
-* Showcases Delays
+* Showcases reliability against Request and Response Packet Loss
+* Showcases reliability against Delays
+* SHowcases reliability against out of order packets
 ### Example 2: Stock Price
 - Showcases Error Propagation
 - Showcases Callee Restarts
@@ -67,3 +68,9 @@ export RPCGENERATOR=${CLOSURE_SCRIPTS}/RPCGenerator_ss.py
 ```
 - Build and run the examples using standard procedure(CLEAN SOURCE, ANNOTATE, ANALYZE PARTITION CONFLICTS, EMULATE) . 
 Note: `.solution/refactored` subdirectory in each example contains a sample(working) annotated code. 
+
+
+### Simulation of loss and delays(Three ways to do it):
+- Use core ui's loss and delay knobs (unreliable)
+- Use linux tc command to drop and delay pkts (https://sandilands.info/sgordon/dropping-packets-in-ubuntu-linux-using-tc-and-iptables) 
+- Drop and delay pkts at hal level. Need to add some pseduo test code in build/src/hal/api/xdcomms.c. Use env variable to set loss and delay. Code stored in branch [loss_delay_simulation](https://github.com/gaps-closure/hal/compare/develop...loss_delay_simulation?expand=1) 
