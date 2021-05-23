@@ -55,7 +55,7 @@ For more details, checkout the README for each example.
 ### ChangeList:
 - build/src/mules/cle-spec/schema/cle-schema.json : Modifications to support new cle-lables (Num_tries, Timeout etc) [Commit](https://github.com/gaps-closure/mules/commit/a4c6fcbc5d21592b792a5feaed627bd4e591e562)
 - build/src/capo/gedl/RPCGenerator_ss.py: Reliable RPC generator script [Commit](https://github.com/gaps-closure/capo/commit/7ada1bc4bcfa4e417f8ea9c5b49941e2d61133ad)
-- build/apps/examples/reliable_rpc_examples/: Three new examples to showcase RPC properties. [Commit](https://github.com/gaps-closure/build/commit/cf8734efd267898d7b07e3f3ffe26be7ad53e513)
+- build/apps/reliable_rpc_examples/: Three new examples to showcase RPC properties. [Commit](https://github.com/gaps-closure/build/commit/cf8734efd267898d7b07e3f3ffe26be7ad53e513)
 
 
 ### Steps to reproduce:
