@@ -3,7 +3,7 @@ node {
     def closure_img 
     def closure_dir = "/home/closure/gaps"
     def jenkins_id = sh script: 'id -u -z', returnStdout: true
-    def use_existing_img = false
+    def use_existing_img = true
     def dockerfile = "cicd/Dockerfile.ubuntu.develop.full"
     
     try {
@@ -18,6 +18,13 @@ node {
  		closure_img = docker.image("closure_ubuntu_develop_full")
             } else {
                 closure_img = docker.build("closure_ubuntu_develop_full", "-f ${dockerfile} .")
+            }
+        }
+	
+        stage('Test Example 1') {
+            def example_dir = "$closure_dir/build/apps/examples/example1"
+            closure_img.inside("-u 0:0") {
+                sh "cd $example_dir && vstask '0 CLEAN SOURCE'"
             }
         }
         

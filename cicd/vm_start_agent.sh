@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 #one argument expected
 if [ "$#" -ne 1 ] ; then
