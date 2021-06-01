@@ -25,6 +25,10 @@ node {
             def example_dir = "$closure_dir/build/apps/examples/example1"
             closure_img.inside("-u 0:0") {
                 sh "cd $example_dir && vstask '0 CLEAN SOURCE'"
+                sh "cd $example_dir && vstask '1 ANNOTATE'"
+                sh "cd $example_dir && vstask '4 BUILD PLAIN'"
+                sh "cd $example_dir && vstask '2 ANALYZE PARTITION CONFLICTS'"
+                sh "cd $example_dir && vstask '3 AUTOMAGIC'"
             }
         }
         
