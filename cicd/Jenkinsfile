@@ -29,7 +29,11 @@ node {
                 sh "cd $example_dir && vstask '1 ANNOTATE'"
 		sh "cd $example_dir && cp -r .solution/refactored/* annotated/"
                 sh "cd $example_dir && vstask '2 ANALYZE PARTITION CONFLICTS'"
-                sh "cd $example_dir && vstask '3 AUTOMAGIC'"
+                sh "cd $example_dir && vstask '9a DIVIDE'"
+                sh "cd $example_dir && vstask '9b AUTOGEN GEDL, RPCs, IDL, Codecs'"
+                sh "cd $example_dir && vstask '9c VERIFY'"
+                sh "cd $example_dir && vstask '9e BUILD'"
+                sh "cd $example_dir && vstask '9f EMULATE'"
             }
         }
         
