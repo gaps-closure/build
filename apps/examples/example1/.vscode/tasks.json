@@ -4,7 +4,7 @@
       {
         "label": "INITIALIZE TOOLCHAIN",
         "type": "shell",
-        "command": "echo Welcome to GAPS CLOSURE Toolchain; cd ~/gaps/build/src/hal; make clean; make",
+        "command": "echo Welcome to GAPS CLOSURE Toolchain; . .vscode/closure_env.sh && cd ${CLOSURE_HOME}/src/hal; make clean; make",
         "args": [],
         "group": "build",
         "problemMatcher": []
@@ -99,7 +99,7 @@
       {
         "label": "9f EMULATE",
         "type": "shell",
-        "command": "source .vscode/closure_env.sh; make -f .vscode/Makefile.mbig pkg; cd ~/gaps/build/src/emu/; ./start.sh ${PROG}",
+        "command": "source .vscode/closure_env.sh; make -f .vscode/Makefile.mbig pkg; cd ${CLOSURE_HOME}/src/emu/; ./start.sh ${PROG}",
         "args": [],
         "group": "build",
         "problemMatcher": []

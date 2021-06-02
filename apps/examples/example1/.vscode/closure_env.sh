@@ -1,6 +1,7 @@
 #!/bin/bash
 export PROG=$(eval basename `pwd`)
 export PYTHON="/usr/bin/python3 -u"
+export CLOSURE_HOME=$(readlink -f "$(dirname "${BASH_SOURCE[0]}")"/../../..)
 
 CLOSURE_TOOLS=/opt/closure
 export CLOSURE_BINS=${CLOSURE_TOOLS}/bin
