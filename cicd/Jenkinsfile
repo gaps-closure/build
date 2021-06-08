@@ -34,7 +34,7 @@ node {
                 sh "cd $example_dir && vstask '9b AUTOGEN GEDL, RPCs, IDL, Codecs'"
                 sh "cd $example_dir && vstask '9c VERIFY'"
                 sh "cd $example_dir && vstask '9e BUILD'"
-                sh "cd $example_dir && vstask '9f EMULATE'"
+                sh "cd $example_dir && USER=${USER:-closure} vstask '9f EMULATE'"
             }
         }
         
