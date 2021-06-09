@@ -17,5 +17,7 @@ RUN cd $CLOSURE_DIR/build/src/capo/pdg && git checkout develop
 RUN cd $CLOSURE_DIR/build && ./build.sh
 
 RUN $CLOSURE_DIR/build/scripts/install_closure.sh $CLOSURE_DIR/build/src
+
+RUN cd $CLOSURE_DIR/build/src/emu/scripts/install && ./install-deps.sh
                
 #RUN chown -R closure $CLOSURE_DIR
