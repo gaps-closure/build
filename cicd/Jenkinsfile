@@ -18,7 +18,7 @@ node {
  		closure_img = docker.image("closure_ubuntu_develop_full")
             } else {
                 closure_img = docker.build("closure_ubuntu_develop_full", "-f ${dockerfile} .")
-		def running_img = docker.run(['--privileged=true', 'bash'])
+		def running_img = docker.run('--privileged=true', 'bash')
 		sh "docker exec running_img.id mkdir -p /IMAGES"
 		sh "docker exec -w $closure_dir/build/src/emu/scripts/qemu running_img.id ./qemu-build-vm-images.sh -a amd64 -d focal -k focal -s 20G -o /IMAGES"
 		sh "docker exec -w $closure_dir/build/src/emu/scripts/qemu running_img.id ./qemu-build-vm-images.sh -a amd64 -d focal -k focal -s 20G -o /IMAGES -u"
