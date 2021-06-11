@@ -19,10 +19,10 @@ node {
             } else {
                 closure_img = docker.build("closure_ubuntu_develop_full", "-f ${dockerfile} .")
 		def running_img = docker.run('--privileged=true')
-		sh "docker exec $running_img.id mkdir -p /IMAGES"
-		sh "docker exec -w $closure_dir/build/src/emu/scripts/qemu $running_img.id ./qemu-build-vm-images.sh -a amd64 -d focal -k focal -s 20G -o /IMAGES"
-		sh "docker exec -w $closure_dir/build/src/emu/scripts/qemu $running_img.id ./qemu-build-vm-images.sh -a amd64 -d focal -k focal -s 20G -o /IMAGES -u"
-		sh "docker commit $running_img.id closure_ubuntu_develop_full"
+		sh "docker exec running_img.id mkdir -p /IMAGES"
+		sh "docker exec -w $closure_dir/build/src/emu/scripts/qemu running_img.id ./qemu-build-vm-images.sh -a amd64 -d focal -k focal -s 20G -o /IMAGES"
+		sh "docker exec -w $closure_dir/build/src/emu/scripts/qemu running_img.id ./qemu-build-vm-images.sh -a amd64 -d focal -k focal -s 20G -o /IMAGES -u"
+		sh "docker commit running_img.id closure_ubuntu_develop_full"
 		running_img.stop()
             }
         }
