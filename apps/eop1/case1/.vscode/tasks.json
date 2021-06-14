@@ -47,9 +47,6 @@
         "command": "firefox --new-window http://127.0.0.1:8050/",
         "args": [],
         "group": "build",
-        // This task is run before some debug tasks.
-        // Problem is, it's a watch script, and since it never exits, VSCode
-        // complains. All this is needed so VSCode just lets it run.
         "problemMatcher": [
         ],
         "dependsOrder": "sequence",
@@ -71,7 +68,7 @@
         "command": "",
         "args": [],
         "group": {
-          "kind": "build",
+          "kind": "build"
         },
         "dependsOrder": "sequence",
         "dependsOn": [
@@ -140,9 +137,6 @@
         "command": "source .vscode/closure_env.sh; ${PYTHON} ${XDMF_VIEW} -f design/design_spec.json < /dev/null > /dev/null 2>&1 ",
         "args": [],
         "group": "build",
-        // This task is run before some debug tasks.
-        // Problem is, it's a watch script, and since it never exits, VSCode
-        // complains. All this is needed so VSCode just lets it run.
         "problemMatcher": [
           {
             "pattern": [
@@ -156,7 +150,7 @@
             "background": {
               "activeOnStart": true,
               "beginsPattern": ".",
-              "endsPattern": ".",
+              "endsPattern": "."
             }
           }
         ]
@@ -168,6 +162,6 @@
             "description": "egress or ingress",
             "default": "egress",
             "type": "promptString"
-        },
+        }
     ]    
   }
