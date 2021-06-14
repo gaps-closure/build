@@ -51,6 +51,13 @@ RUN wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor 
 &&  sudo apt update \
 &&  sudo apt-get -y install code
 
+RUN cd /tmp \
+&&  wget -nv "https://github.com/coreemu/core/releases/download/release-6.5.0/core_6.5.0_amd64.deb" \
+&&  apt-get -y install ./core_6.5.0_amd64.deb \
+&&  rm core_6.5.0_amd64.deb \
+&&  cp -R /usr/local/lib/python3.6/dist-packages/core /usr/local/lib/python3.8/dist-packages/
+
+RUN pip3 install netaddr
 
 RUN useradd --uid 1000 -ms /bin/bash closure \
 && usermod -aG sudo closure \

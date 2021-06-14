@@ -1,4 +1,5 @@
-CLOSURE_DIR=~/gaps/build
+#CLOSURE_DIR=~/gaps/build
+CLOSURE_DIR=$(CLOSURE_HOME)
 ODIR=./partitioned/$(IPCMODE)
 CFG_DIR=$(CLOSURE_DIR)/src/emu/config/$(PROG)
 

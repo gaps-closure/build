@@ -3,7 +3,7 @@ node {
     def closure_img 
     def closure_dir = "/home/closure/gaps"
     def jenkins_id = sh script: 'id -u -z', returnStdout: true
-    def use_existing_img = false
+    def use_existing_img = true
     def dockerfile = "cicd/Dockerfile.ubuntu.develop.full"
     
     try {
@@ -18,6 +18,45 @@ node {
  		closure_img = docker.image("closure_ubuntu_develop_full")
             } else {
                 closure_img = docker.build("closure_ubuntu_develop_full", "-f ${dockerfile} .")
+		def running_img = closure_img.run('--privileged=true -t -d', 'bash')
+		sh "docker exec $running_img.id mkdir -p /IMAGES"
+		sh "docker exec -w $closure_dir/build/src/emu/scripts/qemu $running_img.id ./qemu-build-vm-images.sh -a amd64 -d focal -k focal -s 20G -o /IMAGES"
+		sh "docker exec -w $closure_dir/build/src/emu/scripts/qemu $running_img.id ./qemu-build-vm-images.sh -a amd64 -d focal -k focal -s 20G -o /IMAGES -u"
+		sh "docker commit $running_img.id closure_ubuntu_develop_full"
+		running_img.stop()
+            }
+        }
+	
+        stage('Test Example 1') {
+            def example_dir = "$closure_dir/build/apps/examples/example1"
+            closure_img.inside("-u 0:0") {
+	        sh "cd $example_dir && git pull && git checkout cicd"
+                sh "cd $example_dir && vstask '0 CLEAN SOURCE'"
+                sh "cd $example_dir && vstask '4 BUILD PLAIN'"
+                sh "cd $example_dir && vstask '1 ANNOTATE'"
+		sh "cd $example_dir && cp -r .solution/refactored/* annotated/"
+                sh "cd $example_dir && vstask '2 ANALYZE PARTITION CONFLICTS'"
+                sh "cd $example_dir && vstask '9a DIVIDE'"
+                sh "cd $example_dir && vstask '9b AUTOGEN GEDL, RPCs, IDL, Codecs'"
+                sh "cd $example_dir && vstask '9c VERIFY'"
+                sh "cd $example_dir && vstask '9e BUILD'"
+//                sh "cd $example_dir && USER=closure vstask '9f EMULATE'"
+            }
+        }
+        stage('Test Example 2') {
+            def example_dir = "$closure_dir/build/apps/examples/example2"
+            closure_img.inside("-u 0:0") {
+	        sh "cd $example_dir && git pull && git checkout cicd"
+                sh "cd $example_dir && vstask '0 CLEAN SOURCE'"
+                sh "cd $example_dir && vstask '4 BUILD PLAIN'"
+                sh "cd $example_dir && vstask '1 ANNOTATE'"
+		sh "cd $example_dir && cp -r .solution/refactored/* annotated/"
+                sh "cd $example_dir && vstask '2 ANALYZE PARTITION CONFLICTS'"
+                sh "cd $example_dir && vstask '9a DIVIDE'"
+                sh "cd $example_dir && vstask '9b AUTOGEN GEDL, RPCs, IDL, Codecs'"
+                sh "cd $example_dir && vstask '9c VERIFY'"
+                sh "cd $example_dir && vstask '9e BUILD'"
+//                sh "cd $example_dir && USER=closure vstask '9f EMULATE'"
             }
         }
         
@@ -32,6 +71,14 @@ node {
                 sh "cd $example_dir && . .vscode/closure_env.sh && make -f .vscode/Makefile.verifier clean; make -f .vscode/Makefile.mbig build"
             }
         }
+
+	stage('Test eop1') {
+	    def eop_dir = "$closure_dir/build/apps/eop1"
+	    closure_img.inside("-u 0:0") {
+	       sh "cd $eop_dir/case1 && vstask 'BUILD'"
+	    }
+	}
+
 
     } catch (e) {
         currentBuild.result = "FAILED"
