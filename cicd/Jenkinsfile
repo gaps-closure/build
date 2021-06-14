@@ -75,7 +75,7 @@ node {
 	stage('Test eop1') {
 	    def eop_dir = "$closure_dir/build/apps/eop1"
 	    closure_img.inside("-u 0:0") {
-	       sh "cd $eop_dir && ./build.sh -b"
+	       sh "cd $eop_dir/case1 && vstasks 'BUILD'"
 	    }
 	}
 
