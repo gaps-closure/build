@@ -17,7 +17,7 @@ node {
                 echo "Using prebuilt image for testing"
  		closure_img = docker.image("closure_ubuntu_develop_full")
             } else {
-                closure_img = docker.build("closure_ubuntu_develop_full", "-f ${dockerfile} .")
+                closure_img = docker.build("closure_ubuntu_develop_full", "--no-cache -f ${dockerfile} .")
 		def running_img = closure_img.run('--privileged=true -t -d', 'bash')
 		sh "docker exec $running_img.id mkdir -p /IMAGES"
 		sh "docker exec -w $closure_dir/build/src/emu/scripts/qemu $running_img.id ./qemu-build-vm-images.sh -a amd64 -d focal -k focal -s 20G -o /IMAGES"
