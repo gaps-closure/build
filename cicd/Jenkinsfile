@@ -40,7 +40,7 @@ node {
                 sh "cd $example_dir && vstask '9b AUTOGEN GEDL, RPCs, IDL, Codecs'"
                 sh "cd $example_dir && vstask '9c VERIFY'"
                 sh "cd $example_dir && vstask '9e BUILD'"
-//                sh "cd $example_dir && USER=closure vstask '9f EMULATE'"
+                sh "cd $example_dir && USER=closure vstask '9f EMULATE'"
             }
         }
         stage('Test Example 2') {
@@ -56,19 +56,24 @@ node {
                 sh "cd $example_dir && vstask '9b AUTOGEN GEDL, RPCs, IDL, Codecs'"
                 sh "cd $example_dir && vstask '9c VERIFY'"
                 sh "cd $example_dir && vstask '9e BUILD'"
-//                sh "cd $example_dir && USER=closure vstask '9f EMULATE'"
+                sh "cd $example_dir && USER=closure vstask '9f EMULATE'"
             }
         }
         
         stage('Test Example 3') {
             def example_dir = "$closure_dir/build/apps/examples/example3"
             closure_img.inside("-u 0:0") {
-                sh "cd $example_dir && mkdir -p annotated && cp .solution/refactored/* annotated"
-                sh "cd $example_dir && . .vscode/closure_env.sh && cd annotated && make -f ../.vscode/Makefile.conflicts dot && make -f ../.vscode/Makefile.conflicts enclaves && mkdir -p ../refactored && cp topology.json ../ && make -f ../.vscode/Makefile.conflicts clean && cp -r * ../refactored"
-                sh "cd $example_dir && . .vscode/closure_env.sh &&  make -f .vscode/Makefile.divvied"
-                sh "cd $example_dir && . .vscode/closure_env.sh && mkdir -p partitioned; cp -r /opt/closure/heuristics ./partitioned; make -f .vscode/Makefile.gedl rpc;"
-                sh "cd $example_dir && . .vscode/closure_env.sh && make -f .vscode/Makefile.verifier verify"
-                sh "cd $example_dir && . .vscode/closure_env.sh && make -f .vscode/Makefile.verifier clean; make -f .vscode/Makefile.mbig build"
+	        sh "cd $example_dir && git pull && git checkout cicd"
+                sh "cd $example_dir && vstask '0 CLEAN SOURCE'"
+                sh "cd $example_dir && vstask '4 BUILD PLAIN'"
+                sh "cd $example_dir && vstask '1 ANNOTATE'"
+		sh "cd $example_dir && cp -r .solution/refactored/* annotated/"
+                sh "cd $example_dir && vstask '2 ANALYZE PARTITION CONFLICTS'"
+                sh "cd $example_dir && vstask '9a DIVIDE'"
+                sh "cd $example_dir && vstask '9b AUTOGEN GEDL, RPCs, IDL, Codecs'"
+                sh "cd $example_dir && vstask '9c VERIFY'"
+                sh "cd $example_dir && vstask '9e BUILD'"
+                sh "cd $example_dir && USER=closure vstask '9f EMULATE'"
             }
         }
 
