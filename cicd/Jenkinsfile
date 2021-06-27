@@ -3,7 +3,7 @@ node {
     def closure_img 
     def closure_dir = "/home/closure/gaps"
     def jenkins_id = sh script: 'id -u -z', returnStdout: true
-    def use_existing_img = false
+    def use_existing_img = true
     def dockerfile = "cicd/Dockerfile.ubuntu.develop.full"
     
     try {
@@ -29,7 +29,7 @@ node {
 	
         stage('Test Example 1') {
             def example_dir = "$closure_dir/build/apps/examples/example1"
-            closure_img.inside("-u 0:0") {
+            closure_img.inside("-u 0:0 --privileged=true") {
 	        sh "cd $example_dir && git pull && git checkout cicd"
                 sh "cd $example_dir && vstask '0 CLEAN SOURCE'"
                 sh "cd $example_dir && vstask '4 BUILD PLAIN'"
