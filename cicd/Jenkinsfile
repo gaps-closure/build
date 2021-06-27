@@ -40,13 +40,16 @@ node {
                 sh "cd $example_dir && vstask '9b AUTOGEN GEDL, RPCs, IDL, Codecs'"
                 sh "cd $example_dir && vstask '9c VERIFY'"
                 sh "cd $example_dir && vstask '9e BUILD'"
-                sh "cd $example_dir && USER=closure vstask '9f EMULATE'"
+		withEnv(["USER=closure", "DISPLAY=:0", "CORE_NO_GUI=yes"]) {
+                    sh "cd $example_dir && USER=closure vstask '9f EMULATE'"
+		}
             }
         }
         stage('Test Example 2') {
             def example_dir = "$closure_dir/build/apps/examples/example2"
             closure_img.inside("-u 0:0") {
 	        sh "cd $example_dir && git pull && git checkout cicd"
+	        sh "cd /root && ln -s $closure_dir ."
                 sh "cd $example_dir && vstask '0 CLEAN SOURCE'"
                 sh "cd $example_dir && vstask '4 BUILD PLAIN'"
                 sh "cd $example_dir && vstask '1 ANNOTATE'"
