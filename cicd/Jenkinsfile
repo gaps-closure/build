@@ -40,7 +40,7 @@ node {
                 sh "cd $example_dir && vstask '9b AUTOGEN GEDL, RPCs, IDL, Codecs'"
                 sh "cd $example_dir && vstask '9c VERIFY'"
                 sh "cd $example_dir && vstask '9e BUILD'"
-		withEnv(["USER=closure", "DISPLAY=:0", "CORE_NO_GUI=yes"]) {
+		withEnv(["USER=closure", "DISPLAY=:0", "CORE_NO_GUI=yes", "TERM=vt100"]) {
                     sh "cd $example_dir && USER=closure vstask '9f EMULATE'"
 		}
             }
