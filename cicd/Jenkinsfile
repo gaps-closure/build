@@ -3,7 +3,7 @@ node {
     def closure_img 
     def closure_dir = "/home/closure/gaps"
     def jenkins_id = sh script: 'id -u -z', returnStdout: true
-    def use_existing_img = false
+    def use_existing_img = true
     def dockerfile = "cicd/Dockerfile.ubuntu.develop.full"
     
     try {
@@ -27,7 +27,16 @@ node {
             }
         }
 	
-        stage('Test Example 1') {
+
+	stage('Test eop1') {
+	    def eop_dir = "$closure_dir/build/apps/eop1"
+	    closure_img.inside("-u 0:0") {
+	        "cd $eop_dir/scripts && ./build_pinstall.sh"
+	    }
+	}
+
+
+	stage('Test Example 1') {
             def example_dir = "$closure_dir/build/apps/examples/example1"
             closure_img.inside("-u 0:0 --privileged=true") {
 	        sh "cd $example_dir && git pull && git checkout cicd"
@@ -84,14 +93,6 @@ node {
 		}
             }
         }
-
-	stage('Test eop1') {
-	    def eop_dir = "$closure_dir/build/apps/eop1"
-	    closure_img.inside("-u 0:0") {
-	       sh "cd $eop_dir/case1 && vstask 'BUILD'"
-	    }
-	}
-
 
     } catch (e) {
         currentBuild.result = "FAILED"
