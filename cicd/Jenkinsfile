@@ -31,6 +31,7 @@ node {
 	stage('Test eop1') {
 	    def eop_dir = "$closure_dir/build/apps/eop1"
 	    closure_img.inside("-u 0:0") {
+	        sh "apt-get -y install libapr1 libapr1-dev nasm yasm"
 	    	sh "cd $eop_dir && git pull && git checkout cicd"
 	        sh "cd $eop_dir/scripts && ./build_pinstall.sh"
 	    }
