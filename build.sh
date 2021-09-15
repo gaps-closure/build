@@ -115,8 +115,7 @@ do
 	    capo)
             echo "Building $c ........................."
             pushd src/capo
-            ln -s pdg2 pdg
-            ./build.sh -l
+            ./build.sh
             popd
             ;;       
         cvi | mules | mbig)
