@@ -115,6 +115,7 @@ do
 	    capo)
             echo "Building $c ........................."
             pushd src/capo
+            ln -s pdg2 pdg
             ./build.sh -l
             popd
             ;;       
@@ -124,6 +125,12 @@ do
             ./build.sh
             popd
             ;;       
+        hal)
+            echo "Building $c ........................."
+            pushd src/$c
+            make  
+            popd
+
     esac
 done
 
