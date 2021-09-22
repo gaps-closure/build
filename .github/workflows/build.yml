@@ -7,8 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     container: 
       image: gapsclosure/closuredev:latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Build closure 
-      run: ./build.sh 
+      steps:
+      - name: Build closure 
+        uses: actions/checkout@v2
+        run: ./build.sh 
   
