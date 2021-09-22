@@ -1,5 +1,5 @@
 #!/bin/bash
-INSTALLDIR=/opt/closure
+INSTALLDIR=/tmp/closure
 GAPSSRC=~/gaps/build/src
 OPTDBG=/opt/closure/devel/10.0.1dbg/bin/opt
 
@@ -39,6 +39,8 @@ sudo cp $GAPSSRC/hal/autogen/*.py $INSTALLDIR/scripts \
 && sudo cp $GAPSSRC/capo/gedl/*.py $INSTALLDIR/scripts \
 && sudo cp $GAPSSRC/capo/partitioner/src/*.py $INSTALLDIR/scripts \
 && sudo cp $GAPSSRC/capo/partitioner/src/cutzoom/*.py $INSTALLDIR/scripts \
+&& sudo cp $GAPSSRC/capo/conflict_analyzer/scripts/*.py $INSTALLDIR/scripts \
+&& sudo cp -r $GAPSSRC/capo/conflict_analyzer/constraints $INSTALLDIR/scripts/ \
 && sudo cp $GAPSSRC/mules/schema_gen.sh $INSTALLDIR/scripts \
 && sudo cp $GAPSSRC/mules/cle-preprocessor/src/join_clemaps.py $INSTALLDIR/scripts \
 && sudo cp $GAPSSRC/mules/cle-preprocessor/src/qd_cle_preprocessor.py $INSTALLDIR/scripts \
