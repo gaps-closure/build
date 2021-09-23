@@ -5,20 +5,29 @@ INCLUDES=-I$(LLVM_INCLUDE) -I$(CLOSURE_INCLUDES)
 
 CLANG_FLAGS += -I ../xdcc_echo -I ../../../amqlib 
 
-enclaves: $(EDIR)/pdgragh.main.dot
-	ln -s $(EDIR)/pdgragh.main.dot .
-	ln -s $(EDIR)/$(PROG)_all.ll ./$(PROG).mod.ll
-	ln -s $(EDIR)/$(PROG).all.clemap.json .
-	$(PYTHON) $(PARTITIONER) $(PROG).all
+enclaves: $(EDIR)/clejson2zinc.done 
+	$(PYTHON) $(CONFLICT_ANALYZER) \
+		--cle-instance $(EDIR)/cle_instance.mzn \
+		--enclave-instance $(EDIR)/enclave_instance.mzn \
+		--pdg-instance $(EDIR)/pdg_instance.mzn \
+		--pdg-data $(EDIR)/pdg_data.csv
 
-dot: $(EDIR)/pdgragh.main.dot
 
-$(EDIR)/pdgragh.main.dot: $(EDIR)/$(PROG)_all.ll
-	#$(OPT_DBG) -load $(LIBPDG) -dot-pdg $< > make_dot.log 2>&1 
-	$(OPT_NODBG) -load $(LIBPDG) -dot-pdg $< > make_dot.log 2>&1
-	mv pdgragh.main.dot $(EDIR)
 
-conflictir: $(EDIR)/$(PROG)_all.ll
+$(EDIR)/clejson2zinc.done: $(EDIR)/pdgraph.main.dot
+	cd $(EDIR); \
+	$(PYTHON) $(CLEJSON2ZINC) -f $(PROG).all.clemap.json
+
+dot: $(EDIR)/pdgraph.main.dot
+
+$(EDIR)/pdgraph.main.dot: $(EDIR)/$(PROG)_all.bc
+	cd $(EDIR); \
+	$(OPT_NODBG) -load $(LIBPDG) -dot-pdg -minizinc $(realpath $<) > make_dot.log 2>&1
+
+conflictir: $(EDIR)/$(PROG)_all.bc
+
+$(EDIR)/$(PROG)_all.bc: $(EDIR)/$(PROG)_all.ll
+	$(LLVMAS) $(EDIR)/$(PROG)_all.ll -o $(EDIR)/$(PROG)_all.bc 
 
 $(EDIR)/$(PROG)_all.ll: $(EDIR)/compencs.done
 	$(eval ENCLAVELL += $(shell find $(EDIR) -name *.ll;))
