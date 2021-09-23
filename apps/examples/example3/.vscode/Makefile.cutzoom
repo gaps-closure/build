@@ -4,7 +4,7 @@ ALL_LL=$(wildcard $(PROG)/*.ll)
 
 dot: $(PROG)_all.mod.bc
 	$(OPT_NODBG) -load $(LIBPDG) -dot-pdg $(PROG)/$^
-	mv pdgragh.main.dot $(PROG)_all.pdgragh.main.dot
+	mv pdgraph.main.dot $(PROG)_all.pdgraph.main.dot
 	mv *.dot $(PROG)
 	$(LLVMDIS) -o $(PROG)/$(PROG)_all.mod.ll $(PROG)/$^
 
@@ -12,12 +12,12 @@ $(PROG)_all.mod.bc: $(ALL_LL)
 	$(LLVMLINK) -o $(PROG)/$@ $^
 
 capotags:
-	$(PYTHON) $(TAGPROC) orange/orange_all.pdgragh.main.dot purple/purple_all.pdgragh.main.dot
+	$(PYTHON) $(TAGPROC) orange/orange_all.pdgraph.main.dot purple/purple_all.pdgraph.main.dot
 	$(PYTHON) $(CUTZOOM) -f join_graph.dot -k1 -o abridged_1_colored.dot
 	$(PYTHON) $(CUTZOOM) -f join_graph.dot -k2 -o abridged_2_colored.dot
 
 clean:
-	rm -f $(PROG)/*.bc $(PROG)/*.dot $(PROG)/*pdgragh* $(PROG)/$(PROG)_all.mod.ll join_graph.*
+	rm -f $(PROG)/*.bc $(PROG)/*.dot $(PROG)/*pdgraph* $(PROG)/$(PROG)_all.mod.ll join_graph.*
 
 realclean: clean
 	rm -f abridged*

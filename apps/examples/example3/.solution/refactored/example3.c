@@ -5,10 +5,17 @@
 #pragma cle def EWMA_SHAREABLE {"level":"orange",\
   "cdf": [\
     {"remotelevel":"purple", \
+     "direction": "bidirectional", \
+     "guarddirective": { "operation": "allow"} }\
+  ] }
+
+#pragma cle def CALC_EWMA {"level":"orange",\
+  "cdf": [\
+    {"remotelevel":"orange", \
      "direction": "egress", \
      "guarddirective": { "operation": "allow"}, \
      "argtaints": [["ORANGE"], ["ORANGE"]], \
-     "codtaints": [], \
+     "codtaints": ["ORANGE", "EWMA_SHAREABLE"], \
      "rettaints": ["EWMA_SHAREABLE"] } \
  ] }
 
@@ -19,12 +26,18 @@
      "guarddirective": { "operation": "allow"}, \
      "argtaints": [], \
      "codtaints": ["ORANGE","EWMA_SHAREABLE"], \
-     "rettaints": ["TAG_RESPONSE_GET_EWMA"] } \
+     "rettaints": ["TAG_RESPONSE_GET_EWMA"] }, \
+    {"remotelevel":"orange", \
+     "direction": "bidirectional", \
+     "guarddirective": { "operation": "allow"}, \
+     "argtaints": [], \
+     "codtaints": ["ORANGE","EWMA_SHAREABLE"], \
+     "rettaints": ["EWMA_SHAREABLE", "TAG_RESPONSE_GET_EWMA"] } \
   ] }
 
-#pragma cle begin EWMA_SHAREABLE
+#pragma cle begin CALC_EWMA
 double calc_ewma(double a, double b) {
-#pragma cle end EWMA_SHAREABLE
+#pragma cle end CALC_EWMA
   const  double alpha = 0.25;
   static double c = 0.0;
   c = alpha * (a + b) + (1 - alpha) * c;
@@ -53,13 +66,14 @@ double get_ewma() {
 #pragma cle end XDLINKAGE_GET_EWMA
   double x = get_a(); 
   double y = get_b(); 
-  return calc_ewma(x,y);
+  double z = calc_ewma(x,y);
+  return z;
 }
 
-#pragma cle begin PURPLE
 int ewma_main() {
-#pragma cle end PURPLE
+#pragma cle begin PURPLE
   double ewma;
+#pragma cle end PURPLE
   for (int i=0; i < 10; i++) {
     ewma = get_ewma(); // conflict resolveable by wraping in RPC
     printf("%f\n", ewma);

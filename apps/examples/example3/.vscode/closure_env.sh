@@ -19,12 +19,13 @@ export LIBGEDL=${CLOSURE_LIBS}/libgedl.so
 
 export PREPROCESSOR=${CLOSURE_SCRIPTS}/qd_cle_preprocessor.py
 export JOINCLEMAPS=${CLOSURE_SCRIPTS}/join_clemaps.py
-export PARTITIONER=${CLOSURE_SCRIPTS}/partitioner.py
+export CLEJSON2ZINC=${CLOSURE_SCRIPTS}/CLEJson2zinc.py
+export CONFLICT_ANALYZER=${CLOSURE_SCRIPTS}/conflictAnalyzer.py
 export TAGPROC=${CLOSURE_SCRIPTS}/tag_processor.py
 export CUTZOOM=${CLOSURE_SCRIPTS}/cutzoom.py
 export DIV=${CLOSURE_SCRIPTS}/program_divider.py
 export IDLGENERATOR=${CLOSURE_SCRIPTS}/IDLGenerator.py
-export RPCGENERATOR=${CLOSURE_SCRIPTS}/RPCGenerator_rk.py
+export RPCGENERATOR=${CLOSURE_SCRIPTS}/RPCGenerator.py
 export AUTOGEN=${CLOSURE_SCRIPTS}/autogen.py
 export HALGEN=${CLOSURE_SCRIPTS}/hal_autoconfig.py
 
@@ -32,11 +33,12 @@ LLVM_RELEASE=/usr/local
 export CLANG=${LLVM_RELEASE}/bin/clang-10
 export CLANG_FLAGS="-S -g -emit-llvm"
 export LLVMLINK=${LLVM_RELEASE}/bin/llvm-link
+export LLVMAS=${LLVM_RELEASE}/bin/llvm-as
 export LLVMDIS=${LLVM_RELEASE}/bin/llvm-dis
 
 export LLVM_DIR=${LLVM_RELEASE}
 
 export HWMODE=emu
 export IPCMODE=multithreaded
-export ENCLAVES="orange purple"
+export ENCLAVES="orange_E purple_E"
 export EXT=c
