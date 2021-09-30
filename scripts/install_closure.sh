@@ -43,6 +43,7 @@ sudo cp $GAPSSRC/hal/autogen/*.py $INSTALLDIR/scripts \
 && sudo cp -r $GAPSSRC/capo/conflict_analyzer/constraints $INSTALLDIR/scripts/ \
 && sudo cp $GAPSSRC/mules/schema_gen.sh $INSTALLDIR/scripts \
 && sudo cp $GAPSSRC/mules/cle-preprocessor/src/join_clemaps.py $INSTALLDIR/scripts \
+&& sudo cp $GAPSSRC/mules/cle-preprocessor/src/join_offsets.py $INSTALLDIR/scripts \
 && sudo cp $GAPSSRC/mules/cle-preprocessor/src/qd_cle_preprocessor.py $INSTALLDIR/scripts \
 && sudo cp $GAPSSRC/ect/flowspec/*.py $INSTALLDIR/scripts \
 && sudo chmod +x $INSTALLDIR/scripts/*
