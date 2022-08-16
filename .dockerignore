@@ -1,0 +1,11 @@
+**/test-install
+**/build
+**/dist
+**/__pycache__
+**/*.egg-info
+**/*.o
+**/*.md
+**/Dockerfile
+**/Dockerfile.dev
+emu
+apps

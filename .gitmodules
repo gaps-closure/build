@@ -1,0 +1,16 @@
+[submodule "capo"]
+	path = capo
+	url = ../capo.git
+	branch = develop
+[submodule "mules"]
+	path = mules
+	url = ../mules.git
+	branch = develop
+[submodule "hal"]
+	path = hal
+	url = ../hal.git
+	branch = develop 
+[submodule "emu"]
+	path = emu
+	url = ../emu.git
+	branch = develop 

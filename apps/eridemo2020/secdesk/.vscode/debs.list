@@ -1,0 +1,8 @@
+cmake
+g++
+sqlite3 
+libsqlite3-dev
+libboost-all-dev
+libblas3
+liblapack3
+libgl1

@@ -2,24 +2,47 @@
 
 #pragma cle def PURPLE {"level":"purple"}
 #pragma cle def ORANGE {"level":"orange"}
-#pragma cle def EWMA_SHAREABLE {"level":"orange",\
+#pragma cle def ORANGE_SHAREABLE {"level":"orange",\
   "cdf": [\
     {"remotelevel":"purple", \
      "direction": "egress", \
+     "guarddirective": { "operation": "allow"}}\
+  ] }
+#pragma cle def EWMA_SHAREABLE {"level":"orange",\
+  "cdf": [\
+    {"remotelevel":"orange", \
+     "direction": "egress", \
      "guarddirective": { "operation": "allow"}, \
      "argtaints": [["ORANGE"], ["ORANGE"]], \
-     "codtaints": [], \
-     "rettaints": ["EWMA_SHAREABLE"] } \
+     "codtaints": ["ORANGE", "ORANGE_SHAREABLE"], \
+     "rettaints": ["ORANGE_SHAREABLE"] } \
  ] }
 
-#pragma cle def XDLINKAGE_GET_EWMA {"level":"orange",\
+#pragma cle def XDLINKAGE_GET_EWMA {"level":"orange",	\
+  "cdf": [\
+    {"remotelevel":"orange", \
+     "direction": "bidirectional", \
+     "guarddirective": { "operation": "allow"}, \
+     "argtaints": [], \
+     "codtaints": ["ORANGE", "ORANGE_SHAREABLE"], \
+     "rettaints": ["TAG_RESPONSE_GET_EWMA"] },\
+    {"remotelevel":"purple", \
+     "direction": "bidirectional", \
+     "guarddirective": { "operation": "allow"}, \
+     "argtaints": [], \
+     "codtaints": ["ORANGE", "ORANGE_SHAREABLE"], \
+     "rettaints": ["TAG_RESPONSE_GET_EWMA"] }\
+  ] }
+
+#pragma cle def EWMA_MAIN {"level":"purple",\
   "cdf": [\
     {"remotelevel":"purple", \
      "direction": "bidirectional", \
      "guarddirective": { "operation": "allow"}, \
      "argtaints": [], \
-     "codtaints": ["ORANGE","EWMA_SHAREABLE"], \
-     "rettaints": ["TAG_RESPONSE_GET_EWMA"] } \
+     "codtaints": ["PURPLE", "TAG_REQUEST_GET_EWMA", "TAG_RESPONSE_GET_EWMA"], \
+     "rettaints": ["PURPLE"] \
+    } \
   ] }
 
 #pragma cle begin EWMA_SHAREABLE
@@ -47,7 +70,6 @@ double get_b() {
   return b;
 }
 
-// blessed on orange side
 #pragma cle begin XDLINKAGE_GET_EWMA
 double get_ewma() {
 #pragma cle end XDLINKAGE_GET_EWMA
@@ -56,9 +78,9 @@ double get_ewma() {
   return calc_ewma(x,y);
 }
 
-#pragma cle begin PURPLE
+#pragma cle begin EWMA_MAIN
 int ewma_main() {
-#pragma cle end PURPLE
+#pragma cle end EWMA_MAIN
   double ewma;
   for (int i=0; i < 10; i++) {
     ewma = get_ewma(); // conflict resolveable by wraping in RPC
@@ -72,5 +94,3 @@ int main(int argc, char **argv) {
 }
 
 // purple master: main, ewma_main
-// orange slave: get_a, get_b, calc_ewma, get_ewma
-

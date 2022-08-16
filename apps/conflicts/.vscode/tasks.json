@@ -1,0 +1,23 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run tester",
+            "type": "shell",
+            "command": "./test.py",
+            "isBackground": false,
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Remove test-runs",
+            "type": "shell",
+            "command": "rm -rf ./test-runs",
+            "isBackground": true,
+            "problemMatcher": []
+        }
+    ]
+}
