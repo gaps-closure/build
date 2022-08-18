@@ -4,7 +4,7 @@
 [![docker](https://github.com/gaps-closure/build/actions/workflows/docker-image.yml/badge.svg)](https://github.com/gaps-closure/build/actions/workflows/docker-image.yml)
 
 
-**DEPRECATED**. Please refer to [CLOSURE C Toolchain Documentation](https://github.com/gaps-closure/gaps-closure.github.io/)
+**DEPRECATED**. Please refer to [CLOSURE C Toolchain Documentation](https://gaps-closure.github.io/cdoc.html)
 
 
 
