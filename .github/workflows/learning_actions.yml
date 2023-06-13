@@ -3,6 +3,11 @@ run-name: ${{ github.actor }} is learning github actions
 on: [push]
 
 jobs:
+  devcontainer-test:
+    runs-on: ubuntu-latest
+    container: gapsclosure/closuredev:master
+    steps:
+      - run: conflict_analyzer --help
   check-pytest-version:
     runs-on: ubuntu-latest
     steps:      
