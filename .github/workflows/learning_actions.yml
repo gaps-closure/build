@@ -9,7 +9,9 @@ jobs:
       run:
         shell: bash
         
-    container: gapsclosure/closuredev:develop
+    container: 
+      image: gapsclosure/closuredev:develop
+      options: --user closure 
     steps:
       - name: check PATH
         run: printenv PATH
