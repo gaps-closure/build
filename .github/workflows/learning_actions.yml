@@ -11,7 +11,7 @@ jobs:
         
     container: 
       image: gapsclosure/closuredev:develop
-      options: --user closure 
+#      options: --user closure 
     steps:
       - name: who am I
         run:  whoami
