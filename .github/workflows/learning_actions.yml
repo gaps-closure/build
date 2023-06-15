@@ -13,6 +13,8 @@ jobs:
       image: gapsclosure/closuredev:develop
       options: --user closure 
     steps:
+      - name: who am I
+        run:  whoami
       - name: check PATH
         run: printenv PATH
 #      - name: look for conflict_analyzer
