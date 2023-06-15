@@ -5,9 +5,19 @@ on: [push]
 jobs:
   devcontainer-test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        
     container: gapsclosure/closuredev:master
     steps:
-      - run: conflict_analyzer --help
+      - name: check what's in /usr/bin
+        run: ls /usr/bin
+      - name: check what's in /usr/local/bin
+        run: ls /usr/local/bin
+      - name: test conflict analyzer in the container
+        run: conflict_analyzer --help
+          
   check-pytest-version:
     runs-on: ubuntu-latest
     steps:      
