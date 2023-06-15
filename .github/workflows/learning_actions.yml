@@ -9,7 +9,7 @@ jobs:
       run:
         shell: bash
         
-    container: gapsclosure/closuredev:master
+    container: gapsclosure/closuredev:develop
     steps:
       - name: check what's in /usr/bin
         run: ls /usr/bin
