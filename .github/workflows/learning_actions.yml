@@ -13,8 +13,8 @@ jobs:
     steps:
       - name: check PATH
         run: printenv PATH
-      - name: look for conflict_analyzer
-        run: which conflict_analyzer
+#      - name: look for conflict_analyzer
+#        run: which conflict_analyzer
       - name: test conflict analyzer in the container
         run: /opt/closure/python/bin/conflict_analyzer --help
           
