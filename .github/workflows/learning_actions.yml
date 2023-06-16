@@ -21,6 +21,10 @@ jobs:
 #        run: which conflict_analyzer
       - name: reload .bashrc
         run:  source /home/closure/.bashrc
+      - name: check PATH again
+        run: printenv PATH
+      - name: who am I again
+        run:  whoami
       - name: test conflict analyzer in the container
         run: /opt/closure/python/bin/conflict_analyzer --help
           
