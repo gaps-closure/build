@@ -11,6 +11,7 @@ jobs:
         
     container: 
       image: gapsclosure/closuredev:develop
+      options: "--entrypoint /bin/bash"
 #      options: --user closure 
     steps:
       - name: who am I
