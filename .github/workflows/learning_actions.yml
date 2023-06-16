@@ -20,7 +20,8 @@ jobs:
 #      - name: look for conflict_analyzer
 #        run: which conflict_analyzer
       - name: reload .bashrc
-        run:  source /home/closure/.bashrc
+#        run:  source /home/closure/.bashrc
+        run: exec bash
       - name: check PATH again
         run: printenv PATH
       - name: who am I again
