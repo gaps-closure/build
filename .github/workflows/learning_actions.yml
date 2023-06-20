@@ -20,9 +20,11 @@ jobs:
         run: printenv PATH
 #      - name: look for conflict_analyzer
 #        run: which conflict_analyzer
+      - name: check .bash_profile
+        run: less ~/.bash_profile
       - name: reload .bashrc
-#        run:  source /home/closure/.bashrc
-        run: exec bash
+        run:  source /home/closure/.bash_profile
+#        run: exec bash
       - name: check PATH again
         run: printenv PATH
       - name: who am I again
