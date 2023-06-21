@@ -23,7 +23,7 @@ jobs:
       - name: check .bash_profile
         run: less ~/.bash_profile
       - name: check .bash_profile again
-        run: less home/closure/.bash_profile
+        run: less /home/closure/.bash_profile
       - name: reload .bashrc
         run:  source /home/closure/.bash_profile
 #        run: exec bash
