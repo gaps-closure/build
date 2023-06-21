@@ -12,8 +12,8 @@ jobs:
     container: 
       image: gapsclosure/closuredev:develop
 #      options: "--entrypoint /bin/bash"
-      options: --env "HOME=/home/closure"
-#      options: --env "PATH=/opt/closure/bin:/opt/closure/python/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/minizinc/bin"     
+#     options: --env "HOME=/home/closure"
+      options: --env "PATH=/opt/closure/bin:/opt/closure/python/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/minizinc/bin"     
     steps:
       - name: who am I
         run:  whoami
