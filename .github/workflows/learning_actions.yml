@@ -25,10 +25,14 @@ jobs:
       - name: check .bash_profile again
         run: less /home/closure/.bash_profile
       - name: reload .bashrc
-        run:  source /home/closure/.bash_profile
-#        run: exec bash
+        run:  source /home/closure/.bashrc
       - name: check PATH again
         run: printenv PATH
+#        - name: reload .bashrc 
+#       run:  source /home/closure/.bash_profile
+#        run: exec bash
+#     - name: check PATH again
+#       run: printenv PATH
       - name: who am I again
         run:  whoami
       - name: test conflict analyzer in the container
