@@ -9,8 +9,8 @@ jobs:
       run:
         shell: bash
         
-#    container: 
-#      image: gapsclosure/closuredev:develop
+    container: 
+      image: gapsclosure/closuredev:develop
 #      options: "--entrypoint /bin/bash"
 #      options: --user closure 
     steps:
