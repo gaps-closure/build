@@ -28,7 +28,7 @@ jobs:
       - name: reload .bashrc
         run:  source /home/closure/.bashrc
       - name: closureenv
-        run:  source /opt/closure/etc/closureenv | printenv PATH | printenv PYTHONPATH
+        run:  source /opt/closure/etc/closureenv; printenv PATH; printenv PYTHONPATH
       - name: check PATH again
         run: printenv PATH
 #        - name: reload .bashrc 
