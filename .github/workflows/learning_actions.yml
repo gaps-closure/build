@@ -27,6 +27,8 @@ jobs:
         run: less /home/closure/.bash_profile
       - name: reload .bashrc
         run:  source /home/closure/.bashrc
+      - name: closureenv
+        run:  source /opt/closure/etc/closureenv
       - name: check PATH again
         run: printenv PATH
 #        - name: reload .bashrc 
