@@ -13,7 +13,7 @@ jobs:
       image: gapsclosure/closuredev:develop
 #      options: "--entrypoint /bin/bash"
 #     options: --env "HOME=/home/closure"
-      options: --user closure     
+      options: --user closure --env "HOME=/home/closure"     
     steps:
       - name: who am I
         run:  whoami
@@ -38,6 +38,8 @@ jobs:
 #       run: printenv PATH
       - name: who am I again
         run:  whoami
+      - name: what is home
+        run: echo $HOME
       - name: test conflict analyzer in the container
         run: bash -c "source ~/.bashrc; conflict_analyzer --help"
           
