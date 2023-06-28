@@ -13,7 +13,7 @@ jobs:
       image: gapsclosure/closuredev:develop
 #      options: "--entrypoint /bin/bash"
 #     options: --env "HOME=/home/closure"
-      options: --env "PATH=/opt/closure/bin:/opt/closure/python/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/minizinc/bin"     
+      options: --user closure     
     steps:
       - name: who am I
         run:  whoami
