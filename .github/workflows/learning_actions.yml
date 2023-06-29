@@ -42,6 +42,12 @@ jobs:
         run: echo $HOME
       - name: test conflict analyzer in the container
         run: source /home/closure/.bash_profile; conflict_analyzer --help
+      - name: test multiline string
+        run: |
+          source /home/closure/.bash_profile
+          printenv PATH
+          printenv PYTHONPATH
+          conflict_analyzer --help
           
   check-pytest-version:
     runs-on: ubuntu-latest
