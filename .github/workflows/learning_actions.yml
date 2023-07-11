@@ -11,8 +11,7 @@ jobs:
         
     container: 
       image: gapsclosure/closuredev:develop
-#      options: "--entrypoint /bin/bash"
-#     options: --env "HOME=/home/closure"
+#      options: --env "HOME=/home/closure"
       options: --user closure     
     steps:
       - name: who am I
@@ -21,31 +20,25 @@ jobs:
         run: printenv PATH
 #      - name: look for conflict_analyzer
 #        run: which conflict_analyzer
-      - name: check .bash_profile
-        run: less ~/.bash_profile
-      - name: check .bash_profile again
-        run: less /home/closure/.bash_profile
-      - name: reload .bashrc
-        run:  source /home/closure/.bashrc
       - name: closureenv
         run:  source /opt/closure/etc/closureenv; printenv PATH; printenv PYTHONPATH
-#        - name: reload .bashrc 
-#       run:  source /home/closure/.bash_profile
-#        run: exec bash
-#     - name: check PATH again
-#       run: printenv PATH
+#       - name: reload .bashrc 
+#        run:  source /home/closure/.bash_profile
       - name: what is home
         run: echo $HOME
-      - name: test conflict analyzer in the container
-        run: source /home/closure/.bash_profile; conflict_analyzer --help
+#      - name: test conflict analyzer in the container
+#       run: source /home/closure/.bash_profile; conflict_analyzer --help
       - name: test multiline string
         run: |
           source /home/closure/.bash_profile
           printenv PATH
           printenv PYTHONPATH
-          conflict_analyzer --help
-          which vstask
-          ls /usr/local/bin/vs*
+          - name: go to workspace for example1
+          cd build/apps/examples/example1
+          vstask "0 CLEAN SOURCE"
+          vstask "1 ANNOTATE"
+          cp .solution/refactored/*.c annotated/
+          ls -ltra annotated/*.c
           
   check-pytest-version:
     runs-on: ubuntu-latest
@@ -72,12 +65,7 @@ jobs:
       - name: Current branch name
         run: |
           echo "${{ steps.branch-name.outputs.current_branch }}"
-      - name: install pytest
-        run: pip install -U pytest
-      - run: pytest --version
-      
-      - name: list files with py prefix in /usr/bin
-        run: ls /usr/bin/py*
-        
-      - name: test docker pull
-        run: docker pull gapsclosure/closuredev:develop
+#      - name: install pytest
+#        run: pip install -U pytest
+#      - name: test docker pull
+#        run: docker pull gapsclosure/closuredev:develop
