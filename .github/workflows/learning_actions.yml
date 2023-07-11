@@ -33,7 +33,6 @@ jobs:
           source /home/closure/.bash_profile
           printenv PATH
           printenv PYTHONPATH
-          - name: go to workspace for example1
           cd build/apps/examples/example1
           vstask "0 CLEAN SOURCE"
           vstask "1 ANNOTATE"
