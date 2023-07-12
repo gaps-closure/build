@@ -42,6 +42,21 @@ jobs:
           vstask "1 ANNOTATE"
           cp .solution/refactored/*.c annotated/
           ls -ltra annotated/*.c
+          - name: step 2
+          vstask "2 ANALYZE PARTITION CONFLICTS"
+          ls -ltr .
+          vstask "9a DIVIDE"
+          grep "export ENCLAVES=" .make/closure_env.sh
+          ls divvied
+          vstask "9b AUTOGEN GEDL, RPCs, IDL, Codecs"
+          cd partitioned/multithreaded; find . -type -f -exec md5sum {} \;
+          cd ../../
+          vstask "9c VERIFY"
+          vstask "9d BUILD"
+          find partitioned/multithreaded -type f -executable
+          source .make/closure_env.sh; make -f .make/mbig.make hal
+          find partitioned/multithreaded -type f -exec md5sum {} \; |grep "hal.*cfg"
+          
           
   check-pytest-version:
     runs-on: ubuntu-latest
