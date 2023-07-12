@@ -44,7 +44,7 @@ jobs:
           ls -ltra annotated/*.c
           vstask "2 ANALYZE PARTITION CONFLICTS"
           [ -f ./topology.json ]
-          [ -f ./abc.json ]
+          [ -f ./artifact.json ]
           vstask "9a DIVIDE"
           grep "export ENCLAVES=" .make/closure_env.sh
           ls divvied
