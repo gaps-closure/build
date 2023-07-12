@@ -43,7 +43,8 @@ jobs:
           cp .solution/refactored/*.c annotated/
           ls -ltra annotated/*.c
           vstask "2 ANALYZE PARTITION CONFLICTS"
-          ls -ltr .
+          [ -f ./topology.json ] && [ -f ./artifact.json ]
+          [ -f abc ]
           vstask "9a DIVIDE"
           grep "export ENCLAVES=" .make/closure_env.sh
           ls divvied
