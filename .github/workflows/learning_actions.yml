@@ -48,7 +48,7 @@ jobs:
           grep "export ENCLAVES=" .make/closure_env.sh
           ls divvied
           vstask "9b AUTOGEN GEDL, RPCs, IDL, Codecs"
-          cd partitioned/multithreaded; find . -type -f -exec md5sum {} \;
+          cd partitioned/multithreaded; find . -type f -exec md5sum {} \;
           cd ../../
           vstask "9c VERIFY"
           vstask "9d BUILD"
