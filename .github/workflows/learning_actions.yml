@@ -42,7 +42,6 @@ jobs:
           vstask "1 ANNOTATE"
           cp .solution/refactored/*.c annotated/
           ls -ltra annotated/*.c
-          - name: step 2
           vstask "2 ANALYZE PARTITION CONFLICTS"
           ls -ltr .
           vstask "9a DIVIDE"
