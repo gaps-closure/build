@@ -37,6 +37,7 @@ jobs:
           cd /home/closure
           git clone --recurse-submodules https://github.com/gaps-closure/build.git
           find . -name example1 -print
+          echo "### Testing example1" >> $GITHUB_STEP_SUMMARY
           cd build/apps/examples/example1
           vstask "0 CLEAN SOURCE"
           vstask "1 ANNOTATE"
@@ -48,6 +49,7 @@ jobs:
           vstask "9a DIVIDE"
           grep "export ENCLAVES=" .make/closure_env.sh
           ls divvied
+          echo $ENCLAVES
           vstask "9b AUTOGEN GEDL, RPCs, IDL, Codecs"
           cd partitioned/multithreaded; find . -type f -exec md5sum {} \;
           cd ../../
