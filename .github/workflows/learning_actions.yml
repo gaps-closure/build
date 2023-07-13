@@ -37,7 +37,7 @@ jobs:
           cd /home/closure
           git clone --recurse-submodules https://github.com/gaps-closure/build.git
           find . -name example1 -print
-          echo "### Testing example1" >> $GITHUB_STEP_SUMMARY
+          echo "### Testing example1"
           cd build/apps/examples/example1
           vstask "0 CLEAN SOURCE"
           vstask "1 ANNOTATE"
