@@ -53,8 +53,8 @@ jobs:
           for i in "${ArrEc[@]}"; do [ -d divvied/$i ] && echo "Directory for $i exists" || { echo "divvied/$i does not exist"; false; } done
           vstask "9b AUTOGEN GEDL, RPCs, IDL, Codecs"
           cd partitioned/multithreaded
-          md5_ll=$(find . -type f -exec md5sum {} \; | sed -ne 's/\\n/,/p')
-          echo $md5_ll
+          md5_ll=$(find . -type f -exec md5sum {} \;)
+          echo $md5_ll | sed 's/\\n/,/p'
           cd ../../
           vstask "9c VERIFY"
           vstask "9d BUILD"
