@@ -46,14 +46,11 @@ jobs:
           vstask "2 ANALYZE PARTITION CONFLICTS"
           checkFiles=(topology.json artifact.json)
           for i in "${checkFiles[@]}"; do [ -f ./$i ] && echo "$i exists" || { echo "$i is not found"; false; } done
-          [ -f ./topology.json ] && echo "topology.json exists"
-          [ -f ./artifact.json ] && echo "artifact.json exists"
           vstask "9a DIVIDE"
           myEnclaves=$(grep "export ENCLAVES=" .make/closure_env.sh | sed -ne 's/export ENCLAVES="//p' |sed -ne 's/"//p')
-          ls divvied
           echo $myEnclaves
           IFS=' ' read -ra ArrEc <<< $myEnclaves
-          for i in "${ArrEc[@]}"; do [ -d divvied/$i ] && echo "Directory for $i exists" || exit 1; done
+          for i in "${ArrEc[@]}"; do [ -d divvie/$i ] && echo "Directory for $i exists" || { echo "divvied/$i does not exist"; false; } done
           vstask "9b AUTOGEN GEDL, RPCs, IDL, Codecs"
           cd partitioned/multithreaded; find . -type f -exec md5sum {} \;
           cd ../../
