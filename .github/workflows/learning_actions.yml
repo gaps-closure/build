@@ -47,10 +47,9 @@ jobs:
           [ -f ./topology.json ] && echo "topology.json exists"
           [ -f ./artifact.json ] && echo "artifact.json exists"
           vstask "9a DIVIDE"
-          grep "export ENCLAVES=" .make/closure_env.sh
+          myEnclaves=$(grep "export ENCLAVES=" .make/closure_env.sh | sed -ne 's/export ENCLAVES="//p' |sed -ne 's/"//p')
           ls divvied
-          echo $ENCLAVES
-          printenv ENCLAVES
+          echo $myEnclaves
           vstask "9b AUTOGEN GEDL, RPCs, IDL, Codecs"
           cd partitioned/multithreaded; find . -type f -exec md5sum {} \;
           cd ../../
