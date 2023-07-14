@@ -51,7 +51,7 @@ jobs:
           ls divvied
           echo $myEnclaves
           IFS=' ' read -ra ArrEc <<< "$myEnclaves"
-          for i in "${ArrEc[@]}"; do echo $i; done
+          for i in "${ArrEc[@]}"; do echo $i; [ -f divvied/$i ] && echo "$i found" || fail; done
           vstask "9b AUTOGEN GEDL, RPCs, IDL, Codecs"
           cd partitioned/multithreaded; find . -type f -exec md5sum {} \;
           cd ../../
