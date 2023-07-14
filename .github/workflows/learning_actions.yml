@@ -49,7 +49,9 @@ jobs:
           vstask "9a DIVIDE"
           myEnclaves=$(grep "export ENCLAVES=" .make/closure_env.sh | sed -ne 's/export ENCLAVES="//p' |sed -ne 's/"//p')
           ls divvied
-          ArrEc=($myEnclaves) | for i in "${ArrEc[@]}"; do echo $i; done
+          echo $myEnclaves
+          IFS=' ' read -ra ArrEc <<< "$myEnclaces"
+          for i in "${ArrEc[@]}"; do echo $i; done
           vstask "9b AUTOGEN GEDL, RPCs, IDL, Codecs"
           cd partitioned/multithreaded; find . -type f -exec md5sum {} \;
           cd ../../
