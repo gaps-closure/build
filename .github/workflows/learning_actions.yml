@@ -44,6 +44,8 @@ jobs:
           cp .solution/refactored/*.c annotated/
           ls -ltra annotated/*.c
           vstask "2 ANALYZE PARTITION CONFLICTS"
+          checkFiles=(topology.json artifact.json)
+          for i in "${checkFiles[@]}"; do [ -f ./$i ] && echo "$i exists" || { echo "$i is not found"; false; } done
           [ -f ./topology.json ] && echo "topology.json exists"
           [ -f ./artifact.json ] && echo "artifact.json exists"
           vstask "9a DIVIDE"
