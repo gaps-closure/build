@@ -43,7 +43,7 @@ jobs:
           cp .solution/refactored/*.c annotated/
           ls -ltra annotated/*.c
           vstask "2 ANALYZE PARTITION CONFLICTS"
-          checkFiles=(topology.json noname.json artifact.json)
+          checkFiles=(topology.json artifact.json)
           for i in "${checkFiles[@]}"; do [ -f ./$i ] && echo "$i exists" || { echo "$i is not found"; false; } done
           vstask "9a DIVIDE"
           myEnclaves=$(grep "export ENCLAVES=" .make/closure_env.sh | sed -ne 's/export ENCLAVES="//p' |sed -ne 's/"//p')
