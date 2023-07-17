@@ -53,7 +53,9 @@ jobs:
           vstask "9b AUTOGEN GEDL, RPCs, IDL, Codecs"
           efiles=($(find ./partitioned/multithreaded -type f -not \( -name "*.a" -o -name "*.o" -o -name "*.so" -o -name "*example1" \) ))
           for i in ${efiles[@]}; 
-          do j=$(sed 's/./.\/.solution/' <<< $i); md5_i=$(md5sum $i); md5_j=$(md5sum $j); echo $md5_i; echo $md5_j; done
+          do j=$(sed 's/./.\/.solution/' <<< $i); md5_i=($(md5sum $i)); md5_j=($(md5sum $j)); 
+          echo "${md5_i[0]} ${md5_j[0]} ${md5_i[1]}";
+          if ((${md5_i[0]} != $md5_j[0]})) then {echo "md5sum for ${md5_i[1]} does not match"; false; } done
           md5_ll=$(find . -type f -exec md5sum {} \;)
           echo $md5_ll
           cd ../../.solution/partitioned/multithreaded
