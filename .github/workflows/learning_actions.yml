@@ -55,7 +55,7 @@ jobs:
           for i in ${efiles[@]}; 
           do j=$(sed 's/./.\/.solution/' <<< $i); md5_i=($(md5sum $i)); md5_j=($(md5sum $j)); 
           echo "${md5_i[0]} ${md5_j[0]} ${md5_i[1]}";
-          if [ ${md5_i[0]} != ${md5_j[0]} ] then echo "found an unmatched one ${md5_i[1]}"; fi;
+          if [ ${md5_i[0]} != ${md5_j[0]} ]; then { echo "found an unmatched one ${md5_i[1]}"; false; } fi;
           done
           vstask "9c VERIFY"
           vstask "9d BUILD"
