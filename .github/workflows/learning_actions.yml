@@ -53,8 +53,11 @@ jobs:
           vstask "9b AUTOGEN GEDL, RPCs, IDL, Codecs"
           cd partitioned/multithreaded
           md5_ll=$(find . -type f -exec md5sum {} \;)
-          echo $md5_ll | sed 's/\\n/,/p'
-          cd ../../
+          echo $md5_ll
+          cd ../../.solution/partitioned/multithreaded
+          md5_so=$(find . -type f -exec md5sum {} \;)
+          echo $md5_so
+          cd ../../../
           vstask "9c VERIFY"
           vstask "9d BUILD"
           find partitioned/multithreaded -type f -executable
