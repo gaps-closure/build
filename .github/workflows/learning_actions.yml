@@ -37,7 +37,7 @@ jobs:
           git clone --recurse-submodules https://github.com/gaps-closure/build.git
           find . -name example1 -print
           echo "### Testing example1"
-          cd build/apps/examples/example1
+          cd build/apps/examples/example3
           vstask "0 CLEAN SOURCE"
           vstask "1 ANNOTATE"
           cp .solution/refactored/*.c annotated/
@@ -51,7 +51,7 @@ jobs:
           IFS=' ' read -ra ArrEc <<< $myEnclaves
           for i in "${ArrEc[@]}"; do [ -d divvied/$i ] && echo "Directory for $i exists" || { echo "divvied/$i does not exist"; false; } done
           vstask "9b AUTOGEN GEDL, RPCs, IDL, Codecs"
-          efiles=($(find ./partitioned/multithreaded -type f -not \( -name "*.a" -o -name "*.o" -o -name "*.so" -o -name "*example1" \) ))
+          efiles=($(find ./partitioned/multithreaded -type f -not \( -name "*.a" -o -name "*.o" -o -name "*.so" -o -name "*example3" \) ))
           for i in ${efiles[@]}; 
           do j=$(sed 's/./.\/.solution/' <<< $i); md5_i=($(md5sum $i)); md5_j=($(md5sum $j)); 
           echo "${md5_i[0]} ${md5_j[0]} ${md5_i[1]}";
