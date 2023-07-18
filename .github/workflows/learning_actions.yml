@@ -60,7 +60,7 @@ jobs:
           done
           vstask "9c VERIFY"
           vstask "9d BUILD"
-          for k in  "${ArrEc[@]}"; do eName="./partitioned/threaded/$k/$appName";
+          for k in  "${ArrEc[@]}"; do eName="./partitioned/multithreaded/$k/$appName";
           [ -x   $eName ] && echo "executable $eName exists" || { echo "executable $eName is not found"; false; } done
           source .make/closure_env.sh; make -f .make/mbig.make hal
           ls -ltra
