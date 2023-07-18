@@ -35,9 +35,10 @@ jobs:
           printenv PYTHONPATH
           cd /home/closure
           git clone --recurse-submodules https://github.com/gaps-closure/build.git
-          find . -name example1 -print
-          echo "### Testing example1"
-          cd build/apps/examples/example3
+          appName="example3"
+          find . -name $appName -print
+          echo "### Testing $appName"
+          cd build/apps/examples/$appName
           vstask "0 CLEAN SOURCE"
           vstask "1 ANNOTATE"
           cp .solution/refactored/*.c annotated/
@@ -51,45 +52,21 @@ jobs:
           IFS=' ' read -ra ArrEc <<< $myEnclaves
           for i in "${ArrEc[@]}"; do [ -d divvied/$i ] && echo "Directory for $i exists" || { echo "divvied/$i does not exist"; false; } done
           vstask "9b AUTOGEN GEDL, RPCs, IDL, Codecs"
-          efiles=($(find ./partitioned/multithreaded -type f -not \( -name "*.a" -o -name "*.o" -o -name "*.so" -o -name "*example3" \) ))
+          efiles=($(find ./partitioned/multithreaded -type f -not \( -name "*.a" -o -name "*.o" -o -name "*.so" -o -name "*$appName" \) ))
           for i in ${efiles[@]}; 
           do j=$(sed 's/./.\/.solution/' <<< $i); md5_i=($(md5sum $i)); md5_j=($(md5sum $j)); 
-          echo "${md5_i[0]} ${md5_j[0]} ${md5_i[1]}";
+          echo "${md5_i[0]} ${md5_j[0]} ${md5_i[1]} ${md5_j[1]}";
           if [ ${md5_i[0]} != ${md5_j[0]} ]; then { echo "found an unmatched one ${md5_i[1]}"; } fi;
           done
           vstask "9c VERIFY"
           vstask "9d BUILD"
-          find partitioned/multithreaded -type f -executable
+          for k in  "${ArrEc[@]}"; do eName="./$k/$appName";
+          [ -x   $eName ] && echo "executable $eName exists" || { echo "executable $eName is not found"; false; } done
           source .make/closure_env.sh; make -f .make/mbig.make hal
-          find partitioned/multithreaded -type f -exec md5sum {} \; |grep "hal.*cfg"
+          efiles2=($(find ./partitioned/multithreaded -type f -name "*hal*.cfg" ))
+          for i in ${efiles2[@]}; 
+          do j=$(sed 's/./.\/.solution/' <<< $i); md5_i=($(md5sum $i)); md5_j=($(md5sum $j)); 
+          echo "${md5_i[0]} ${md5_j[0]} ${md5_i[1]} ${md5_j[1]}";
+          if [ ${md5_i[0]} != ${md5_j[0]} ]; then { echo "found an unmatched one ${md5_i[1]}"; } fi;
+          done
           
-          
-  check-pytest-version:
-    runs-on: ubuntu-latest
-    steps:      
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v3
-        with:
-          submodules: true
-
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
-
-      - name: Get branch name
-        id: branch-name
-        uses: tj-actions/branch-names@v7
-        
-      - name: Current branch name
-        run: |
-          echo "${{ steps.branch-name.outputs.current_branch }}"
-#      - name: install pytest
-#        run: pip install -U pytest
-#      - name: test docker pull
-#        run: docker pull gapsclosure/closuredev:develop
