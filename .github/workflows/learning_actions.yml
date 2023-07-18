@@ -63,8 +63,9 @@ jobs:
           for k in  "${ArrEc[@]}"; do eName="./$k/$appName";
           [ -x   $eName ] && echo "executable $eName exists" || { echo "executable $eName is not found"; false; } done
           source .make/closure_env.sh; make -f .make/mbig.make hal
+          ls -ltra
           efiles2=($(find ./partitioned/multithreaded -type f -name "*hal*.cfg" ))
-          echo $efiles2
+          echo "EFILES2 is $efiles2"
           for i in ${efiles2[@]}; 
           do j=$(sed 's/./.\/.solution/' <<< $i); md5_i=($(md5sum $i)); md5_j=($(md5sum $j)); 
           echo "${md5_i[0]} ${md5_j[0]} ${md5_i[1]} ${md5_j[1]}";
