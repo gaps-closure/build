@@ -35,7 +35,7 @@ jobs:
           printenv PYTHONPATH
           cd /home/closure
           git clone --recurse-submodules https://github.com/gaps-closure/build.git
-          appName="example1"
+          appName="example2"
           find . -name $appName -print
           echo "### Testing $appName"
           cd build/apps/examples/$appName
