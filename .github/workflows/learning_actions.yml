@@ -33,7 +33,7 @@ jobs:
           source /home/closure/.bash_profile
           printenv PATH
           printenv PYTHONPATH
-          cd /home/closure
+          mkdir /workspaces; cd /workspaces
           git clone --recurse-submodules https://github.com/gaps-closure/build.git
           appName="example2"
           find . -name $appName -print
