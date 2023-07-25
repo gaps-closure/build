@@ -57,8 +57,9 @@ jobs:
           efiles=($(find ./partitioned/multithreaded -type f -not \( -name "*.a" -o -name "*.o" -o -name "*.so" -o -name "*$appName" \) ))
           for i in ${efiles[@]}; 
           do j=$(sed 's/./.\/.solution/' <<< $i); md5_i=($(md5sum $i)); 
-          if [[ $j == *".gedl" ] || [ $j == *"gedl.ll" ]]; then echo "file $j found"; else echo "file $j not interesting"; fi;
-          if [ ${md5_i[0]} != ${md5_j[0]} ]; then { cat ${md5_i[1]}; cat ${md5_j[1]}; echo "found an unmatched one ${md5_i[1]}"; } fi;
+          if [ $j == *".gedl" ] || [ $j == *"/gedl.ll" ]; then md5_j=($(sed "s+/workspaces+$cHome+/g" $j | md5sum));
+          else md5_j=($(md5sum $j)); fi;
+          if [ ${md5_i[0]} != ${md5_j[0]} ]; then { echo "found an unmatched one ${md5_i[1]}"; } fi;
           done
           vstask "9c VERIFY"
           vstask "9d BUILD"
