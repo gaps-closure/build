@@ -58,7 +58,7 @@ jobs:
           for i in ${efiles[@]}; 
           do j=$(sed 's/./.\/.solution/' <<< $i); md5_i=($(md5sum $i)); 
           echo "FILE NAME: $j";
-          if [ $j == *".gedl" ] || [ $j == *"/gedl.ll" ]; then { md5_j=($(sed "s+/workspaces+$cHome+g" $j | md5sum)); echo "CASE: ${md5_j[@]}"; }
+          if [[ $j == *".gedl" || $j == *"/gedl.ll" ]]; then { md5_j=($(sed "s+/workspaces+$cHome+g" $j | md5sum)); echo "CASE: ${md5_j[@]}"; }
           else md5_j=($(md5sum $j)); fi;
           echo "${md5_i[0]} ${md5_j[0]} $i $j";
           if [ ${md5_i[0]} != ${md5_j[0]} ]; then { echo "found an unmatched one ${md5_i[1]}"; } fi;
