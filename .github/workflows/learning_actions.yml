@@ -10,7 +10,8 @@ jobs:
         shell: bash
         
     container: 
-      image: gapsclosure/closuredev:develop
+#      image: gapsclosure/closuredev:develop
+      image: gapsclosure/closuredev:master
 #      options: --env "HOME=/home/closure"
       options: --user closure     
     steps:
@@ -30,12 +31,13 @@ jobs:
 #       run: source /home/closure/.bash_profile; conflict_analyzer --help
       - name: test multiline string
         run: |
-          source /home/closure/.bash_profile
+          cHome="/home/closure"
+          source $cHome/.bash_profile
           printenv PATH
           printenv PYTHONPATH
-          mkdir /workspaces; cd /workspaces
+          cd $cHome
           git clone --recurse-submodules https://github.com/gaps-closure/build.git
-          appName="example2"
+          appName="example1"
           find . -name $appName -print
           echo "### Testing $appName"
           cd build/apps/examples/$appName
@@ -54,7 +56,9 @@ jobs:
           vstask "9b AUTOGEN GEDL, RPCs, IDL, Codecs"
           efiles=($(find ./partitioned/multithreaded -type f -not \( -name "*.a" -o -name "*.o" -o -name "*.so" -o -name "*$appName" \) ))
           for i in ${efiles[@]}; 
-          do j=$(sed 's/./.\/.solution/' <<< $i); md5_i=($(md5sum $i)); md5_j=($(md5sum $j)); 
+          do j=$(sed 's/./.\/.solution/' <<< $i); md5_i=($(md5sum $i)); 
+          if [[ $j == *".gedl" ] || [ $j == *"/gedl.ll" ]]; then { md5_j=($(sed "s+/workspaces+$cHome+" $j | md5sum) };
+          else md5_j=($(md5sum $j)); fi;
           echo "${md5_i[0]} ${md5_j[0]} ${md5_i[1]} ${md5_j[1]}";
           if [ ${md5_i[0]} != ${md5_j[0]} ]; then { cat ${md5_i[1]}; cat ${md5_j[1]}; echo "found an unmatched one ${md5_i[1]}"; } fi;
           done
