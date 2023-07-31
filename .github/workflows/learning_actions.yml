@@ -77,4 +77,5 @@ jobs:
           echo "${md5_i[0]} ${md5_j[0]} ${md5_i[1]} ${md5_j[1]}";
           if [ ${md5_i[0]} != ${md5_j[0]} ]; then { echo "found an unmatched one ${md5_i[1]}"; } fi;
           done
+          cd $cHome
           done
