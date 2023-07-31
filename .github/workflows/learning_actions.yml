@@ -37,7 +37,9 @@ jobs:
           printenv PYTHONPATH
           cd $cHome
           git clone --recurse-submodules https://github.com/gaps-closure/build.git
-          appName="example1"
+          checkApps=(example1 example2)
+          for cApp in "${checkApps[@]}"; do
+          appName=$cApp
           find . -name $appName -print
           echo "### Testing $appName"
           cd build/apps/examples/$appName
@@ -75,4 +77,4 @@ jobs:
           echo "${md5_i[0]} ${md5_j[0]} ${md5_i[1]} ${md5_j[1]}";
           if [ ${md5_i[0]} != ${md5_j[0]} ]; then { echo "found an unmatched one ${md5_i[1]}"; } fi;
           done
-          
+          done
