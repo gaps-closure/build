@@ -10,8 +10,8 @@ jobs:
         shell: bash
         
     container: 
-#      image: gapsclosure/closuredev:develop
-      image: gapsclosure/closuredev:master
+      image: gapsclosure/closuredev:develop
+#      image: gapsclosure/closuredev:master
 #      options: --env "HOME=/home/closure"
       options: --user closure     
     steps:
