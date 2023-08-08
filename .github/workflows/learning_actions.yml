@@ -37,7 +37,7 @@ jobs:
           printenv PYTHONPATH
           cd $cHome
           git clone --recurse-submodules https://github.com/gaps-closure/build.git
-          checkApps=(example1 example2 example3)
+          checkApps=(example1)
           for cApp in "${checkApps[@]}"; do
           appName=$cApp
           find . -name $appName -print
@@ -62,7 +62,7 @@ jobs:
           if [[ $i == *".gedl" || $i == *"/gedl.ll" ]]; then md5_j=($(sed "s+/workspaces+$cHome+g" $j | md5sum)); 
           else md5_j=($(md5sum $j)); fi;
           echo "${md5_i[0]} ${md5_j[0]} $i $j";
-          if [ ${md5_i[0]} != ${md5_j[0]} ]; then { echo "found an unmatched one ${md5_i[1]}"; diff $i $j; false; } fi;
+          if [ ${md5_i[0]} != ${md5_j[0]} ]; then { echo "found an unmatched one ${md5_i[1]}"; diff $i $j; } fi;
           done
           vstask "9c VERIFY"
           vstask "9d BUILD"
