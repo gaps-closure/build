@@ -37,7 +37,7 @@ jobs:
           printenv PYTHONPATH
           cd $cHome
           git clone --recurse-submodules https://github.com/gaps-closure/build.git
-          checkApps=(example1)
+          checkApps=(example1 example2 example3)
           for cApp in "${checkApps[@]}"; do
           appName=$cApp
           find . -name $appName -print
