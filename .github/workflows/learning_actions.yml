@@ -1,6 +1,10 @@
 name: learn-github-actions
 run-name: ${{ github.actor }} is learning github actions
-on: [push]
+on:
+  push:
+    branches:
+      - cicd
+#on: [push]
 
 jobs:
   devcontainer-test:
