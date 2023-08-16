@@ -19,6 +19,11 @@ jobs:
 #     image: gapsclosure/closuredev:master
 #      options: --env "HOME=/home/closure"
     steps:
+      - name: Get branch names.
+        id: branch-names
+        uses: tj-actions/branch-names@v7
+      - name: check branch name
+        run: echo ${{ steps.branch-names.outputs.head_ref_branch }}
       - name: who am I
         run:  whoami
       - name: check PATH
