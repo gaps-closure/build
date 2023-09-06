@@ -2,8 +2,10 @@ name: learn-github-actions
 run-name: ${{ github.actor }} is learning github actions
 on:
   push:
-    branches:
-      - '!master'
+    branches-ignore:
+      - master
+#    branches:
+#      - master
 #on: [push]
 
 jobs:
