@@ -1,12 +1,9 @@
-name: learn-github-actions
-run-name: ${{ github.actor }} is learning github actions
+name: cicd on branches other than the master
+run-name: ${{ github.actor }} is pushing to branches other than the master
 on:
   push:
     branches-ignore:
       - master
-#    branches:
-#      - master
-#on: [push]
 
 jobs:
   devcontainer-test:
@@ -18,23 +15,11 @@ jobs:
     container: 
      image: gapsclosure/closuredev:develop
      options: --user closure     
-#     image: gapsclosure/closuredev:master
-#      options: --env "HOME=/home/closure"
     steps:
-      - name: who am I
-        run:  whoami
-      - name: check PATH
-        run: printenv PATH
-#      - name: look for conflict_analyzer
-#        run: which conflict_analyzer
       - name: closureenv
         run:  source /opt/closure/etc/closureenv; printenv PATH; printenv PYTHONPATH
-#       - name: reload .bashrc 
-#        run:  source /home/closure/.bash_profile
       - name: what is home
         run: echo $HOME
-#      - name: test conflict analyzer in the container
-#       run: source /home/closure/.bash_profile; conflict_analyzer --help
       - name: test multiline string
         run: |
           cHome="/home/closure"
