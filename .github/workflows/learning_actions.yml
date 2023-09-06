@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is learning github actions
 on:
   push:
     branches:
-      - cicd2
+      - '!cicd2'
 #on: [push]
 
 jobs:
