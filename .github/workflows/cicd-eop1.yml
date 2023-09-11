@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - cicd2
+  workflow_run:
+    workflows: [Upload Docker image]
+    types:
+      - completed
 
 jobs:
   devcontainer-test:
