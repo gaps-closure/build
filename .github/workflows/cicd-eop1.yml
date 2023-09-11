@@ -37,12 +37,12 @@ jobs:
           vstask "CLEAN"
           vstask "A6 CODE GENERATION"
           vstask "BUILD"
-          in_and_out=(egress ingress)
-          for io in "${in_and_out[@]}"; do dName="./xdcc/$io_xdcc";
+          in_and_out=(egress_xdcc ingress_xdcc)
+          for io in "${in_and_out[@]}"; do dName="./xdcc/$io";
           myEnclaves=$(grep "export ENCLAVES=" $dName/.make/closure_env.sh | sed -ne 's/export ENCLAVES="//p' |sed -ne 's/"//p')
           echo $myEnclaves
           IFS=' ' read -ra ArrEc <<< $myEnclaves
-          for i in "${ArrEc[@]}"; do iName="$dName/partitioned/multithreaded/$i/$io_xdcc";
+          for i in "${ArrEc[@]}"; do iName="$dName/partitioned/multithreaded/$i/$io";
           [ -x   $iName ] && echo "executable $iName exists" || { echo "executable $iName is not found"; false; } done
           done
           done
