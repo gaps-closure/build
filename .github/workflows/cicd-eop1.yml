@@ -28,7 +28,7 @@ jobs:
           printenv PYTHONPATH
           cd $cHome
           git clone --recurse-submodules https://github.com/gaps-closure/build.git
-          checkApps=(case1)
+          checkApps=(case1 case2 case3)
           for cApp in "${checkApps[@]}"; do
           appName=$cApp
           find . -name $appName -print
@@ -37,7 +37,12 @@ jobs:
           vstask "CLEAN"
           vstask "A6 CODE GENERATION"
           vstask "BUILD"
-          checkFiles=(egress_xdcc ingress_xdcc)
-          for i in "${checkFiles[@]}"; do iName="./xdcc/egress_xdcc/partitioned/multithreaded/orange/$i";
+          in_and_out=(egress ingress)
+          for io in "${in_and_out[@]}"; do dName="./xdcc/$io_xdcc";
+          myEnclaves=$(grep "export ENCLAVES=" $dName/.make/closure_env.sh | sed -ne 's/export ENCLAVES="//p' |sed -ne 's/"//p')
+          echo $myEnclaves
+          IFS=' ' read -ra ArrEc <<< $myEnclaves
+          for i in "${ArrEc[@]}"; do iName="$dName/partitioned/multithreaded/$i/$io_xdcc";
           [ -x   $iName ] && echo "executable $iName exists" || { echo "executable $iName is not found"; false; } done
+          done
           done
