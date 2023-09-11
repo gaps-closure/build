@@ -2,8 +2,8 @@ name: cicd on eop1
 run-name: ${{ github.actor }} is testing cicd on eop1
 on:
   push:
-    branches-ignore:
-      - master
+    branches:
+      - cicd2
 
 jobs:
   devcontainer-test:
