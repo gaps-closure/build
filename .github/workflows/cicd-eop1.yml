@@ -45,4 +45,5 @@ jobs:
           for i in "${ArrEc[@]}"; do iName="$dName/partitioned/multithreaded/$i/$io";
           [ -x   $iName ] && echo "executable $iName exists" || { echo "executable $iName is not found"; false; } done
           done
+          cd $cHome
           done
