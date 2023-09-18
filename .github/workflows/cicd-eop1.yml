@@ -2,8 +2,7 @@ name: cicd on eop1
 run-name: ${{ github.actor }} is testing cicd on eop1
 on:
   push:
-    branches:
-      - cicd2
+  
   workflow_run:
     workflows: [Upload Docker image]
     types:
