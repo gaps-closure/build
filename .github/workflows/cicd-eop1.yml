@@ -4,7 +4,7 @@ on:
   push:
 
   workflow_run:
-    workflows: [Upload Docker image]
+    workflows: ["Upload Docker image"]
     types:
       - completed
 
