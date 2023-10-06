@@ -42,7 +42,8 @@ jobs:
         with:
           context: apps/eop1
           push: true
-          tags: gapsclosure/eop1:${{ steps.branch-name.outputs.current_branch }}
+          file: Dockerfile.cicd
+          tags: gapsclosure/closuredev/eop1:${{ steps.branch-name.outputs.current_branch }}
           labels: ${{ steps.meta.output.labels }}
       
     
