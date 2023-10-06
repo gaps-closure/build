@@ -85,3 +85,8 @@ Then run the following commands to convert the message to binary and then parse 
 cat 224.txt | xxd -r -p > 224.bin
 daffodil parse --schema sync_bw.dfdl 224.bin > 224.infoset
 ``` 
+
+
+green will be yellow,
+
+orange will be red

@@ -13,24 +13,24 @@
 #include <pthread.h>
 
 // Data Annotations
-// Circular buffer is on the green side and not shareable
+// Circular buffer is on the yellow side and not shareable
 // Popped message is not shareable but sanitize returns a shareable copy
- //Information on the source enclave (level green) not authorized to be shared with any other enclave
-#pragma cle def GREEN {"level":"green"}
- //Information on the source enclave (level orange) not authorized to be shared with any other enclave
-#pragma cle def ORANGE {"level":"orange"}
-// Information on the sink enclave (level orange) that can be shared with source enclave (level green)
-#pragma cle def ORANGE_SHARABLE {"level":"orange",\
+ //Information on the source enclave (level yellow) not authorized to be shared with any other enclave
+#pragma cle def YELLOW {"level":"yellow"}
+ //Information on the source enclave (level red) not authorized to be shared with any other enclave
+#pragma cle def RED {"level":"red"}
+// Information on the sink enclave (level red) that can be shared with source enclave (level yellow)
+#pragma cle def RED_SHARABLE {"level":"red",\
   "cdf": [\
-    {"remotelevel":"green", \
+    {"remotelevel":"yellow", \
      "direction": "egress", \
      "guarddirective": { "operation": "allow"} \
     } \
   ] }
-// Information on the source enclave (level green) that cget_sink_socket(an be shared with source enclave (level orange)
-#pragma cle def GREEN_SHARABLE {"level":"green",\
+// Information on the source enclave (level yellow) that cget_sink_socket(an be shared with source enclave (level red)
+#pragma cle def YELLOW_SHARABLE {"level":"yellow",\
   "cdf": [\
-    {"remotelevel":"orange", \
+    {"remotelevel":"red", \
      "direction": "egress", \
      "guarddirective": { "operation": "allow"} \
     } \
@@ -42,108 +42,108 @@
 // The function annotation of a function called cross domain must have a cdf for every remote side that has that call
 // Every function annotation must have a cdf at the same level that the function resides
 // Functions called cross domain: 
-//CLE: get_sink_socket() on sink / orange side, called cross domain from main()
+//CLE: get_sink_socket() on sink / red side, called cross domain from main()
 //CLE: update_sink() on sink side called cross domain from pop_source_and_update_sink()
-//CLE: shutdown_sink() on sink / orange side, called cross domain from main()
+//CLE: shutdown_sink() on sink / red side, called cross domain from main()
 //CLE: sanitize() makes non-sharable data from circular buffer sharable called from pop_source_and_update_sink()
 // define one annotation for each of the 6 functions described above
 // functions called cross domain arguments and return value will have the tag_request_FUNC and tag_response_FUNC labels in the corresponding arguments and return taints
 
-// first cdf block is labels i can touch from orange
-// second cdf block says the function is callable from green
+// first cdf block is labels i can touch from red
+// second cdf block says the function is callable from yellow
 
-#pragma cle def GET_SINK_SOCKET {"level":"orange",\
+#pragma cle def GET_SINK_SOCKET {"level":"red",\
   "cdf": [\
-    {"remotelevel":"orange", \
+    {"remotelevel":"red", \
      "direction": "egress", \
      "guarddirective": { "operation": "allow"}, \
      "argtaints": [], \
-     "codtaints" : ["ORANGE", "ORANGE_SHARABLE"], \
-     "rettaints" : ["ORANGE_SHARABLE", "TAG_RESPONSE_GET_SINK_SOCKET"] \
+     "codtaints" : ["RED", "RED_SHARABLE"], \
+     "rettaints" : ["RED_SHARABLE", "TAG_RESPONSE_GET_SINK_SOCKET"] \
     }, \
-    {"remotelevel":"green", \
+    {"remotelevel":"yellow", \
      "direction": "egress", \
      "guarddirective": { "operation": "allow"}, \
      "argtaints": [], \
-     "codtaints" : ["ORANGE", "ORANGE_SHARABLE"], \
-     "rettaints" : ["ORANGE_SHARABLE", "TAG_RESPONSE_GET_SINK_SOCKET"] \
+     "codtaints" : ["RED", "RED_SHARABLE"], \
+     "rettaints" : ["RED_SHARABLE", "TAG_RESPONSE_GET_SINK_SOCKET"] \
     } \
   ] \
 }
 
 
-#pragma cle def UPDATE_SINK {"level":"orange",\
+#pragma cle def UPDATE_SINK {"level":"red",\
   "cdf": [\
-    {"remotelevel":"orange", \
+    {"remotelevel":"red", \
      "direction": "egress", \
      "guarddirective": { "operation": "allow"}, \
      "argtaints": [["TAG_REQUEST_UPDATE_SINK"], ["TAG_REQUEST_UPDATE_SINK"]], \
-     "codtaints" : ["ORANGE", "ORANGE_SHARABLE", "TAG_RESPONSE_GET_SINK_SOCKET", "TAG_REQUEST_GET_SINK_SOCKET"], \
+     "codtaints" : ["RED", "RED_SHARABLE", "TAG_RESPONSE_GET_SINK_SOCKET", "TAG_REQUEST_GET_SINK_SOCKET"], \
      "rettaints" : ["TAG_RESPONSE_UPDATE_SINK"] \
     }, \
-    {"remotelevel":"green", \
+    {"remotelevel":"yellow", \
      "direction": "egress", \
      "guarddirective": { "operation": "allow"}, \
      "argtaints": [["TAG_REQUEST_UPDATE_SINK"], ["TAG_REQUEST_UPDATE_SINK"]], \
-     "codtaints" : ["ORANGE", "ORANGE_SHARABLE", "TAG_RESPONSE_GET_SINK_SOCKET", "TAG_REQUEST_GET_SINK_SOCKET"], \
+     "codtaints" : ["RED", "RED_SHARABLE", "TAG_RESPONSE_GET_SINK_SOCKET", "TAG_REQUEST_GET_SINK_SOCKET"], \
      "rettaints" : ["TAG_RESPONSE_UPDATE_SINK"] \
     } \
   ] \
 }
 
 
-#pragma cle def POP_SOURCE_AND_UPDATE_SINK {"level":"green",\
+#pragma cle def POP_SOURCE_AND_UPDATE_SINK {"level":"yellow",\
   "cdf": [\
-    {"remotelevel":"green", \
+    {"remotelevel":"yellow", \
      "direction": "egress", \
      "guarddirective": { "operation": "allow"}, \
      "argtaints": [], \
-     "codtaints" : ["GREEN", "GREEN_SHARABLE", "TAG_RESPONSE_UPDATE_SINK", "TAG_REQUEST_UPDATE_SINK"], \
-     "rettaints" : ["GREEN"] \
+     "codtaints" : ["YELLOW", "YELLOW_SHARABLE", "TAG_RESPONSE_UPDATE_SINK", "TAG_REQUEST_UPDATE_SINK"], \
+     "rettaints" : ["YELLOW"] \
     } \
   ] \
 }
 
 
-#pragma cle def SHUTDOWN_SINK {"level":"orange",\
+#pragma cle def SHUTDOWN_SINK {"level":"red",\
   "cdf": [\
-    {"remotelevel":"orange", \
+    {"remotelevel":"red", \
      "direction": "egress", \
      "guarddirective": { "operation": "allow"}, \
      "argtaints": [], \
-     "codtaints" : ["ORANGE", "ORANGE_SHARABLE", "TAG_RESPONSE_GET_SINK_SOCKET", "TAG_REQUEST_GET_SINK_SOCKET"], \
+     "codtaints" : ["RED", "RED_SHARABLE", "TAG_RESPONSE_GET_SINK_SOCKET", "TAG_REQUEST_GET_SINK_SOCKET"], \
      "rettaints" : ["TAG_RESPONSE_SHUTDOWN_SYNC"] \
     }, \
-    {"remotelevel":"green", \
+    {"remotelevel":"yellow", \
      "direction": "egress", \
      "guarddirective": { "operation": "allow"}, \
      "argtaints": [], \
-     "codtaints" : ["ORANGE", "ORANGE_SHARABLE", "TAG_RESPONSE_GET_SINK_SOCKET", "TAG_REQUEST_GET_SINK_SOCKET"], \
+     "codtaints" : ["RED", "RED_SHARABLE", "TAG_RESPONSE_GET_SINK_SOCKET", "TAG_REQUEST_GET_SINK_SOCKET"], \
      "rettaints" : ["TAG_RESPONSE_SHUTDOWN_SYNC"] \
     } \
   ] \
 }
 
 
-#pragma cle def SANITIZE {"level":"green",\
+#pragma cle def SANITIZE {"level":"yellow",\
   "cdf": [\
-    {"remotelevel":"green", \
+    {"remotelevel":"yellow", \
      "direction": "egress", \
      "guarddirective": { "operation": "allow"}, \
-     "argtaints": [["GREEN"], ["GREEN_SHARABLE"], ["GREEN_SHARABLE"]], \
+     "argtaints": [["YELLOW"], ["YELLOW_SHARABLE"], ["YELLOW_SHARABLE"]], \
      "codtaints" : [], \
-     "rettaints" : ["GREEN"] \
+     "rettaints" : ["YELLOW"] \
     } \
   ] \
 }
 
-#pragma cle def MAIN {"level":"green",\
+#pragma cle def MAIN {"level":"yellow",\
   "cdf": [\
-    {"remotelevel":"green", \
+    {"remotelevel":"yellow", \
      "direction": "egress", \
      "guarddirective": { "operation": "allow"}, \
      "argtaints": [], \
-     "codtaints" : ["GREEN", "TAG_RESPONSE_GET_SINK_SOCKET", "TAG_REQUEST_GET_SINK_SOCKET", "TAG_RESPONSE_SHUTDOWN_SINK", "TAG_REQUEST_SHUTDOWN_SINK"], \
+     "codtaints" : ["YELLOW", "TAG_RESPONSE_GET_SINK_SOCKET", "TAG_REQUEST_GET_SINK_SOCKET", "TAG_RESPONSE_SHUTDOWN_SINK", "TAG_REQUEST_SHUTDOWN_SINK"], \
      "rettaints" : [] \
     } \
   ] \
@@ -167,15 +167,15 @@ struct circular_buffer {
 };
 
 
-// //CLE: will be annotated to be on source / green side and not sharable
+// //CLE: will be annotated to be on source / yellow side and not sharable
 
-#pragma cle begin GREEN
+#pragma cle begin YELLOW
 struct circular_buffer circ_buff = {
     .cur_size = 0,
     .head = 0,
     .tail = 0
 };
-#pragma cle end GREEN
+#pragma cle end YELLOW
 
 // Getters
 
@@ -200,7 +200,7 @@ void init_lock() {
 }
 
 
-//CLE: source / green side
+//CLE: source / yellow side
 void init_buffer() {
     init_lock();
 
@@ -232,7 +232,7 @@ void display() {
     }
 }
 
-//CLE: source / green side
+//CLE: source / yellow side
 void enqueue(char* input) {
     printf("%s called\n", __func__);
     // print_details();
@@ -257,7 +257,7 @@ void enqueue(char* input) {
     pthread_mutex_unlock(&circ_buff.lock);
 }
 
-//CLE: source / green side
+//CLE: source / yellow side
 void pop() {
     printf("%s called\n", __func__);
     pthread_mutex_lock(&circ_buff.lock);
@@ -274,12 +274,12 @@ void pop() {
     pthread_mutex_unlock(&circ_buff.lock);
 }
 
-//CLE: source / green side
+//CLE: source / yellow side
 int get_source_socket() {
-    #pragma cle begin GREEN
+    #pragma cle begin YELLOW
     static bool source_init = false;
     static int source_sock = -1;
-    #pragma cle end GREEN
+    #pragma cle end YELLOW
 
     if (source_init) {
         return source_sock;
@@ -305,15 +305,15 @@ int get_source_socket() {
     return source_sock;
 }
 
-// On the orange side
+// On the red side
 #pragma cle begin GET_SINK_SOCKET
 int get_sink_socket() {
 #pragma cle end GET_SINK_SOCKET
 
     static bool sink_init = false;
-    #pragma cle begin ORANGE_SHARABLE
+    #pragma cle begin RED_SHARABLE
     static int sink_sock = -1;
-    #pragma cle end ORANGE_SHARABLE
+    #pragma cle end RED_SHARABLE
 
 
     if (sink_init) {
@@ -379,7 +379,7 @@ void* source_receive() {
     }
 }
 
-//CLE: on the source / green side
+//CLE: on the source / yellow side
 void start_recv_thread() {
     pthread_t id;
     pthread_create(&id, NULL, source_receive, NULL);
@@ -387,7 +387,7 @@ void start_recv_thread() {
 }
 void inhint(char* ignored, char* input, int len) { }
 
-//CLE: will be on sink / orange side
+//CLE: will be on sink / red side
 #pragma cle begin UPDATE_SINK
 int update_sink(char* output, int len) {
 #pragma cle end UPDATE_SINK
@@ -411,19 +411,19 @@ void sanitize(char* input, char* output, int len) {
 void pop_source_and_update_sink() {
 #pragma cle end POP_SOURCE_AND_UPDATE_SINK
     // printf("%s called\n", __func__);
-    #pragma cle begin GREEN
+    #pragma cle begin YELLOW
     char output[BLOCK_SIZE];
-    #pragma cle end GREEN
-    #pragma cle begin GREEN_SHARABLE
+    #pragma cle end YELLOW
+    #pragma cle begin YELLOW_SHARABLE
     char san_output[BLOCK_SIZE];
-    #pragma cle end GREEN_SHARABLE
+    #pragma cle end YELLOW_SHARABLE
     while(1) {
         memset(output, 0, sizeof(output));
         memset(san_output, 0, sizeof(san_output));
-        #pragma cle begin GREEN_SHARABLE
+        #pragma cle begin YELLOW_SHARABLE
         // is this thread safe?
         int len = circ_buff.block_lengths[circ_buff.head];
-        #pragma cle end GREEN_SHARABLE
+        #pragma cle end YELLOW_SHARABLE
         if (len != 0) {
             printf("Len isnt 0\n");
             memcpy(output, head(), head_len());
@@ -437,7 +437,7 @@ void pop_source_and_update_sink() {
     }
 }
 
-//CLE: source / green side
+//CLE: source / yellow side
 void shutdown_source() {
     int source_sock = -1;
     if ((source_sock = get_source_socket()) != -1) {
@@ -452,7 +452,7 @@ void shutdown_source() {
     free(circ_buff.block_lengths);
 }
 
-//CLE: sink / orange side
+//CLE: sink / red side
 #pragma cle begin SHUTDOWN_SINK
 int shutdown_sink() {
 #pragma cle end SHUTDOWN_SINK
@@ -503,16 +503,16 @@ void run_tests() {
     printf("end of the program\n");
 }
 
-//CLE: init_buffer() on source / green side
-//CLE: get_source_socket() on source / green side
-//CLE: get_sink_socket() on sink / orange side, called cross domain
-//CLE: start_recv_thread() on source / green side
+//CLE: init_buffer() on source / yellow side
+//CLE: get_source_socket() on source / yellow side
+//CLE: get_sink_socket() on sink / red side, called cross domain
+//CLE: start_recv_thread() on source / yellow side
 //CLE: pop_source_update_sink() on source side calls update_sink()
 //CLE: update_sink() on sink side called cross domain
 //CLE: circular buffer is source side not sharable
 //CLE: sanitize() makes non-sharable data from circular buffer sharable.
-//CLE: shutdown_source() on source / green side
-//CLE: shutdown_sink() on sink / orange side, called cross domain
+//CLE: shutdown_source() on source / yellow side
+//CLE: shutdown_sink() on sink / red side, called cross domain
 //CLE: main on source side
 #pragma cle begin MAIN
 int main() {    
