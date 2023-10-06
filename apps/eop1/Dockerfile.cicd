@@ -1,0 +1,32 @@
+FROM gapsclosure/closuredev:develop
+MAINTAINER mkaplan@peratonlabs.com
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN sudo apt-get -y update                              \
+&&  sudo apt-get -y install				\
+    libapr1    						\
+    libapr1-dev						\
+    nasm						\
+    yasm						\
+    cmake						\
+    autoconf						\
+    automake						\
+    libtool						\
+    libssl-dev						\
+    openjdk-16-jre-headless				\
+    libavcodec-dev 					\
+    libavformat-dev 					\
+    libswscale-dev
+
+RUN python3 -m pip install				\
+    Flask==2.0.0					\
+    Werkzeug==2.0.0
+    
+RUN mkdir /tmp/gaps && cd /tmp/gaps			\
+&&  git clone https://github.com/apache/activemq-cpp	\
+&&  cd /tmp/gaps/activemq-cpp/activemq-cpp		\
+&&  git checkout activemq-cpp-3.9.5			\
+&&  ./autogen.sh					\
+&&  ./configure						\
+&&  make -j 8 && sudo make install && cd /tmp		\
+&&  rm -rf /tmp/gaps/activemq-cpp

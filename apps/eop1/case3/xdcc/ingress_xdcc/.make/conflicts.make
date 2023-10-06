@@ -1,6 +1,6 @@
 IDIR=./annotated
 EDIR=./annotated-working
-CLANG_FLAGS += -I ../xdcc_echo -I ../../../amqlib
+CLANG_ARGS += -I$(realpath ../xdcc_echo),-I$(realpath ../../../amqlib),-I/usr/local/include/activemq-cpp-3.9.5
 CONSTRAINTS=$(CLOSURE_PYTHON)/conflict_analyzer/constraints
 
 assignments: topology 
@@ -14,7 +14,7 @@ topology.json: $(EDIR)
 	--artifact artifact.json \
 	--temp $(EDIR) \
 	--source-path $(realpath .)/refactored \
-	--clang-args="-I$(realpath ../xdcc_echo),-I$(realpath ../../../amqlib)" \
+	--clang-args="$(CLANG_ARGS)" \
 	annotated/$(PROG).c 
 
 $(EDIR):
