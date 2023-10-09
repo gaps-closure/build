@@ -151,8 +151,7 @@
 
 
 #define HOST "127.0.0.1"
-#define SINK 8087
-#define SOURCE 8088
+#define PORT 8087
 
 #define BLOCK_SIZE 1024 
 #define NUM_BLOCKS 64 
@@ -287,7 +286,7 @@ int get_source_socket() {
 
     struct sockaddr_in source_addr;
     source_addr.sin_family = AF_INET;
-    source_addr.sin_port = htons(SOURCE);
+    source_addr.sin_port = htons(PORT);
     source_addr.sin_addr.s_addr = inet_addr(HOST);
 
     source_sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -322,7 +321,7 @@ int get_sink_socket() {
 
     struct sockaddr_in sink_addr;
     sink_addr.sin_family = AF_INET;
-    sink_addr.sin_port = htons(SINK);
+    sink_addr.sin_port = htons(PORT);
     sink_addr.sin_addr.s_addr = inet_addr(HOST);
 
     sink_sock = socket(AF_INET, SOCK_STREAM, 0);
