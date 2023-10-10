@@ -77,7 +77,7 @@ LD_LIBRARY_PATH=/home/ijones/gaps/build/hal/api ./sync
 ```
 
 # Test daffodil parser 
-When testing daffodil parser, run the hal with an additional command `|& tee /tmp/sync_orange.log` to capture the output of the hal
+When testing daffodil parser, run the hal with an additional command `|& tee /tmp/sync_red.log` to capture the output of the hal
 With this, you can look for specific messages sent to xdd1. Save this as a single message.txt.
 
 Then run the following commands to convert the message to binary and then parse the binary as an infoset.
@@ -85,8 +85,3 @@ Then run the following commands to convert the message to binary and then parse 
 cat 224.txt | xxd -r -p > 224.bin
 daffodil parse --schema sync_bw.dfdl 224.bin > 224.infoset
 ``` 
-
-
-green will be yellow,
-
-orange will be red
