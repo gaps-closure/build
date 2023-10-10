@@ -15,6 +15,7 @@ topology.json: $(EDIR)
 	--temp $(EDIR) \
 	--source-path $(realpath .)/refactored \
 	--clang-args="$(CLANG_ARGS)" \
+	--dump-ptg=`which dump-ptg` \
 	annotated/$(PROG).c 
 
 $(EDIR):
