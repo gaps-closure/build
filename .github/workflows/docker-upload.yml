@@ -43,7 +43,7 @@ jobs:
           context: .
           push: true
           file: ./apps/eop1/Dockerfile.cicd
-          tags: gapsclosure/closuredev/eop1:${{ steps.branch-name.outputs.current_branch }}
+          tags: gapsclosure/eop1:${{ steps.branch-name.outputs.current_branch }}
           labels: ${{ steps.meta.output.labels }}
       
     
