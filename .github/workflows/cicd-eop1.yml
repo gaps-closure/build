@@ -16,7 +16,7 @@ jobs:
         shell: bash
         
     container: 
-     image: gapsclosure/closuredev:eop1
+     image: gapsclosure/eop1:develop
      options: --user closure     
     steps:
       - name: closureenv
