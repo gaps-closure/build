@@ -11,7 +11,7 @@ export CLOSURE_PYTHON=${CLOSURE_TOOLS}/python
 export CLOSURE_SCHEMAS=${CLOSURE_TOOLS}/schemas
 export CLOSURE_DEVICES=${CLOSURE_TOOLS}/etc
 
-export OPT=/usr/local/bin/opt
+export OPT="/usr/local/bin/opt -enable-new-pm=0"
 export VERIFIER=${CLOSURE_BINS}/verifier
 
 export LIBPDG=${CLOSURE_LIBS}/libpdg.so

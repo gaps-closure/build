@@ -1,6 +1,6 @@
 {
 	"name": "CLOSUREDEV-EOP1",
-	"image": "gapsclosure/closuredev/eop1:develop",
+	"image": "gapsclosure/eop1:develop",
 
 	"containerEnv": {
 		"DISPLAY": "${localEnv:DISPLAY}",
