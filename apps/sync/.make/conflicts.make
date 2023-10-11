@@ -14,6 +14,7 @@ topology.json: $(EDIR)
 	--artifact artifact.json \
 	--temp $(EDIR) \
 	--source-path $(realpath .)/refactored \
+	--dump-ptg `which dump-ptg` \
 	annotated/$(PROG).c 
 
 $(EDIR):
