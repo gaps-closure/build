@@ -158,8 +158,9 @@ RUN cd /tmp \
 &&  git clone https://github.com/gaps-closure/svf \
 &&  cd svf                                        \
 &&  git checkout develop                          \
-&&  LLVM_DIR=/usr/lib/llvm-14 ./build.sh          \
-&&  cd Release-build; sudo make install
+&&  LLVM_DIR=/usr/lib/llvm-14 ./build.sh debug    \
+&&  chmod -R 777 /tmp/svf     		 	  \
+&&  cd Debug-build; sudo make install
 # removing /tmp/svf breaks our tools, TODO: XXX	
 
 # copy and install
