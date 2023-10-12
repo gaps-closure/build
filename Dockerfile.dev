@@ -154,14 +154,12 @@ RUN sudo ln -s $(which clang-14) /usr/local/bin/clang \
 && sudo ln -s $(which llvm-dis-14) /usr/local/bin/llvm-dis
 
 # SVF
-RUN cd /tmp \
+RUN cd /opt/closure \
 &&  git clone https://github.com/gaps-closure/svf \
 &&  cd svf                                        \
 &&  git checkout develop                          \
-&&  LLVM_DIR=/usr/lib/llvm-14 ./build.sh debug    \
-&&  chmod -R 777 /tmp/svf     		 	  \
-&&  cd Debug-build; sudo make install
-# removing /tmp/svf breaks our tools, TODO: XXX	
+&&  LLVM_DIR=/usr/lib/llvm-14 ./build.sh release  \
+&&  sudo chmod 777 /opt/closure/svf/Release-build/svf-llvm
 
 # copy and install
 COPY --chown=closure . /tmp/build
@@ -171,7 +169,7 @@ RUN cd /tmp/build \
 # Small fix for ect
 # RUN sudo rm -rf /tmp/build
 
-ENV PATH=$PATH:/opt/minizinc/bin:$PATH
+ENV PATH=$PATH:/opt/minizinc/bin:/opt/closure/svf/Release-build/bin:$PATH
 RUN echo "source /opt/closure/etc/closureenv" >> /home/closure/.bashrc
 RUN echo "source /opt/closure/etc/closureenv" >> /home/closure/.bash_profile
 RUN echo "if [[ -e '/root/bashrc' ]]; then bash /root/bashrc; fi" >> /home/closure/.bashrc
