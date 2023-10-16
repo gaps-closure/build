@@ -52,7 +52,7 @@ jobs:
           IFS=' ' read -ra ArrEc <<< $myEnclaves
           for i in "${ArrEc[@]}"; do [ -d divvied/$i ] && echo "Directory for $i exists" || { echo "divvied/$i does not exist"; false; } done
           vstask "9b AUTOGEN GEDL, RPCs, IDL, Codecs"
-          efiles=($(find ./partitioned/multithreaded -type f -not \( -name "*.a" -o -name "*.o" -o -name "*.so" -o -name "*$appName" \) ))
+          efiles=($(find ./partitioned/multithreaded -type f -not \( -name "*.a" -o -name "*.o" -o -name "*.so" -o -name "*gedl.ll" -o -name "*$appName" \) ))
           for i in ${efiles[@]}; 
           do j=$(sed 's/./.\/.solution/' <<< $i); md5_i=($(md5sum $i)); 
           if [[ $i == *".gedl" || $i == *"/gedl.ll" ]]; then md5_j=($(sed "s+/workspaces+$cHome+g" $j | md5sum)); 
