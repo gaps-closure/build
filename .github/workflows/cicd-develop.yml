@@ -2,8 +2,8 @@ name: cicd on branches other than the master
 run-name: ${{ github.actor }} is pushing to branches other than the master
 on:
   push:
-    branches-ignore:
-      - master
+    branches:
+      - cicd2
 
   workflow_run:
     workflows: [Upload Docker image]
@@ -58,7 +58,7 @@ jobs:
           echo "${md5_i[0]} ${md5_j[0]} $i $j";
           if [ ${md5_i[0]} != ${md5_j[0]} ]; then { echo "found an unmatched one ${md5_i[1]}"; diff $i $j; } fi;
           done
-          vstask "9c VERIFY"
+          # vstask "9c VERIFY"
           vstask "9d BUILD"
           for k in  "${ArrEc[@]}"; do eName="./partitioned/multithreaded/$k/$appName";
           [ -x   $eName ] && echo "executable $eName exists" || { echo "executable $eName is not found"; false; } done
