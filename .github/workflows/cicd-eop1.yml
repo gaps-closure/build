@@ -7,6 +7,8 @@ on:
     workflows: [Upload Docker image]
     types:
       - completed
+    branches:
+      - develop
 
 jobs:
   devcontainer-test:
@@ -16,8 +18,8 @@ jobs:
         shell: bash
         
     container: 
-     image: gapsclosure/eop1:develop
-     options: --user closure     
+      image: gapsclosure/eop1:develop
+      options: --user closure     
     steps:
       - name: closureenv
         run:  source /opt/closure/etc/closureenv; printenv PATH; printenv PYTHONPATH
