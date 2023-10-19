@@ -29,7 +29,7 @@
       "name": "_err_handle_rpc_get_ewma",
       "level": "purple",
       "enclave": "purple_E",
-      "line": 167
+      "line": 175
     },
     {
       "name": "_hal_init",
@@ -41,7 +41,7 @@
       "name": "_master_rpc_init",
       "level": "purple",
       "enclave": "purple_E",
-      "line": 176
+      "line": 184
     }
   ],
   "global_scoped_vars": []

@@ -19,7 +19,7 @@ extern int _slave_rpc_loop();
             "guarddirective": {"operation": "allow"}, \
             "argtaints": [],\
             "codtaints": ["TAG_REQUEST_GET_A", "TAG_RESPONSE_GET_A"],\
-            "rettaints": []\
+            "rettaints": ["TAG_RESPONSE_GET_A"]\
             }]}
 #pragma cle def TAG_NEXTRPC {"level": "orange", \
     "cdf": [{"remotelevel": "orange", "direction": "egress", \

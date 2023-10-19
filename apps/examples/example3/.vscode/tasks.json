@@ -48,6 +48,7 @@
           "9a DIVIDE",
           "9b AUTOGEN GEDL, RPCs, IDL, Codecs",
           "9d BUILD",
+          "9c VERIFY",
           "9e EMULATE"
         ],
         "problemMatcher": []
@@ -69,9 +70,17 @@
         "problemMatcher": []
       },
       {
-        "label": "9c VERIFY",
+        "label": "OLD-9c VERIFY",
         "type": "shell",
         "command": "source .make/closure_env.sh; make -f .make/verifier.make verify; make -f .make/verifier.make analyze; make -f .make/ect.make ect",
+        "args": [],
+        "group": "build",
+        "problemMatcher": []
+      },
+      {
+        "label": "9c VERIFY",
+        "type": "shell",
+        "command": "source .make/closure_env.sh; make -f .make/verifier.make analyze;",
         "args": [],
         "group": "build",
         "problemMatcher": []

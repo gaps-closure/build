@@ -1,10 +1,12 @@
 {
   "source_path": "/workspaces/build/apps/examples/example3/partitioned/multithreaded/orange",
   "enclaves": [
+    "purple_E",
     "orange_E"
   ],
   "levels": [
-    "orange"
+    "orange",
+    "purple"
   ],
   "functions": [
     {
@@ -33,8 +35,8 @@
     },
     {
       "name": "main",
-      "level": "orange",
-      "enclave": "orange_E",
+      "level": "purple",
+      "enclave": "purple_E",
       "line": 101
     },
     {
@@ -45,21 +47,21 @@
     },
     {
       "name": "_hal_init",
-      "level": "orange",
-      "enclave": "orange_E",
+      "level": "purple",
+      "enclave": "purple_E",
       "line": 5
     },
     {
       "name": "_wrapper_request_get_ewma",
       "level": "orange",
       "enclave": "orange_E",
-      "line": 115
+      "line": 123
     },
     {
       "name": "_slave_rpc_loop",
-      "level": "orange",
-      "enclave": "orange_E",
-      "line": 118
+      "level": "purple",
+      "enclave": "purple_E",
+      "line": 126
     }
   ],
   "global_scoped_vars": []
