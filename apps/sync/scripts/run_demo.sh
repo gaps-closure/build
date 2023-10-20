@@ -76,14 +76,14 @@ set_up() {
             export LD_LIBRARY_PATH=/home/ijones/gaps/build/hal/api
             mate-terminal --tab --title "sync-$COLR" -e "./sync"
             export LD_LIBRARY_PATH=
-            popdcd 
+            popd 
             mate-terminal --tab --title "debug-$COLR"
         ;;
         xarbitor)
         ;;
     esac
 
-    vboxmanage startvm "$COLR enclave"
+    # vboxmanage startvm "$COLR enclave"
 }
 
 shutdown (){
