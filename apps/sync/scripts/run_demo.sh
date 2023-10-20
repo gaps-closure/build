@@ -59,7 +59,7 @@ esac
 
 clean_up() {
     rm -f /tmp/sync*
-    rm -f /tmp/taky*
+    rm -f /tmp/taky.$COLR/*
     redis-cli flushdb
 }
 
@@ -88,9 +88,9 @@ set_up() {
 
 shutdown (){
     vboxmanage controlvm "$COLR enclave" poweroff
-    pkill -f taky
-    pkill -f sync
-    pkill -f hal 
+    sudo pkill -f taky
+    sudo pkill -f sync
+    sudo pkill -f hal 
     redis-cli flushdb
 }
 
