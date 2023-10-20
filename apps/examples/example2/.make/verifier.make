@@ -37,6 +37,7 @@ analyze: $(EDIR)
 			--output=$(EDIR)/$(enclave)/topology.json \
 			--artifact=$(EDIR)/$(enclave)/artifact.json \
 			--source-path=$(ODIR)/$(enclave) \
+			--dump-ptg `which dump-ptg` \
 			$(ODIR)/$(enclave)/*.c $(ODIR)/$(enclave)/*.h;)
 
 $(EDIR):

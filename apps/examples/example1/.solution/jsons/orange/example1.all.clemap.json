@@ -98,7 +98,9 @@
             "TAG_REQUEST_GET_A",
             "TAG_RESPONSE_GET_A"
           ],
-          "rettaints": []
+          "rettaints": [
+            "TAG_RESPONSE_GET_A"
+          ]
         }
       ]
     }

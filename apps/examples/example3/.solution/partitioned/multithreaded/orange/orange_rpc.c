@@ -120,7 +120,8 @@ WRAP(request_get_ewma)
 int _slave_rpc_loop() {
     _hal_init((char *)INURI, (char *)OUTURI);
     pthread_t tid[NXDRPC];
-    pthread_create(&tid[0], NULL, _wrapper_request_get_ewma, NULL);
+    void (*_req_get_ewma)(void *) = _wrapper_request_get_ewma;
+    pthread_create(&tid[0], NULL, _req_get_ewma, NULL);
     for (int i = 0; i < NXDRPC; i++) pthread_join(tid[i], NULL);
     return 0;
 }

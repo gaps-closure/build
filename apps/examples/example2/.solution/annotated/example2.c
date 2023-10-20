@@ -1,12 +1,45 @@
 #include <stdio.h>
 
 #pragma cle def PURPLE {"level":"purple"}
+#pragma cle def PURPLE_SHAREABLE { "level": "purple", \
+  "cdf": [ \
+    {"remotelevel": "orange", \
+     "direction": "bidirectional", \
+     "guarddirective": { "operation": "allow"} } \
+    ]}
+
+#pragma cle def XDLINKAGE_GET_EWMA {"level":"purple",	\
+  "cdf": [\
+    {"remotelevel":"orange", \
+     "direction": "bidirectional", \
+     "guarddirective": { "operation": "allow"}, \
+     "argtaints": [["TAG_REQUEST_GET_EWMA"]], \
+     "codtaints": ["PURPLE", "PURPLE_SHAREABLE"], \
+     "rettaints": ["TAG_RESPONSE_GET_EWMA"] },\
+    {"remotelevel":"purple", \
+     "direction": "bidirectional", \
+     "guarddirective": { "operation": "allow"}, \
+     "argtaints": [["TAG_REQUEST_GET_EWMA"]], \
+     "codtaints": ["PURPLE", "PURPLE_SHAREABLE"], \
+     "rettaints": ["TAG_RESPONSE_GET_EWMA"] }\
+  ] }
 
 #pragma cle def ORANGE {"level":"orange",\
   "cdf": [\
     {"remotelevel":"purple", \
      "direction": "egress", \
      "guarddirective": { "operation": "allow"}}\
+  ] }
+
+#pragma cle def EWMA_MAIN {"level":"orange",\
+  "cdf": [\
+    {"remotelevel":"orange", \
+     "direction": "bidirectional", \
+     "guarddirective": { "operation": "allow"}, \
+     "argtaints": [], \
+     "codtaints": ["ORANGE", "TAG_REQUEST_GET_EWMA", "TAG_RESPONSE_GET_EWMA"], \
+     "rettaints": ["ORANGE"] \
+    } \
   ] }
 
 double calc_ewma(double a, double b) {
@@ -32,16 +65,28 @@ double get_b() {
   return b;
 }
 
+#pragma cle begin XDLINKAGE_GET_EWMA
+double get_ewma(double x) {
+#pragma cle end XDLINKAGE_GET_EWMA
+#pragma cle begin PURPLE_SHAREABLE
+  double x1, y1, z1;
+#pragma cle end PURPLE_SHAREABLE
+  x1 = x;
+  y1 = get_b();
+  z1 = calc_ewma(x1, y1);
+  return z1;
+}
+
+#pragma cle begin EWMA_MAIN
 int ewma_main() {
+#pragma cle end EWMA_MAIN
   double x;
   double y;
-#pragma cle begin ORANGE
   double ewma;
-#pragma cle end ORANGE
   for (int i=0; i < 10; i++) {
     x = get_a();
-    y = get_b();           // XXX: conflict, purple not shareable, wrapping not feasible
-    ewma = calc_ewma(x,y); // XXX: conflict propagates via y
+    y = x;
+    ewma = get_ewma(y);
     printf("%f\n", ewma);
   }
   return 0;
@@ -50,4 +95,3 @@ int ewma_main() {
 int main() {
   return ewma_main();
 }
-
