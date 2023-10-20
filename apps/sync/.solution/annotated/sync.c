@@ -462,45 +462,6 @@ int shutdown_sink() {
     return 0;
 }
 
-void run_tests() {
-    FILE* file = fopen("update.xml", "rb");
-    char* content = (char*) malloc(582 + 1);
-    fread(content, 1, 582, file);
-
-    printf("events begin\n");
-    enqueue(content);
-    display();
-    enqueue("HEHEHEHE");
-    enqueue(content);
-    enqueue("4444444444444444444");
-    enqueue(content);
-    display();
-    pop();
-    pop();
-    pop();
-    display();
-    char* output = (char*) malloc(1024 * sizeof(char));
-    strncpy(output, head(), 582);
-    pop();
-
-    printf("pointer output: %p\n", output);
-    printf("this is in pop output %s\n", output);
-
-    int len = head_len();
-    memset(output, 0, 1024 * sizeof(char));
-    strncpy(output, head(), len);
-
-    printf("pointer head output: %p\n", output);
-    printf("this is in head output %*.s\n", len, output);
-    pop();
-    display();
-    // free_cb(buffer);
-    printf("pointer output: %p\n", output);
-    printf("this is in output %*.s\n", len, output);
-    free(content);
-    free(output);
-    printf("end of the program\n");
-}
 
 //CLE: init_buffer() on source / yellow side
 //CLE: get_source_socket() on source / yellow side
@@ -523,6 +484,5 @@ int main() {
     pop_source_and_update_sink();
     shutdown_source();
     shutdown_sink();
-    // run_tests();
     return 0;
 }

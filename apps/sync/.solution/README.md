@@ -23,6 +23,16 @@ sudo apt install redis-server
   - From the Android VM, browse to jaga:8000 and click the .apk. 
   - Follow prompts to allow permissions in teh process and install the app.
 
+## UID Deconflict
+Because we are running the application in VMs, the device's serial number does not get picked up by the ATAK app. Therefore we have to manually change the uuid in the device used to denote the location of the client.
+This is done as such:
+1. Type alt-left-arrow on the keyboard to switch to terminal interface on android.
+2. `cd /data/data/com.atakmap.app/shared_prefs`
+3. `vi com.atakmap.app_preferences.xml`
+4. Change the line with "bestDeviceUID" to a unique identifier after searching for UID (typing '/' then UID)
+5. Save (:wq)
+6. Type alt-left to return to android
+
 
 # Start TAKy
 ```
@@ -57,7 +67,7 @@ cd ~/gaps/build/hal/test/sync
 ../../daemon/hal -l 0 ./sync_orange.cfg
 
 cd ~/gaps/taky
-taky -c taky-liono-orange.conf
+taky -c taky-orange.conf
 
 cd ~/gaps/build/apps/sync/partitioned/multithreaded/orange
 LD_LIBRARY_PATH=/home/ijones/gaps/build/hal/api ./sync
