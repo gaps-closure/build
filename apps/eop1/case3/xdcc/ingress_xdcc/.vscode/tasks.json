@@ -49,6 +49,7 @@
         "dependsOn": [
           "9a DIVIDE",
           "9b AUTOGEN GEDL, RPCs, IDL, Codecs",
+          "9c VERIFY",
           "9e BUILD"
         ],
         "problemMatcher": []
@@ -72,7 +73,7 @@
       {
         "label": "9c VERIFY",
         "type": "shell",
-        "command": "source .make/closure_env.sh; make -f .make/verifier.make verify; make -f .make/verifier.make analyze; make -f .make/ect.make ect",
+        "command": "source .make/closure_env.sh; make -f .make/verifier.make analyze;",
         "args": [],
         "group": "build",
         "problemMatcher": []

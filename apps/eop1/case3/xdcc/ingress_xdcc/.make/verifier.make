@@ -32,11 +32,12 @@ all:
 analyze: $(EDIR)
 	$(foreach enclave, $(ENCLAVES), \
 		conflict_analyzer \
-			--clang-args="-I$(ODIR)/$(enclave),-I$(ODIR)/autogen,-I/opt/closure/include,-D__LEGACY_XDCOMMS__=1" \
+			--clang-args="-I$(ODIR)/$(enclave),-I$(ODIR)/autogen,-I/opt/closure/include,-I$(realpath ../xdcc_echo),-I$(realpath ../../../amqlib),-I/usr/local/include/activemq-cpp-3.9.5,-D__LEGACY_XDCOMMS__=1" \
 			--pdg-lib=/opt/closure/lib/libpdg.so \
 			--output=$(EDIR)/$(enclave)/topology.json \
 			--artifact=$(EDIR)/$(enclave)/artifact.json \
 			--source-path=$(ODIR)/$(enclave) \
+			--dump-ptg `which dump-ptg` \
 			$(ODIR)/$(enclave)/*.c $(ODIR)/$(enclave)/*.h;)
 
 $(EDIR):
