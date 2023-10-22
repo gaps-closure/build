@@ -32,20 +32,18 @@ handle_opts() {
     echo "sucessful"
 }
 handle_opts "$@"
-export DISPLAY=$DISPLAY
+
 
 case $ENVR in
     remote)
-
-	;;
+    ;;
     xarbitor)
-	;;
+    ;;
     *)
-	echo "Environment must be remote or xarbitor"
-	exit 1
-	;;
+    echo "Environment must be remote or xarbitor"
+    exit 1
+    ;;
 esac
-
 
 case $COLR in
     red)
@@ -61,42 +59,44 @@ esac
 
 clean_up() {
     rm -f /tmp/sync*
-    rm -f /tmp/taky*
+    rm -f /tmp/taky.$COLR/*
     redis-cli flushdb
 }
 
 set_up() {
-    pushd ~/gaps/taky
-    mate-terminal --tab --title "taky-$COLR" -e "taky -c taky-liono-$COLR.conf" &
-    popd
-    echo "PRINT COLORS"
-    pushd ~/gaps/build/hal/test/sync
-    mate-terminal --tab --title "hal-$COLR" -e "../../daemon/hal -l 0 ./sync_$COLR.cfg" &
-    popd
-    pushd ~/gaps/build/apps/sync/partitioned/multithreaded/$COLR
-    mate-terminal --tab --title "sync-$COLR" -e "LD_LIBRARY_PATH=/home/ijones/gaps/build/hal/api ./sync" &
-    popd
-    mate-terminal --tab --title "debug-$COLR" &
+    case $ENVR in
+        remote)
+            pushd ~/gaps/taky
+            mate-terminal --tab --title "taky-$COLR" -e "taky -c taky-$COLR.conf"
+            popd
+            pushd ~/gaps/build/hal/test/sync
+            mate-terminal --tab --title "hal-$COLR" -e "../../daemon/hal -l 0 ./sync_$COLR.cfg"
+            popd
+            pushd ~/gaps/build/apps/sync/partitioned/multithreaded/$COLR
+            export LD_LIBRARY_PATH=/home/ijones/gaps/build/hal/api
+            mate-terminal --tab --title "sync-$COLR" -e "./sync"
+            export LD_LIBRARY_PATH=
+            popd 
+            mate-terminal --tab --title "debug-$COLR"
+        ;;
+        xarbitor)
+        ;;
+    esac
 
-    vboxmanage startvm "$COLR enclave"
+    # vboxmanage startvm "$COLR enclave"
 }
-
-# start_demo() {
-
-# }
 
 shutdown (){
     vboxmanage controlvm "$COLR enclave" poweroff
+    sudo pkill -f taky
+    sudo pkill -f sync
+    sudo pkill -f hal 
+    redis-cli flushdb
 }
 
 clean_up
 set_up
 read -p "Press enter to shutdown"
-# start_demo
-# read -p "Proceed to ATAK to send message"
 shutdown
-# # stop_demo
 
-# # start_demo
-
-echo "DONEZO"
+echo "SCRIPT EXIT"
