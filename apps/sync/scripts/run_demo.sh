@@ -7,7 +7,7 @@ usage_exit() {
   echo "Usage: $0 [ -h ] [ -c COLR ] [ -e ENVR ]"
   echo "-h                  Help"
   echo "-c COLR             Enclave color - {red, yellow}"
-  echo "-e ENVR             Where the demo is running - {remote, xarbitor}"
+  echo "-e ENVR             Where the demo is running - {network, xarbitor}"
   exit 1
 }
 
@@ -35,12 +35,12 @@ handle_opts "$@"
 
 
 case $ENVR in
-    remote)
+    network)
     ;;
     xarbitor)
     ;;
     *)
-    echo "Environment must be remote or xarbitor"
+    echo "Environment must be network or xarbitor"
     exit 1
     ;;
 esac
@@ -59,31 +59,26 @@ esac
 
 clean_up() {
     rm -f /tmp/sync*
+    rm -f /tmp/hal*
     rm -f /tmp/taky.$COLR/*
     redis-cli flushdb
 }
 
 set_up() {
     case $ENVR in
-        remote)
+        network)
             pushd ~/gaps/taky
             mate-terminal --tab --title "taky-$COLR" -e "taky -c taky-$COLR.conf"
             popd
-            pushd ~/gaps/build/hal/test/sync
-            mate-terminal --tab --title "hal-$COLR" -e "../../daemon/hal -l 0 ./sync_$COLR.cfg"
-            popd
-            pushd ~/gaps/build/apps/sync/partitioned/multithreaded/$COLR
-            export LD_LIBRARY_PATH=/home/ijones/gaps/build/hal/api
-            mate-terminal --tab --title "sync-$COLR" -e "./sync"
-            export LD_LIBRARY_PATH=
-            popd 
+            mate-terminal --tab --title "hal-$COLR" -x ~/gaps/build/apps/sync/scripts/start_hal.sh -c $COLR
+            mate-terminal --tab --title "sync-$COLR" -x ~/gaps/build/apps/sync/scripts/start_sync.sh -c $COLR
             mate-terminal --tab --title "debug-$COLR"
         ;;
         xarbitor)
         ;;
     esac
 
-    # vboxmanage startvm "$COLR enclave"
+    vboxmanage startvm "$COLR enclave"
 }
 
 shutdown (){
