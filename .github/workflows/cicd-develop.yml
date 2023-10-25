@@ -1,17 +1,17 @@
-name: cicd on branches other than the master
-run-name: ${{ github.actor }} is pushing to branches other than the master
+name: cicd on the cicd2 branch
+run-name: ${{ github.actor }} is pushing to the cicd2 branch
 on:
   push:
     branches:
       - cicd2
 
-  workflow_run:
-    workflows: [Upload Docker image]
-    types:
-      - completed
+        #  workflow_run:
+        #    workflows: [Upload Docker image]
+        #    types:
+        #      - completed
 
 jobs:
-  devcontainer-test:
+  cicd test:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -42,9 +42,11 @@ jobs:
           cp .solution/refactored/*.c annotated/
           ls -ltra annotated/*.c
           vstask "2 ANALYZE PARTITION CONFLICTS"
+          echo "### AFTER 2"
           checkFiles=(topology.json artifact.json)
           for i in "${checkFiles[@]}"; do [ -f ./$i ] && echo "$i exists" || { echo "$i is not found"; false; } done
           vstask "9a DIVIDE"
+          echo "### AFTER 9a"
           myEnclaves=$(grep "export ENCLAVES=" .make/closure_env.sh | sed -ne 's/export ENCLAVES="//p' |sed -ne 's/"//p')
           echo $myEnclaves
           IFS=' ' read -ra ArrEc <<< $myEnclaves
@@ -58,10 +60,11 @@ jobs:
           echo "${md5_i[0]} ${md5_j[0]} $i $j";
           if [ ${md5_i[0]} != ${md5_j[0]} ]; then { echo "found an unmatched one ${md5_i[1]}"; diff $i $j; } fi;
           done
-          echo "### BEFORE 9c"
-          # vstask "9c VERIFY"
+          echo "### AFTER 9b"
+          vstask "9c VERIFY"
           echo "### AFTER 9c"
           vstask "9d BUILD"
+          echo "### AFTER 9d"
           for k in  "${ArrEc[@]}"; do eName="./partitioned/multithreaded/$k/$appName";
           [ -x   $eName ] && echo "executable $eName exists" || { echo "executable $eName is not found"; false; } done
           source .make/closure_env.sh; make -f .make/mbig.make hal
