@@ -11,7 +11,8 @@ on:
       - develop
 
 jobs:
-  devcontainer-test:
+  cicd_on_cases_with_newly_built_eop1_image:
+          #  devcontainer-test:
     runs-on: ubuntu-latest
     defaults:
       run:
