@@ -11,7 +11,7 @@ on:
         #      - completed
 
 jobs:
-  cicd test:
+  cicd_test:
     runs-on: ubuntu-latest
     defaults:
       run:
