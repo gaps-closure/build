@@ -1,9 +1,9 @@
 name: cicd on the develop branch
-run-name: ${{ github.actor }} is pushing to the develop branch
+# run-name: ${{ github.actor }} is pushing to the develop branch
 on:
-  push:
-    branches:
-      - develop
+        #  push:
+        #    branches:
+        #      - develop
 
   workflow_run:
     workflows: [Upload Docker image]
@@ -13,7 +13,8 @@ on:
       - develop
 
 jobs:
-  devcontainer-test:
+        #  devcontainer-test:
+  cicd_on__examples_with_newly_built_develop_image:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -62,7 +63,7 @@ jobs:
           echo "${md5_i[0]} ${md5_j[0]} $i $j";
           if [ ${md5_i[0]} != ${md5_j[0]} ]; then { echo "found an unmatched one ${md5_i[1]}"; diff $i $j; } fi;
           done
-          # vstask "9c VERIFY"
+          vstask "9c VERIFY"
           vstask "9d BUILD"
           for k in  "${ArrEc[@]}"; do eName="./partitioned/multithreaded/$k/$appName";
           [ -x   $eName ] && echo "executable $eName exists" || { echo "executable $eName is not found"; false; } done
