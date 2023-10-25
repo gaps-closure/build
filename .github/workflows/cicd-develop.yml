@@ -1,5 +1,5 @@
 name: cicd on the develop branch
-run-name: ${{ github.actor }} is pushing to the develop branch
+# run-name: ${{ github.actor }} is pushing to the develop branch
 on:
   push:
     branches:
