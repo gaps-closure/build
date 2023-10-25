@@ -28,6 +28,8 @@ handle_opts() {
 
 handle_opts "$@"
 
+
+sleep 3
 pushd ~/gaps/build/apps/sync/partitioned/multithreaded/$COLR
 LD_LIBRARY_PATH=/home/$USER/gaps/build/hal/api ./sync |& tee /tmp/sync-$COLR.log
 popd 
