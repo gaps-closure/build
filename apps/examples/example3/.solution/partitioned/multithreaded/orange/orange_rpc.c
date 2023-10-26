@@ -42,10 +42,14 @@ void _handle_request_get_ewma() {
     static void *ssocket;
 #endif /* __LEGACY_XDCOMMS__ */
     #pragma cle begin TAG_REQUEST_GET_EWMA
+#pragma clang attribute push (__attribute__((annotate("TAG_REQUEST_GET_EWMA"))), apply_to = any(function,type_alias,record,enum,variable(unless(is_parameter)),field))
     request_get_ewma_datatype request_get_ewma;
+#pragma clang attribute pop
     #pragma cle end TAG_REQUEST_GET_EWMA
     #pragma cle begin TAG_RESPONSE_GET_EWMA
+#pragma clang attribute push (__attribute__((annotate("TAG_RESPONSE_GET_EWMA"))), apply_to = any(function,type_alias,record,enum,variable(unless(is_parameter)),field))
     response_get_ewma_datatype response_get_ewma;
+#pragma clang attribute pop
     #pragma cle end TAG_RESPONSE_GET_EWMA
 #ifndef __LEGACY_XDCOMMS__
     codec_map  mycmap[DATA_TYP_MAX];
@@ -116,7 +120,8 @@ WRAP(request_get_ewma)
 int _slave_rpc_loop() {
     _hal_init((char *)INURI, (char *)OUTURI);
     pthread_t tid[NXDRPC];
-    pthread_create(&tid[0], NULL, _wrapper_request_get_ewma, NULL);
+    void (*_req_get_ewma)(void *) = _wrapper_request_get_ewma;
+    pthread_create(&tid[0], NULL, _req_get_ewma, NULL);
     for (int i = 0; i < NXDRPC; i++) pthread_join(tid[i], NULL);
     return 0;
 }

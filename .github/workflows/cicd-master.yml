@@ -9,6 +9,8 @@ on:
     workflows: [Upload Docker image]
     types:
       - completed
+    branches:
+      - master
 
 jobs:
   devcontainer-test:

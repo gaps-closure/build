@@ -1,8 +1,8 @@
 {
   "source_path": "/workspaces/build/apps/examples/example2/refactored",
   "enclaves": [
-    "purple_E",
-    "orange_E"
+    "orange_E",
+    "purple_E"
   ],
   "levels": [
     "orange",

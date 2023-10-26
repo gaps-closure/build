@@ -134,7 +134,9 @@
             "TAG_REQUEST_GET_EWMA",
             "TAG_RESPONSE_GET_EWMA"
           ],
-          "rettaints": []
+          "rettaints": [
+            "TAG_RESPONSE_GET_EWMA"
+          ]
         }
       ]
     }

@@ -1,23 +1,26 @@
 name: cicd on eop1
-run-name: ${{ github.actor }} is testing cicd on eop1
+# run-name: ${{ github.actor }} is testing cicd on eop1
 on:
-  push:
+        #  push:
 
   workflow_run:
-    workflows: ["Upload Docker image"]
+    workflows: [Upload Docker image]
     types:
       - completed
+    branches:
+      - develop
 
 jobs:
-  devcontainer-test:
+  cicd_on_cases_with_newly_built_eop1_image:
+          #  devcontainer-test:
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
         
     container: 
-     image: gapsclosure/closuredev:eop1
-     options: --user closure     
+      image: gapsclosure/eop1:develop
+      options: --user closure     
     steps:
       - name: closureenv
         run:  source /opt/closure/etc/closureenv; printenv PATH; printenv PYTHONPATH

@@ -1,17 +1,20 @@
-name: cicd on the cicd2 branch
-run-name: ${{ github.actor }} is pushing to the cicd2 branch
+name: cicd on the develop branch
+# run-name: ${{ github.actor }} is pushing to the develop branch
 on:
-  push:
-    branches:
-      - cicd2
+        #  push:
+        #    branches:
+        #      - develop
 
-        #  workflow_run:
-        #    workflows: [Upload Docker image]
-        #    types:
-        #      - completed
+  workflow_run:
+    workflows: [Upload Docker image]
+    types:
+      - completed
+    branches:
+      - develop
 
 jobs:
-  cicd_test:
+        #  devcontainer-test:
+  cicd_on__examples_with_newly_built_develop_image:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -23,6 +26,8 @@ jobs:
     steps:
       - name: closureenv
         run:  source /opt/closure/etc/closureenv; printenv PATH; printenv PYTHONPATH
+      - name: what is home
+        run: echo $HOME
       - name: test multiline string
         run: |
           cHome="/home/closure"
