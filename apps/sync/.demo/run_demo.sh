@@ -70,8 +70,8 @@ set_up() {
             pushd ~/gaps/taky
             mate-terminal --tab --title "taky-$COLR" -e "taky -c taky-$COLR.conf"
             popd
-            mate-terminal --tab --title "hal-$COLR" -x ~/gaps/build/apps/sync/scripts/start_hal.sh -c $COLR
-            mate-terminal --tab --title "sync-$COLR" -x ~/gaps/build/apps/sync/scripts/start_sync.sh -c $COLR
+            mate-terminal --tab --title "hal-$COLR" -x ~/gaps/build/apps/sync/.demo/start_hal.sh -c $COLR
+            mate-terminal --tab --title "sync-$COLR" -x ~/gaps/build/apps/sync/.demo/start_sync.sh -c $COLR
             mate-terminal --tab --title "debug-$COLR"
         ;;
         xarbitor)
