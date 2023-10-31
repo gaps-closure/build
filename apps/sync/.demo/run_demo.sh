@@ -47,7 +47,6 @@ esac
 
 case $COLR in
     red)
-
 	;;
     yellow)
 	;;
@@ -67,22 +66,28 @@ clean_up() {
 set_up() {
     case $ENVR in
         network)
-            pushd ~/gaps/taky
-            mate-terminal --tab --title "taky-$COLR" -e "taky -c taky-$COLR.conf"
-            popd
+            mate-terminal --tab --title "taky-$COLR" -x ~/gaps/build/apps/sync/.demo/start_taky.sh -c $COLR
             mate-terminal --tab --title "hal-$COLR" -x ~/gaps/build/apps/sync/.demo/start_hal.sh -c $COLR
             mate-terminal --tab --title "sync-$COLR" -x ~/gaps/build/apps/sync/.demo/start_sync.sh -c $COLR
             mate-terminal --tab --title "debug-$COLR"
+
+            vboxmanage startvm "$COLR enclave"
         ;;
         xarbitor)
+            mate-terminal --tab --title "taky-$COLR" -x ~/taky/run_taky.sh
+            mate-terminal --tab --title "recv-$COLR" -x ~/sync/run_recv_$COLR.sh
+            mate-terminal --tab --title "sync-$COLR" -x ~/sync/run_sync_$COLR
+            mate-terminal --tab --title "debug-$COLR"
         ;;
     esac
-
-    vboxmanage startvm "$COLR enclave"
 }
 
 shutdown (){
+
+    if [ "$ENVR" == "network"]; then
     vboxmanage controlvm "$COLR enclave" poweroff
+    fi
+
     sudo pkill -f taky
     sudo pkill -f sync
     sudo pkill -f hal 
@@ -94,4 +99,4 @@ set_up
 read -p "Press enter to shutdown"
 shutdown
 
-echo "SCRIPT EXIT"
+echo "DEMO EXIT"
