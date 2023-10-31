@@ -76,7 +76,7 @@ set_up() {
         xarbitor)
             mate-terminal --tab --title "taky-$COLR" -x ~/taky/run_taky.sh
             mate-terminal --tab --title "recv-$COLR" -x ~/sync/run_recv_$COLR.sh
-            mate-terminal --tab --title "sync-$COLR" -x ~/sync/run_sync_$COLR
+            mate-terminal --tab --title "sync-$COLR" -x ~/sync/run_sync_$COLR.sh
             mate-terminal --tab --title "debug-$COLR"
         ;;
     esac
@@ -84,7 +84,7 @@ set_up() {
 
 shutdown (){
 
-    if [ "$ENVR" == "network"]; then
+    if [ "$ENVR" == "network" ]; then
     vboxmanage controlvm "$COLR enclave" poweroff
     fi
 
