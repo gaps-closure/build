@@ -1,9 +1,9 @@
 name: cicd on eop1
 # run-name: ${{ github.actor }} is testing cicd on eop1
 on:
-  push:
-    branches:
-      - cicd2
+        #  push:
+          #    branches:
+          #      - cicd2
 
   workflow_run:
     workflows: [Upload Docker image]
@@ -24,6 +24,11 @@ jobs:
       image: gapsclosure/eop1:develop
       options: --user closure     
     steps:
+      - env:
+         EVENT_CONTEXT: ${{ toJSON(github.event) }}
+        run: |
+         echo $EVENT_CONTEXT
+
       - name: closureenv
         run:  source /opt/closure/etc/closureenv; printenv PATH; printenv PYTHONPATH
       - name: what is home
