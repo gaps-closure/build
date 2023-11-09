@@ -1,16 +1,16 @@
 name: cicd on C_examples
 # run-name: ${{ github.actor }} is pushing to the develop branch
 on:
-        #  push:
-        #    branches:
-        #      - develop
+          push:
+            branches:
+              - cicd2
 
-  workflow_run:
-    workflows: [Upload Docker image]
-    types:
-      - completed
-    branches:
-      - cicd2
+                #  workflow_run:
+                #    workflows: [Upload Docker image]
+                #    types:
+                #      - completed
+                #    branches:
+                #      - cicd2
 
 jobs:
         #  devcontainer-test:
