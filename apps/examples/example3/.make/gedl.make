@@ -42,7 +42,7 @@ CLANG_FLAGS += -I../../../amqlib -I../xdcc_echo -D__LEGACY_XDCOMMS__=1
 gedl: $(ODIR)/$(PROG).gedl
 
 $(ODIR)/$(PROG).gedl: $(ODIR)/gedl.ll
-	cd $(ODIR) && $(OPT) -disable-output -load $(LIBGEDL) -accinfo-track -d 1 -prog $(PROG) -he ../heuristics < gedl.ll > opt_test.log
+	cd $(ODIR) && $(OPT) -disable-output -load $(LIBGEDL) -accinfo-track -d 1 -prog $(PROG) -he ../heuristics < gedl.ll
 
 gedlir: $(ODIR)/gedl.ll
 
