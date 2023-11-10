@@ -4,7 +4,7 @@
       {
         "label": "0 CLEAN SOURCE",
         "type": "shell",
-        "command": "rm -rf annotated partitioned divvied refactored jsons verifier *working *.json;",
+        "command": "rm -rf annotated partitioned divvied refactored jsons verifier *working *.json log; mkdir log",
         "args": [],
         "group": {
           "kind": "build",

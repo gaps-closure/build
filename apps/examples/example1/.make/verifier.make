@@ -38,7 +38,7 @@ analyze: $(EDIR)
 			--artifact=$(EDIR)/$(enclave)/artifact.json \
 			--source-path=$(ODIR)/$(enclave) \
 			--dump-ptg `which dump-ptg` \
-			$(ODIR)/$(enclave)/*.c $(ODIR)/$(enclave)/*.h;)
+			$(ODIR)/$(enclave)/*.c $(ODIR)/$(enclave)/*.h > ./log/verifier_$(enclave).log 2>&1;)
 
 $(EDIR):
 	$(foreach enclave, $(ENCLAVES), $(shell mkdir -p $(EDIR)/$(enclave)))
