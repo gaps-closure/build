@@ -12,7 +12,6 @@ topology.json: $(EDIR)
 	--pdg-lib $(CLOSURE_LIBS)/libpdg.so \
 	--output topology.json \
 	--artifact artifact.json \
-	--temp $(EDIR) \
 	--source-path $(realpath .)/refactored \
 	--dump-ptg `which dump-ptg` \
 	annotated/$(PROG).c 

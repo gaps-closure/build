@@ -27,7 +27,6 @@ struct circular_buffer {
 };
 
 
-// //CLE: will be annotated to be on source / yellow side and not sharable
 struct circular_buffer circ_buff = {
     .cur_size = 0,
     .head = 0,
@@ -54,8 +53,6 @@ void init_lock() {
     pthread_mutex_init(&circ_buff.lock, NULL); 
 }
 
-
-//CLE: source / yellow side
 void init_buffer() {
     init_lock();
 
@@ -66,7 +63,6 @@ void init_buffer() {
     memset(circ_buff.block_lengths, 0, NUM_BLOCKS * sizeof(int));
 }
 
-//CLE: source / yellow side
 void enqueue(char* input) {
     printf("%s called\n", __func__);
 
@@ -90,7 +86,6 @@ void enqueue(char* input) {
     pthread_mutex_unlock(&circ_buff.lock);
 }
 
-//CLE: source / yellow side
 void pop() {
     printf("%s called\n", __func__);
     pthread_mutex_lock(&circ_buff.lock);
@@ -107,7 +102,6 @@ void pop() {
     pthread_mutex_unlock(&circ_buff.lock);
 }
 
-//CLE: source / yellow side
 int get_source_socket() {
     static bool source_init = false;
     static int source_sock = -1;
@@ -136,7 +130,6 @@ int get_source_socket() {
     return source_sock;
 }
 
-//CL: sink / red side
 int get_sink_socket() {
     static bool sink_init = false;
     static int sink_sock = -1;
@@ -203,15 +196,12 @@ void* source_receive() {
     }
 }
 
-//CLE: source / yellow side
 void start_recv_thread() {
     pthread_t id;
     pthread_create(&id, NULL, source_receive, NULL);
 }
 
 void inhint(char* ignored, char* input, int len) { }
-
-//CLE: sink / red side
 int update_sink(char* output, int len) {
     inhint(output, output, BLOCK_SIZE);
     if (send(get_sink_socket(), output, len, 0) < 0) {
@@ -221,7 +211,6 @@ int update_sink(char* output, int len) {
     return 0;
 }
 
-//CLE: this function makes non-sharable input to sharable return
 void sanitize(char* input, char* output, int len) {
     strncpy(output, input, len); // can do filtering on input here if needed.
 }
@@ -229,6 +218,7 @@ void sanitize(char* input, char* output, int len) {
 void pop_source_and_update_sink() {
     char output[BLOCK_SIZE];
     char san_output[BLOCK_SIZE];
+
     while(1) {
         memset(output, 0, sizeof(output));
         memset(san_output, 0, sizeof(san_output));
@@ -244,7 +234,6 @@ void pop_source_and_update_sink() {
     }
 }
 
-//CLE: source / yellow side
 void shutdown_source() {
     int source_sock = -1;
     if ((source_sock = get_source_socket()) != -1) {
@@ -259,7 +248,6 @@ void shutdown_source() {
     free(circ_buff.block_lengths);
 }
 
-//CLE: sink / red side
 int shutdown_sink() {
     int sink_sock = -1;
     if ((sink_sock = get_sink_socket()) != -1) {
@@ -268,17 +256,6 @@ int shutdown_sink() {
     return 0;
 }
 
-//CLE: init_buffer() on source / yellow side
-//CLE: get_source_socket() on source / yellow side
-//CLE: get_sink_socket() on sink / red side, called cross domain
-//CLE: start_recv_thread() on source / yellow side
-//CLE: pop_source_update_sink() on source side calls update_sink()
-//CLE: update_sink() on sink side called cross domain
-//CLE: circular buffer is source side not sharable
-//CLE: sanitize() makes non-sharable data from circular buffer sharable.
-//CLE: shutdown_source() on source / yellow side
-//CLE: shutdown_sink() on sink / red side, called cross domain
-//CLE: main on source side
 int main() {
     init_buffer();
     get_source_socket();

@@ -20,7 +20,7 @@
  //Information on the source enclave (level red) not authorized to be shared with any other enclave
 #pragma cle def RED {"level":"red"}
 // Information on the sink enclave (level red) that can be shared with source enclave (level yellow)
-#pragma cle def RED_SHARABLE {"level":"red",\
+#pragma cle def RED_SHAREABLE {"level":"red",\
   "cdf": [\
     {"remotelevel":"yellow", \
      "direction": "egress", \
@@ -28,7 +28,7 @@
     } \
   ] }
 // Information on the source enclave (level yellow) that cget_sink_socket(an be shared with source enclave (level red)
-#pragma cle def YELLOW_SHARABLE {"level":"yellow",\
+#pragma cle def YELLOW_SHAREABLE {"level":"yellow",\
   "cdf": [\
     {"remotelevel":"red", \
      "direction": "egress", \
@@ -45,7 +45,7 @@
 //CLE: get_sink_socket() on sink / red side, called cross domain from main()
 //CLE: update_sink() on sink side called cross domain from pop_source_and_update_sink()
 //CLE: shutdown_sink() on sink / red side, called cross domain from main()
-//CLE: sanitize() makes non-sharable data from circular buffer sharable called from pop_source_and_update_sink()
+//CLE: sanitize() makes non-SHAREABLE data from circular buffer SHAREABLE called from pop_source_and_update_sink()
 // define one annotation for each of the 6 functions described above
 // functions called cross domain arguments and return value will have the tag_request_FUNC and tag_response_FUNC labels in the corresponding arguments and return taints
 
@@ -58,15 +58,15 @@
      "direction": "egress", \
      "guarddirective": { "operation": "allow"}, \
      "argtaints": [], \
-     "codtaints" : ["RED", "RED_SHARABLE"], \
-     "rettaints" : ["RED_SHARABLE", "TAG_RESPONSE_GET_SINK_SOCKET"] \
+     "codtaints" : ["RED", "RED_SHAREABLE"], \
+     "rettaints" : ["RED_SHAREABLE", "TAG_RESPONSE_GET_SINK_SOCKET"] \
     }, \
     {"remotelevel":"yellow", \
      "direction": "egress", \
      "guarddirective": { "operation": "allow"}, \
      "argtaints": [], \
-     "codtaints" : ["RED", "RED_SHARABLE"], \
-     "rettaints" : ["RED_SHARABLE", "TAG_RESPONSE_GET_SINK_SOCKET"] \
+     "codtaints" : ["RED", "RED_SHAREABLE"], \
+     "rettaints" : ["RED_SHAREABLE", "TAG_RESPONSE_GET_SINK_SOCKET"] \
     } \
   ] \
 }
@@ -78,14 +78,14 @@
      "direction": "egress", \
      "guarddirective": { "operation": "allow"}, \
      "argtaints": [["TAG_REQUEST_UPDATE_SINK"], ["TAG_REQUEST_UPDATE_SINK"]], \
-     "codtaints" : ["RED", "RED_SHARABLE", "TAG_RESPONSE_GET_SINK_SOCKET", "TAG_REQUEST_GET_SINK_SOCKET"], \
+     "codtaints" : ["RED", "RED_SHAREABLE", "TAG_RESPONSE_GET_SINK_SOCKET", "TAG_REQUEST_GET_SINK_SOCKET"], \
      "rettaints" : ["TAG_RESPONSE_UPDATE_SINK"] \
     }, \
     {"remotelevel":"yellow", \
      "direction": "egress", \
      "guarddirective": { "operation": "allow"}, \
      "argtaints": [["TAG_REQUEST_UPDATE_SINK"], ["TAG_REQUEST_UPDATE_SINK"]], \
-     "codtaints" : ["RED", "RED_SHARABLE", "TAG_RESPONSE_GET_SINK_SOCKET", "TAG_REQUEST_GET_SINK_SOCKET"], \
+     "codtaints" : ["RED", "RED_SHAREABLE", "TAG_RESPONSE_GET_SINK_SOCKET", "TAG_REQUEST_GET_SINK_SOCKET"], \
      "rettaints" : ["TAG_RESPONSE_UPDATE_SINK"] \
     } \
   ] \
@@ -98,7 +98,7 @@
      "direction": "egress", \
      "guarddirective": { "operation": "allow"}, \
      "argtaints": [], \
-     "codtaints" : ["YELLOW", "YELLOW_SHARABLE", "TAG_RESPONSE_UPDATE_SINK", "TAG_REQUEST_UPDATE_SINK"], \
+     "codtaints" : ["YELLOW", "YELLOW_SHAREABLE", "TAG_RESPONSE_UPDATE_SINK", "TAG_REQUEST_UPDATE_SINK"], \
      "rettaints" : ["YELLOW"] \
     } \
   ] \
@@ -111,26 +111,28 @@
      "direction": "egress", \
      "guarddirective": { "operation": "allow"}, \
      "argtaints": [], \
-     "codtaints" : ["RED", "RED_SHARABLE", "TAG_RESPONSE_GET_SINK_SOCKET", "TAG_REQUEST_GET_SINK_SOCKET"], \
-     "rettaints" : ["TAG_RESPONSE_SHUTDOWN_SYNC"] \
+     "codtaints" : ["RED", "RED_SHAREABLE", "TAG_RESPONSE_GET_SINK_SOCKET", "TAG_REQUEST_GET_SINK_SOCKET"], \
+     "rettaints" : ["TAG_RESPONSE_SHUTDOWN_SINK"] \
     }, \
     {"remotelevel":"yellow", \
      "direction": "egress", \
      "guarddirective": { "operation": "allow"}, \
      "argtaints": [], \
-     "codtaints" : ["RED", "RED_SHARABLE", "TAG_RESPONSE_GET_SINK_SOCKET", "TAG_REQUEST_GET_SINK_SOCKET"], \
-     "rettaints" : ["TAG_RESPONSE_SHUTDOWN_SYNC"] \
+     "codtaints" : ["RED", "RED_SHAREABLE", "TAG_RESPONSE_GET_SINK_SOCKET", "TAG_REQUEST_GET_SINK_SOCKET"], \
+     "rettaints" : ["TAG_RESPONSE_SHUTDOWN_SINK"] \
     } \
   ] \
 }
 
-
+/* for downstream analysis, argtaint needs TAG_RESPONSE_UPDATE_SINK to
+   change san_output to a TAG_RESPONSE for passing to RPC function.
+   MK: 10-27-23, see more discussion in code */
 #pragma cle def SANITIZE {"level":"yellow",\
   "cdf": [\
     {"remotelevel":"yellow", \
      "direction": "egress", \
      "guarddirective": { "operation": "allow"}, \
-     "argtaints": [["YELLOW"], ["YELLOW_SHARABLE"], ["YELLOW_SHARABLE"]], \
+     "argtaints": [["YELLOW"], ["YELLOW_SHAREABLE", "TAG_RESPONSE_UPDATE_SINK"], ["YELLOW_SHAREABLE"]], \
      "codtaints" : [], \
      "rettaints" : ["YELLOW"] \
     } \
@@ -166,7 +168,7 @@ struct circular_buffer {
 };
 
 
-// //CLE: will be annotated to be on source / yellow side and not sharable
+// //CLE: will be annotated to be on source / yellow side and not SHAREABLE
 
 #pragma cle begin YELLOW
 struct circular_buffer circ_buff = {
@@ -310,9 +312,9 @@ int get_sink_socket() {
 #pragma cle end GET_SINK_SOCKET
 
     static bool sink_init = false;
-    #pragma cle begin RED_SHARABLE
+    #pragma cle begin RED_SHAREABLE
     static int sink_sock = -1;
-    #pragma cle end RED_SHARABLE
+    #pragma cle end RED_SHAREABLE
 
 
     if (sink_init) {
@@ -398,7 +400,7 @@ int update_sink(char* output, int len) {
     return 0;
 }
 
-//CLE: this function makes non-sharable input to sharable return
+//CLE: this function makes non-SHAREABLE input to SHAREABLE return
 #pragma cle begin SANITIZE
 void sanitize(char* input, char* output, int len) {
 #pragma cle end SANITIZE
@@ -413,16 +415,25 @@ void pop_source_and_update_sink() {
     #pragma cle begin YELLOW
     char output[BLOCK_SIZE];
     #pragma cle end YELLOW
-    #pragma cle begin YELLOW_SHARABLE
+    /* MK 10-27-23: san_output gets reassigned as TAG_REQUEST_UPDATE_SINK in downstream
+    conflict_analysis. Uncommented YELLOW_SHAREABLE for now. Downstream 
+    assigns different annotation to something that was a different annotation
+    upstream (i.e., when below is uncommented). This is a larger problem.
+    
+    conflict otherwise arises in:
+            sanitize(output, san_output, len);
+            update_sink(san_output, len);
+    */
+    // #pragma cle begin YELLOW_SHAREABLE
     char san_output[BLOCK_SIZE];
-    #pragma cle end YELLOW_SHARABLE
+    // #pragma cle end YELLOW_SHAREABLE
     while(1) {
         memset(output, 0, sizeof(output));
         memset(san_output, 0, sizeof(san_output));
-        #pragma cle begin YELLOW_SHARABLE
+        #pragma cle begin YELLOW_SHAREABLE
         // is this thread safe?
         int len = circ_buff.block_lengths[circ_buff.head];
-        #pragma cle end YELLOW_SHARABLE
+        #pragma cle end YELLOW_SHAREABLE
         if (len != 0) {
             printf("Len isnt 0\n");
             memcpy(output, head(), head_len());
@@ -469,8 +480,8 @@ int shutdown_sink() {
 //CLE: start_recv_thread() on source / yellow side
 //CLE: pop_source_update_sink() on source side calls update_sink()
 //CLE: update_sink() on sink side called cross domain
-//CLE: circular buffer is source side not sharable
-//CLE: sanitize() makes non-sharable data from circular buffer sharable.
+//CLE: circular buffer is source side not SHAREABLE
+//CLE: sanitize() makes non-SHAREABLE data from circular buffer SHAREABLE.
 //CLE: shutdown_source() on source / yellow side
 //CLE: shutdown_sink() on sink / red side, called cross domain
 //CLE: main on source side
