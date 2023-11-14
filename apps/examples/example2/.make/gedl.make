@@ -48,21 +48,21 @@ gedlir: $(ODIR)/gedl.ll
 
 $(ODIR)/gedl.ll: $(EDIR)/perencll.done
 	$(foreach enclave,$(ENCLAVES), $(eval ENCLAVELL += $(EDIR)/$(enclave)/$(enclave).ll ))
-	$(LLVMLINK) $(ENCLAVELL) -S -o $(ODIR)/gedl.ll > log/gedl.log
+	$(LLVMLINK) $(ENCLAVELL) -S -o $(ODIR)/gedl.ll > $(LOGDIR)/gedl.out
 
 perencll: $(EDIR)/perencll.done
 
 # create combined LL for each enclave, and do an opt pass to determine functions imported/exported by each enclave
 $(EDIR)/perencll.done: $(EDIR)/compencs.done
 	$(foreach enclave,$(ENCLAVES), $(LLVMLINK) $(shell find $(EDIR)/$(enclave) -name *.ll;) -S -o $(EDIR)/$(enclave)/$(enclave).ll;)
-	$(foreach enclave,$(ENCLAVES), $(OPT) -disable-output -load $(LIBGEDL) -llvm-test -prefix $(ODIR)/$(enclave)/ < $(EDIR)/$(enclave)/$(enclave).ll > log/perecll_$(enclave).log;)
+	$(foreach enclave,$(ENCLAVES), $(OPT) -disable-output -load $(LIBGEDL) -llvm-test -prefix $(ODIR)/$(enclave)/ < $(EDIR)/$(enclave)/$(enclave).ll > $(LOGDIR)/perecll_$(enclave).out;)
 	touch $(EDIR)/perencll.done
 
 compencs: $(EDIR)/compencs.done
 
 # compile to LLVM IR
 $(EDIR)/compencs.done: $(EDIR)/preproc.done
-	$(foreach enclave,$(ENCLAVES), $(foreach p,$(shell find $(EDIR)/$(enclave) -name *.c;), $(CLANG) $(CLANG_FLAGS) $(INCLUDES) $p -o $(basename $p).ll >log/compencs_$(enclave).log;))
+	$(foreach enclave,$(ENCLAVES), $(foreach p,$(shell find $(EDIR)/$(enclave) -name *.c;), $(CLANG) $(CLANG_FLAGS) $(INCLUDES) $p -o $(basename $p).ll > $(LOGDIR)/compencs_$(enclave).out;))
 	touch $(EDIR)/compencs.done
 
 preproc: $(EDIR)/preproc.done
@@ -112,8 +112,8 @@ $(ODIR)/$(PROG).all.clemap.json:
 	bash -f $(JOIN) $(EDIR) $(ODIR)/$(PROG).all.clemap.json
 
 $(EDIR)/rautogen.done: idl
-	cd $(AUTOGENDIR) && $(AUTOGEN) -i "$(PROG).idl" -g bw_v1 -d $(PROG)_bw.dfdl -e codec > $(PWD)/log/$(AUTOGEN)_bw.log \
-	&& $(AUTOGEN) -i "$(PROG).idl" -g be_v1 -d $(PROG)_be.dfdl -e codec > $(PWD)/log/$(AUTOGEN)_be.log \
+	cd $(AUTOGENDIR) && $(AUTOGEN) -i "$(PROG).idl" -g bw_v1 -d $(PROG)_bw.dfdl -e codec > $(PWD)/$(LOGDIR)/$(AUTOGEN)_bw.out \
+	&& $(AUTOGEN) -i "$(PROG).idl" -g be_v1 -d $(PROG)_be.dfdl -e codec > $(PWD)/$(LOGDIR)/$(AUTOGEN)_be.out \
 	&& echo $(PWD) && cd $(PWD) && touch $(EDIR)/rautogen.done
 
 idl: $(EDIR)/idl.done

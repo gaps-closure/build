@@ -40,3 +40,5 @@ export ENCLAVES="orange purple"
 export EXT=c
 export ECT=ect
 export LD_LIBRARY_PATH=ect/z3-4.8.8/lib:$LD_LIBRARY_PATH
+
+export LOGDIR=log

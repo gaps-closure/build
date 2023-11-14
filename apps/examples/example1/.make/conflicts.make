@@ -1,6 +1,5 @@
 IDIR=./annotated
 EDIR=./annotated-working
-LDIR=log
 CLANG_FLAGS += -I ../xdcc_echo -I ../../../amqlib
 CONSTRAINTS=$(CLOSURE_PYTHON)/conflict_analyzer/constraints
 
@@ -16,7 +15,7 @@ topology.json: $(EDIR)
 	--temp $(EDIR) \
 	--source-path $(realpath .)/refactored \
 	--dump-ptg `which dump-ptg` \
-	annotated/$(PROG).c > $(LDIR)/conflict_analyzer.log 
+	annotated/$(PROG).c > $(LOGDIR)/conflict_analyzer.out 
 
 $(EDIR):
 	mkdir -p $(EDIR)
