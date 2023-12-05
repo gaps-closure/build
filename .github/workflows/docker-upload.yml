@@ -14,7 +14,7 @@ jobs:
           
       - name: Get branch name
         id: branch-name
-        uses: tj-actions/branch-names@v5.4
+        uses: tj-actions/branch-names@v7.0.7
       
       - name: Log in to Docker Hub
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
