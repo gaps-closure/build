@@ -120,7 +120,7 @@ idl: $(EDIR)/idl.done
 
 $(EDIR)/idl.done: gedl
 	$(IDLGENERATOR) -s $(CLOSURE_SCHEMAS)/gedl-schema.json -g "$(ODIR)/$(PROG).gedl" -o "$(ODIR)/autogen/$(PROG).idl" -i $(IPC_MODE) \
-	&& touch $(EDIR)/idl.done
+	> $(LOGDIR)/$(IDLGENERATOR).out && touch $(EDIR)/idl.done
 	
 slibs: $(AUTOGENDIR)/libcodecs.so 
 
