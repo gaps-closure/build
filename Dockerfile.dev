@@ -143,6 +143,7 @@ RUN sudo apt -y update                     \
 &&  sudo apt -y install			   \
     llvm-14-dev 			   \
     clang-14 				   \
+    libclang-14-dev                        \
     python3-clang-14
     
 # LLVM install linking
