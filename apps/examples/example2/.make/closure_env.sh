@@ -22,6 +22,7 @@ export JOINCLEMAPS=join_clemaps
 export PARTITIONER=partitioner
 # only used in cutzoom
 export DIV=divider
+export DIV_PLUGIN=divider_plugin
 export IDLGENERATOR=idl_generator
 export RPCGENERATOR=rpc_generator
 export AUTOGEN=hal_autogen
