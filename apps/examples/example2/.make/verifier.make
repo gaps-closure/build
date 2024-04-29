@@ -37,7 +37,8 @@ analyze: $(EDIR)
 			--output=$(EDIR)/$(enclave)/topology.json \
 			--artifact=$(EDIR)/$(enclave)/artifact.json \
 			--source-path=$(ODIR)/$(enclave) \
-			$(ODIR)/$(enclave)/*.c $(ODIR)/$(enclave)/*.h;)
+			--dump-ptg `which dump-ptg` \
+			$(ODIR)/$(enclave)/*.c $(ODIR)/$(enclave)/*.h > ./log/verifier_$(enclave).log 2>&1;)
 
 $(EDIR):
 	$(foreach enclave, $(ENCLAVES), $(shell mkdir -p $(EDIR)/$(enclave)))

@@ -4,9 +4,12 @@
       {
         "label": "0 CLEAN SOURCE",
         "type": "shell",
-        "command": "rm -rf annotated partitioned divvied refactored jsons verifier *working *.json;",
+        "command": "rm -rf annotated partitioned divvied refactored jsons verifier *working *.json log; mkdir log",
         "args": [],
-        "group": "build",
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
         "problemMatcher": []
       },
       {
@@ -14,7 +17,10 @@
         "type": "shell",
         "command": "mkdir annotated; cp -R plain/* annotated; echo Prepared sources for CLE annotation by developer under ./annotated; echo Move to Conflict Analysis when done annotating",
         "args": [],
-        "group": "build",
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
         "problemMatcher": []
       },
       {
@@ -41,8 +47,8 @@
         "dependsOn": [
           "9a DIVIDE",
           "9b AUTOGEN GEDL, RPCs, IDL, Codecs",
-          "9c VERIFY",
           "9d BUILD",
+          "9c VERIFY",
           "9e EMULATE"
         ],
         "problemMatcher": []
@@ -64,9 +70,17 @@
         "problemMatcher": []
       },
       {
-        "label": "9c VERIFY",
+        "label": "OLD-9c VERIFY",
         "type": "shell",
         "command": "source .make/closure_env.sh; make -f .make/verifier.make verify; make -f .make/verifier.make analyze; make -f .make/ect.make ect",
+        "args": [],
+        "group": "build",
+        "problemMatcher": []
+      },
+      {
+        "label": "9c VERIFY",
+        "type": "shell",
+        "command": "source .make/closure_env.sh; make -f .make/verifier.make analyze;",
         "args": [],
         "group": "build",
         "problemMatcher": []

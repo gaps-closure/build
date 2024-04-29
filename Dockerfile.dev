@@ -24,10 +24,10 @@ RUN apt-get -y update           \
 	cmake                       \
     libtinfo-dev                \
     libxml2-dev                 \
-    python3.8                   \
-    llvm-10-dev                 \
-    clang-10                    \
-    python3-clang-10            
+    python3.8                   
+#    llvm-10-dev                 \
+#    clang-10                    \
+#    python3-clang-10            
 
 # python dependencies
 RUN python3 -m pip install		\
@@ -115,14 +115,6 @@ RUN curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 RUN sudo apt update
 RUN sudo apt install -y nodejs
 
-# LLVM install linking
-RUN ln -s $(which clang-10) /usr/local/bin/clang \
-&& ln -s $(which opt-10) /usr/local/bin/opt \
-&& ln -s $(which llvm-link-10) /usr/local/bin/llvm-link \
-&& ln -s $(which llvm-config-10) /usr/local/bin/llvm-config \
-&& ln -s $(which llvm-as-10) /usr/local/bin/llvm-as \
-&& ln -s $(which llvm-dis-10) /usr/local/bin/llvm-dis
-
 # minizinc
 RUN cd /opt/ \
 &&  sudo mkdir minizinc \
@@ -138,6 +130,37 @@ ENV HOME /home/closure
 RUN sudo apt install -y clang-9 \
 && curl -sSL https://get.haskellstack.org/ | sh
 
+# Install LLVM-14
+RUN sudo apt -y update                     \
+&&  sudo apt -y install    		   \
+    lsb-release		   		   \	
+    software-properties-common 		   \
+    gnupg		       		   \
+&&  cd /tmp 				   \
+&&  wget https://apt.llvm.org/llvm.sh 	   \
+&&  chmod +x ./llvm.sh 			   \
+&&  sudo ./llvm.sh 14			   \
+&&  sudo apt -y install			   \
+    llvm-14-dev 			   \
+    clang-14 				   \
+    python3-clang-14
+    
+# LLVM install linking
+RUN sudo ln -s $(which clang-14) /usr/local/bin/clang \
+&& sudo ln -s $(which opt-14) /usr/local/bin/opt \
+&& sudo ln -s $(which llvm-link-14) /usr/local/bin/llvm-link \
+&& sudo ln -s $(which llvm-config-14) /usr/local/bin/llvm-config \
+&& sudo ln -s $(which llvm-as-14) /usr/local/bin/llvm-as \
+&& sudo ln -s $(which llvm-dis-14) /usr/local/bin/llvm-dis
+
+# SVF
+RUN cd /opt/closure \
+&&  git clone https://github.com/gaps-closure/svf \
+&&  cd svf                                        \
+&&  git checkout develop                          \
+&&  LLVM_DIR=/usr/lib/llvm-14 ./build.sh release  \
+&&  sudo chmod 777 /opt/closure/svf/Release-build/svf-llvm
+
 # copy and install
 COPY --chown=closure . /tmp/build
 RUN cd /tmp/build \
@@ -146,7 +169,7 @@ RUN cd /tmp/build \
 # Small fix for ect
 # RUN sudo rm -rf /tmp/build
 
-ENV PATH=$PATH:/opt/minizinc/bin:$PATH
+ENV PATH=$PATH:/opt/minizinc/bin:/opt/closure/svf/Release-build/bin:$PATH
 RUN echo "source /opt/closure/etc/closureenv" >> /home/closure/.bashrc
 RUN echo "source /opt/closure/etc/closureenv" >> /home/closure/.bash_profile
 RUN echo "if [[ -e '/root/bashrc' ]]; then bash /root/bashrc; fi" >> /home/closure/.bashrc
